@@ -1,0 +1,17 @@
+# Card metadata consumed by https://designmolecule.com
+name: MicroMold
+slug: micromold
+area: Advanced Manufacturing
+status: concept          # concept | design | prototype | tested | released
+shortlisted: false
+pitch: >-
+  A desktop injection molding press for recycled plastic: a lever or screw press with a heated barrel and interchangeable aluminum molds, turning shredded waste plastic into small useful parts.
+problem: >-
+  Community recycling produces shredded plastic with few local uses, and small-batch molding of parts is out of reach without an injection press.
+budget_usd: 400
+difficulty: 3  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [advanced-manufacturing, open-hardware, cern-ohl-s]
