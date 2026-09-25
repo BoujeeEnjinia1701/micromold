@@ -2,7 +2,12 @@
 name: MicroMold
 slug: micromold
 area: Advanced Manufacturing
-status: concept          # concept | design | prototype | tested | released
+trl: 2                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
+trl_target: 3
+trl_evidence:
+  - docs/01-problem.md
+  - docs/02-concept.md
+  - docs/03-requirements.md
 shortlisted: false
 pitch: >-
   A desktop injection molding press for recycled plastic: a lever or screw press with a heated barrel and interchangeable aluminum molds, turning shredded waste plastic into small useful parts.
