@@ -1,6 +1,7 @@
 # Card metadata consumed by https://designmolecule.com
 name: MicroMold
 slug: micromold
+repo: BoujeeEnjinia1701/micromold         # GitHub repository, shown on every drawing and render
 area: Advanced Manufacturing
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
