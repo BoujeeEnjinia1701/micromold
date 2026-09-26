@@ -3,9 +3,9 @@ doc_id: MMD-PRC-001
 title: MicroMold design precis
 project: MicroMold
 doc_type: Design precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,13 +25,17 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget approved by Amish ($520)
 ---
 
 # MicroMold design precis
 
 ## Summary
 
-MicroMold is a bench-top, hand-operated plunger injection press for recycled HDPE, PP, LDPE and PS. The rack-and-pinion head of a 1 t arbor press, mounted on a taller steel column and turned by a 450 mm ratchet handle, drives a 22 mm plunger down a vertical steel barrel heated by two 300 W band heaters. Melt leaves a heated 4 mm nozzle into a two-plate aluminum mold that a screw lift table holds against the nozzle, inside a perforated nozzle zone shield, where a small fan cools the mold, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations (MMD-CAL-001 v0.2) give a shot of up to 34.2 g at 8.9 MPa (89 bar) with 250 N on the handle, delivered in about four ratchet pulls; a warm-up of 12.2 min; and about 11.6 parts per hour from 753 W of single-phase power. The press costs $507 in parts and $597 with one mold, $7 over the $500 budget, and weighs about 39.2 kg against a 40 kg target. All figures are estimates.
+MicroMold is a bench-top, hand-operated plunger injection press for recycled HDPE, PP, LDPE and PS. The rack-and-pinion head of a 1 t arbor press, mounted on a taller steel column and turned by a 450 mm ratchet handle, drives a 22 mm plunger down a vertical steel barrel heated by two 300 W band heaters. Melt leaves a heated 4 mm nozzle into a two-plate aluminum mold that a screw lift table holds against the nozzle, inside a perforated nozzle zone shield, where a small fan cools the mold, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations (MMD-CAL-001 v0.3) give a shot of up to 34.2 g at 8.9 MPa (89 bar) with 250 N on the handle, delivered in about four ratchet pulls; a warm-up of 12.2 min; and about 11.6 parts per hour from 753 W of single-phase power. The press costs $507 in parts against the $520 budget ($597 with one mold, which is tooling), and weighs about 39.2 kg against a 40 kg target. All figures are estimates.
 
 ![MicroMold on a workbench](../media/hero.png)
 
@@ -104,7 +108,7 @@ Table 2. Key numbers.
 | Fume hood flow | About 124 m³/h [J1] | R13 met on paper |
 | Mass | 39.2 kg without the control box, against 40 kg [K1] | R9 at risk |
 | Size | 320 x 260 mm base; handle 1,089 mm above the bench at the start of a pull [K2] | R9 met on size |
-| Parts cost | $507 press; $597 with one mold, against $500 [L1] | R14 not met, by $7 |
+| Parts cost | $507 press; $597 with one mold, against $520 [L1] | R14 at risk, $13 margin |
 
 ## Key design choices
 
@@ -117,7 +121,7 @@ These follow MMD-DDR-001 and MMD-DDR-002. Each was decided by Amish, 2026-09-25:
 - **Bolted two-plate aluminum molds on a lift table (D5).** Bolts are slow but cheap and hold 45 cm² at full pressure. A toggle clamp frame (about $40) is a later upgrade. The nozzle tip is now 190 mm above the bench so that 120 mm stacks fit.
 - **Load cell for pressure indication (D6).** A number for each shot helps a group learn and record settings. A glass-epoxy spacer keeps the cell cool.
 - **First mold: a test plaque (D7).** A 64 x 50 x 6 mm plaque shows fill, shrinkage and surface quality and can be cut into test bars. Product molds follow co-design.
-- **Budget (D8, DDR-002).** The budget covers the press and is $500; molds are tooling, reported separately (R8). The press is $507, so R14 is not met by $7; the options are in `docs/REVIEW.md` (O3).
+- **Budget (D8, DDR-002).** The budget covers the press and is $520, approved by Amish on 2026-09-26 to cover the priced BOM; molds are tooling, reported separately (R8). The press is $507, so R14 is at risk with a $13 margin on indicative prices.
 - **Fume control (D9).** A side hood with a duct fan at the funnel, plus a written condition to run only under it or outdoors.
 - **Heaters, mold cooling, mass and feedstock (DDR-002).** Two 300 W barrel bands for a 12.2 min warm-up; a 120 mm fan at the mold so parts eject from a mold near 47 °C; a 40 kg mass target for a bench-bolted press; and injection-grade flake only.
 - **Co-design partner type (D10).** The first partner is to be a group that already shreds HDPE or PP; the specific partner and place remain open.

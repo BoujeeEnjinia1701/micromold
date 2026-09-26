@@ -3,9 +3,9 @@ doc_id: MMD-DDR-002
 title: MicroMold recommendations accepted
 project: MicroMold
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.2"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget approved by Amish ($520); O3 decided
 ---
 
 # 0002: Recommendations accepted
@@ -69,7 +73,7 @@ The options for D1 to D10 are in MMD-DDR-001 and `docs/REVIEW.md` (session 2026-
 ## Consequences
 
 - Controlled documents revised: MMD-PRC-001 v0.4, MMD-REQ-001 v0.4, MMD-CAL-001 v0.2 and MMD-DDR-001 v0.2. Drawing MMD-DWG-001 is at Rev P2. `bom/bom.csv` has 18 lines. No pitch or problem rewording was recommended, so the pitch and problem in `project.yaml` are unchanged.
-- R14 is still not met, by $7, because the mold cooling fan (N4) was added after the $500 figure (N1) was recommended. This is a new item for Amish (below); it is not decided here.
+- R14 was still not met, by $7, because the mold cooling fan (N4) was added after the $500 figure (N1) was recommended. Amish closed this on 2026-09-26 (see below).
 - No decision needs another repo to change, so there are no cross-repo actions.
 - Decided but on hold because TRL 4 is on hold: recruiting the co-design partner (D10), choosing and weighing a real arbor press (N2), and any build or trial of the heaters, fan or press.
 
@@ -81,4 +85,11 @@ The options for D1 to D10 are in MMD-DDR-001 and `docs/REVIEW.md` (session 2026-
 | --- | --- | --- |
 | O1 | The specific first co-design partner and its city or region. No recommendation was made. | Proposed, awaiting Amish |
 | O2 | First product molds after the test plaque. For co-design; no recommendation was made. | Proposed, awaiting Amish |
-| O3 | New: the press is $507 against $500. Options: (a) raise `budget_usd` to $520; (b) keep $500 and recheck against real quotations at TRL 4, since a $7 overrun is within the accuracy of indicative prices; (c) count the mold cooling fan as workshop equipment outside the press budget, as the molds are. Recommendation: (b). | Proposed, awaiting Amish |
+| O3 | New: the press is $507 against $500. Options: (a) raise `budget_usd` to $520; (b) keep $500 and recheck against real quotations at TRL 4, since a $7 overrun is within the accuracy of indicative prices; (c) count the mold cooling fan as workshop equipment outside the press budget, as the molds are. Recommendation: (b). | Decided by Amish, 2026-09-26: option (a), `budget_usd` $520 (see below) |
+
+## Budget approved, 2026-09-26
+
+On 2026-09-26 Amish wrote, in chat: "i approve all the budget items."
+
+- Budget set to $520 to cover the priced BOM: decided by Amish, 2026-09-26. The priced press is $507 (molds as tooling, D8), so R14 moves from not met to at risk, with a $13 (2.5 %) margin on indicative prices. The press with one mold is $597; the mold stays outside the budget.
+- Files changed: `project.yaml` (`budget_usd` 500 to 520); MMD-REQ-001 v0.5 (R14 target and status); MMD-CAL-001 v0.3 and `docs/04-calcs/sizing.py` (cost section and status table; counts 0 not met, 3 at risk, 8 met on paper, 4 met by design, 1 not verifiable); MMD-PRB-001 v0.5 and MMD-PRC-001 v0.5 (budget figure); `README.md`; `bom/bom-notes.md`; `docs/REVIEW.md`.

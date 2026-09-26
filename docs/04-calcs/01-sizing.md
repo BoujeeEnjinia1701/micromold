@@ -3,7 +3,7 @@ doc_id: MMD-CAL-001
 title: MicroMold sizing calculations
 project: MicroMold
 doc_type: Calculation
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,17 +17,21 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget approved by Amish ($520, MMD-DDR-002); R14 from not met to at risk
 ---
 
 # MicroMold sizing calculations
 
-On paper, MicroMold meets twelve of its sixteen requirements (eight by calculation, four by design), has two at risk, misses one and leaves one that only hardware can show. This issue includes the decisions Amish made on 2026-09-25 (MMD-DDR-002): `budget_usd` of $500, a 40 kg mass target, two 300 W barrel bands, a mold cooling fan and injection-grade feedstock in R1. The miss is cost: R14 is not met by $7, the press alone being $507 against $500 with molds counted as tooling, and $597 with the first mold; the mold cooling fan added $12 after the $500 figure was set. The two at risk are mass (R9, 39.2 kg against 40 kg with an assumed 8 kg arbor press head) and shot size (R2, if the fresh charge is not tamped). The 300 W bands bring warm-up to 12.2 min (R5), and the fan keeps the mold near 47 °C, so throughput (R6) is 11.6 parts per hour, limited by melt soak. The v0.1 calculations also showed that the TRL 2 concept could not work as drawn: a single pull of the arbor press handle moves the plunger only about 31 mm, not the 120 mm a shot needs, so a ratchet handle drives the pinion. Five more changes followed: a 4 mm nozzle orifice with a tapered sprue, a glass-epoxy spacer that keeps the load cell cool, a 20 mm bracket plate on mica pads, a nozzle zone shield, and a nozzle tip raised to 190 mm so that 120 mm mold stacks fit. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
+On paper, MicroMold meets twelve of its sixteen requirements (eight by calculation, four by design), has three at risk, misses none and leaves one that only hardware can show. This issue includes the decisions Amish made on 2026-09-25 (MMD-DDR-002): a 40 kg mass target, two 300 W barrel bands, a mold cooling fan and injection-grade feedstock in R1. On 2026-09-26 Amish approved a `budget_usd` of $520 to cover the priced BOM (MMD-DDR-002). Cost (R14) is now at risk: the press alone is $507 against $520 with molds counted as tooling, a 2.5 % margin, and $597 with the first mold. The other two at risk are mass (R9, 39.2 kg against 40 kg with an assumed 8 kg arbor press head) and shot size (R2, if the fresh charge is not tamped). The 300 W bands bring warm-up to 12.2 min (R5), and the fan keeps the mold near 47 °C, so throughput (R6) is 11.6 parts per hour, limited by melt soak. The v0.1 calculations also showed that the TRL 2 concept could not work as drawn: a single pull of the arbor press handle moves the plunger only about 31 mm, not the 120 mm a shot needs, so a ratchet handle drives the pinion. Five more changes followed: a 4 mm nozzle orifice with a tapered sprue, a glass-epoxy spacer that keeps the load cell cool, a 20 mm bracket plate on mica pads, a nozzle zone shield, and a nozzle tip raised to 190 mm so that 120 mm mold stacks fit. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
 
 > **Safety:** These are first-principles estimates for a paper proof of concept. They do not replace a pressure and electrical safety review of a built press. The barrel, nozzle and mold reach 180 to 260 °C, the melt is under pressure, the heaters run at mains voltage and an operator can load the press to about 1.35 times its rating. See MMD-PRC-001, Safety.
 
 ## Scope and method
 
-The note checks every requirement in MMD-REQ-001 v0.4 against the design in MMD-PRC-001 v0.4 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS` and `derived()` stack-up, so the bore, stroke, nozzle height, table travel, bracket, mold and hood used here are those in the STEP files and in drawing MMD-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py`.
+The note checks every requirement in MMD-REQ-001 v0.5 against the design in MMD-PRC-001 v0.5 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS` and `derived()` stack-up, so the bore, stroke, nozzle height, table travel, bracket, mold and hood used here are those in the STEP files and in drawing MMD-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py`.
 
 The design case is the reference part of MMD-REQ-001: a 30 g HDPE test plaque, 64 x 50 x 6 mm, molded from washed, dried flake of 3 to 8 mm at a 220 °C barrel set point in a 25 °C workshop.
 
@@ -144,13 +148,13 @@ A flanged side hood with a 150 x 100 mm face, 100 mm from the funnel axis, needs
 
 ## L. Cost (R14, R8)
 
-The BOM has 18 lines, all priced: $597.00 with one mold, of which the press is $507.00, the test mold $90.00 and the fume extraction $48.00 [L1]. Against `budget_usd` of $500 (MMD-DDR-002; was $400):
+The BOM has 18 lines, all priced: $597.00 with one mold, of which the press is $507.00, the test mold $90.00 and the fume extraction $48.00 [L1]. Against `budget_usd` of $520 (approved by Amish on 2026-09-26, MMD-DDR-002; was $500, and $400 before that):
 
-- **Press alone (MMD-DDR-001 D8 scope):** $507.00, over by $7.00. R14 is **not met** [L2].
-- **Press and one mold:** $597.00, over by $97.00 [L2].
+- **Press alone (MMD-DDR-001 D8 scope):** $507.00, under by $13.00 (2.5 % margin). With indicative prices and less than 5 % margin, R14 is **at risk** [L2].
+- **Press and one mold:** $597.00, over by $77.00; the mold is tooling outside the budget [L2].
 - Without the fume extraction the press would be $459.00 [L2].
 
-The mold at $90.00 meets R8 ($100) on an indicative price. MMD-DDR-002 added the mold cooling fan ($12.00, item 18); the 300 W bands cost about the same as the 250 W bands. The $7 overrun is a new item for Amish in `docs/REVIEW.md` (O3).
+The mold at $90.00 meets R8 ($100) on an indicative price. MMD-DDR-002 added the mold cooling fan ($12.00, item 18); the 300 W bands cost about the same as the 250 W bands. The $7 overrun that remained at $500 is closed by the $520 budget (O3 decided, 2026-09-26).
 
 ## M. Results against every requirement
 
@@ -158,7 +162,7 @@ The mold at $90.00 meets R8 ($100) on an indicative price. MMD-DDR-002 added the
 
 | ID | Requirement | Value | Target | Status |
 | --- | --- | --- | --- | --- |
-| R14 | Affordable | $507 press; $597 with one mold | Press $500 or less, molds as tooling | **Not met** |
+| R14 | Affordable | $507 press; $597 with one mold | Press $520 or less, molds as tooling | **At risk** |
 | R9 | Bench size and mass | 320 x 260 mm; 1,089 mm; 39.2 kg | 350 x 300 mm; 1.1 m; 40 kg | **At risk** (mass) |
 | R2 | Shot size | 34.2 g ideal; about 25 g if the fresh charge is loose flake | 30 g or more | **At risk** |
 | R3 | Injection pressure | 8.9 MPa at 0.60 efficiency (12.4 MPa at 0.84); fill needs about 4.8 MPa in 10 s | 8 MPa at 250 N or less | Met on paper |
@@ -175,7 +179,7 @@ The mold at $90.00 meets R8 ($100) on an indicative price. MMD-DDR-002 added the
 | R15 | Garage-buildable | Only the barrel set and molds need a lathe or mill (local shop) | Hand tools, drill press, optional welding | Met by design |
 | R16 | Repeatable parts | Needs hardware | Mass within ±3 % over 10 shots | Not verifiable at TRL 3 |
 
-Counts: 1 not met, 2 at risk, 8 met on paper, 4 met by design, 1 not verifiable at TRL 3.
+Counts: 0 not met, 3 at risk, 8 met on paper, 4 met by design, 1 not verifiable at TRL 3.
 
 ## Checks against the TRL 2 figures
 
@@ -196,4 +200,4 @@ Counts: 1 not met, 2 at risk, 8 met on paper, 4 met by design, 1 not verifiable 
 | About 14 Wh per shot, 0.5 kWh per kg | About 20 Wh, 0.66 kWh per kg | Precis updated |
 | About 32 kg | 39.2 kg with the fan | R9 target 40 kg (MMD-DDR-002); at risk |
 | Handle knob about 1.06 m | 1,089 mm at the start of a pull | Precis updated |
-| $399 press, $489 with one mold | $507 press, $597 with one mold | `budget_usd` $500 (MMD-DDR-002); R14 over by $7 |
+| $399 press, $489 with one mold | $507 press, $597 with one mold | `budget_usd` $520 (MMD-DDR-002, 2026-09-26); R14 at risk, $13 margin |

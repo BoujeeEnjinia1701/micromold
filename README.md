@@ -2,7 +2,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Advanced Manufacturing · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $500 USD · **Difficulty:** 3 of 5
+**Area:** Advanced Manufacturing · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $520 USD · **Difficulty:** 3 of 5
 
 A desktop injection molding press for recycled plastic: a lever or screw press with a heated barrel and interchangeable aluminum molds, turning shredded waste plastic into small useful parts.
 
@@ -18,7 +18,7 @@ It is open and garage-buildable because the value is in local making. Only the b
 
 ## Burning platform
 
-Only about 9 % of plastic waste was recycled worldwide in 2019, after losses in recycling ([OECD, *Global Plastics Outlook*, 2022](https://www.oecd.org/en/publications/global-plastics-outlook_de747aef-en.html)). Municipal solid waste reached 2.56 billion tonnes in 2022 and is projected to reach 3.86 billion tonnes by 2050, while collection covers only 31 % of waste in sub-Saharan Africa and 67 % in South Asia ([World Bank, *What a Waste 3.0*](https://www.worldbank.org/en/publication/what-a-waste)).
+Only 9 % of the world's plastic waste is successfully recycled, while most is landfilled, incinerated or leaks into the environment ([OECD, 2022](https://www.oecd.org/en/about/news/press-releases/2022/02/plastic-pollution-is-growing-relentlessly-as-waste-management-and-recycling-fall-short.html); [*Global Plastics Outlook*](https://www.oecd.org/en/publications/global-plastics-outlook_de747aef-en.html)). Municipal solid waste reached 2.56 billion tonnes in 2022 and is projected to reach 3.86 billion tonnes by 2050, while collection covers only 31 % of waste in sub-Saharan Africa and 67 % in South Asia ([World Bank, *What a Waste 3.0*](https://www.worldbank.org/en/publication/what-a-waste)).
 
 Recycling groups need products that pay for collection, and exporting scrap is getting harder: since 1 January 2021 the Basel Convention plastic waste amendments have required prior informed consent for most mixed or contaminated plastic waste shipments ([Basel Convention](https://www.basel.int/implementation/plasticwaste/amendments/overview/tabid/8426/default.aspx)). Adding value locally, by molding parts, is one of the few routes left for small operators.
 
@@ -40,8 +40,8 @@ Recycling groups need products that pay for collection, and exporting scrap is g
 | --- | --- |
 | Kenya | Single-use plastic carrier and flat bags have been banned since 2017 ([NEMA](https://www.nema.go.ke/index.php?option=com_content&view=article&id=241)); durable recycled products are a natural outlet for collected HDPE and PP |
 | Sub-Saharan Africa | Collection covers only 31 % of waste ([World Bank](https://www.worldbank.org/en/publication/what-a-waste)); products that pay for collection make it viable |
-| South Asia (India, Bangladesh) | Collection reaches 67 % ([World Bank](https://www.worldbank.org/en/publication/what-a-waste)), with large informal recycling sectors that could add value to sorted flake |
-| Latin America (Brazil, Colombia) | Organized waste picker cooperatives already sort plastics and look for higher-value outlets |
+| South Asia (India, Bangladesh) | Collection reaches 67 % ([World Bank](https://www.worldbank.org/en/publication/what-a-waste)); as collection grows, sorted flake needs local outlets that add value |
+| Brazil | The National Solid Waste Policy (Law 12,305 of 2010) directs public cleaning services to prioritize cooperatives of low-income waste pickers and allows federal support for their equipment ([Planalto, Lei 12.305/2010](https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12305.htm), arts. 36 and 42); a press is the kind of equipment that lets a cooperative sell parts rather than flake |
 | United States | Plastics recycling was 8.7 % in 2018 ([US EPA](https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling/plastics-material-specific-data)); makerspaces and schools can use it for local recycling programs |
 | Europe (Netherlands and wider EU) | Precious Plastic workspaces already run open lever presses ([Precious Plastic Academy](https://onearmy.github.io/academy/build/injection)); a bench press with higher pressure widens what they can mold |
 
@@ -55,7 +55,7 @@ Community recycling produces shredded plastic with few local uses, and small-bat
 
 ## Concept
 
-A bench-top, hand-operated plunger injection press. The rack-and-pinion head of a 1 t arbor press, on a taller steel column and turned by a ratchet handle, drives a 22 mm plunger down a vertical barrel heated by two 300 W band heaters and a 100 W nozzle heater, each zone under PID control. Melt fills a bolted two-plate aluminum mold held against a 4 mm nozzle by a screw lift table inside a perforated shield, where a small fan cools the mold; a load cell under the ram shows the injection force, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations give up to 34 g of HDPE per shot at 8.9 MPa (89 bar) with 250 N on the handle in about four ratchet pulls, a 12.2 min warm-up, about 11 parts per hour and 753 W from a single-phase socket. Parts cost $507 for the press and $597 with one mold, $7 over the $500 budget, and the press weighs about 39.2 kg against its 40 kg target (see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md)).
+A bench-top, hand-operated plunger injection press. The rack-and-pinion head of a 1 t arbor press, on a taller steel column and turned by a ratchet handle, drives a 22 mm plunger down a vertical barrel heated by two 300 W band heaters and a 100 W nozzle heater, each zone under PID control. Melt fills a bolted two-plate aluminum mold held against a 4 mm nozzle by a screw lift table inside a perforated shield, where a small fan cools the mold; a load cell under the ram shows the injection force, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations give up to 34 g of HDPE per shot at 8.9 MPa (89 bar) with 250 N on the handle in about four ratchet pulls, a 12.2 min warm-up, about 11 parts per hour and 753 W from a single-phase socket. Parts cost $507 for the press against the $520 budget and $597 with one mold, and the press weighs about 39.2 kg against its 40 kg target (see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md)).
 
 ![Material flow](media/flow.png)
 
@@ -95,6 +95,12 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv); the parametric mo
 ## Documentation
 
 Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (MMD-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `MMD-PRC-001/v1.0`.
+
+## Credits
+
+Designed by Amish Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+
+AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 
 ## Licenses
 

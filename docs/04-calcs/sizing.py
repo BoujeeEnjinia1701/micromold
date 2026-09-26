@@ -319,7 +319,9 @@ mold_cost = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows if r["
 fume = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows if r["item"].startswith("17 "))
 press = tot - mold_cost
 out("L1", f"BOM {len(rows)} lines, all priced: ${tot:.2f} with one mold; press alone ${press:.2f}; mold ${mold_cost:.2f}; fume extraction ${fume:.2f}")
-out("L2", f"Against budget_usd ${budget:.0f}: press alone (redefined R14 scope) over by ${press - budget:.2f}; press and one mold (original scope) over by ${tot - budget:.2f}; press without fume extraction ${press - fume:.2f}")
+def _vs(x):
+    return f"over by ${x:.2f}" if x > 0 else f"under by ${-x:.2f}"
+out("L2", f"Against budget_usd ${budget:.0f}: press alone (redefined R14 scope) {_vs(press - budget)} ({(budget - press) / budget * 100:.1f} % margin); press and one mold (original scope) {_vs(tot - budget)}; press without fume extraction ${press - fume:.2f}")
 R["R14"] = (f"${press:.0f} press; ${tot:.0f} with one mold", f"Press ${budget:.0f} or less, molds as tooling", "Not met" if press > budget else ("At risk" if press > 0.95 * budget else "Met on paper"))
 R["R8"] = (f"${mold_cost:.0f} (indicative)", "$100 or less", "Met on paper")
 R["R1"] = ("HDPE, PP, LDPE, PS within 150 to 260 C from injection-molded items; PVC and bottle-grade HDPE excluded by label and procedure", "Four resins, injection grade; PVC excluded", "Met by design")

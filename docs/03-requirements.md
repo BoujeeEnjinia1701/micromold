@@ -3,9 +3,9 @@ doc_id: MMD-REQ-001
 title: MicroMold requirements
 project: MicroMold
 doc_type: Requirements
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,11 +25,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget approved by Amish
 ---
 
 # MicroMold requirements
 
-These are the requirements for the concept, checked by calculation at TRL 3 in MMD-CAL-001. Targets are proposals for review, not yet validated with users, and will be revised after co-design sessions (see MMD-PRB-001). "Met on paper" means met by calculation, and "met by design" means met by a stated feature; neither is demonstrated on hardware. Two targets changed in v0.3 under MMD-DDR-001: R14 covers the press without molds (D8), and R13 names the hood (D9). Three more changed in v0.4 under MMD-DDR-002, decided by Amish on 2026-09-25: R1 requires injection-grade flake, R9 allows 40 kg (was 35 kg) and R14 allows $500 (was $400). Status is from MMD-CAL-001 v0.2, which includes the 300 W barrel bands and the mold cooling fan.
+These are the requirements for the concept, checked by calculation at TRL 3 in MMD-CAL-001. Targets are proposals for review, not yet validated with users, and will be revised after co-design sessions (see MMD-PRB-001). "Met on paper" means met by calculation, and "met by design" means met by a stated feature; neither is demonstrated on hardware. Two targets changed in v0.3 under MMD-DDR-001: R14 covers the press without molds (D8), and R13 names the hood (D9). Three more changed in v0.4 under MMD-DDR-002, decided by Amish on 2026-09-25: R1 requires injection-grade flake, R9 allows 40 kg (was 35 kg) and R14 allows $500 (was $400). In v0.5 R14 allows $520, the budget Amish approved on 2026-09-26 to cover the priced BOM (MMD-DDR-002). Status is from MMD-CAL-001 v0.3, which includes the 300 W barrel bands and the mold cooling fan.
 
 The **reference part** used throughout is a 30 g HDPE test plaque, 64 x 50 x 6 mm, molded from washed, dried flake of 3 to 8 mm.
 
@@ -50,7 +54,7 @@ Table 1. Requirements.
 | R11 | Touch-safe outer surfaces | Guard and jacket 60 °C or less at 220 °C set point and 25 °C ambient; nozzle and mold zone guarded | Met on paper: skin 48 °C; nozzle zone shield added | Thermal calculation |
 | R12 | Electrical safety | Earthed frame, fused inlet, double-pole switch, RCD or GFCI supply, heaters and wiring rated for 250 °C at the barrel | Met by design, unverified | Design review against IEC 60204-1 principles |
 | R13 | Fume control | A side hood with a duct fan at the funnel, and operation only under it or outdoors; set points above 260 °C blocked in the controller | Met on paper: about 124 m³/h | Hood calculation; design review |
-| R14 | Affordable | Parts for the press, excluding molds (tooling, see R8), $500 or less | **Not met: $507** ($597 with one mold) | Priced BOM (`bom/bom.csv`) |
+| R14 | Affordable | Parts for the press, excluding molds (tooling, see R8), $520 or less | **At risk: $507** ($597 with one mold; 2.5 % margin on indicative prices) | Priced BOM (`bom/bom.csv`) |
 | R15 | Garage-buildable | Everything except the barrel and the mold built with hand tools, a drill press and optional welding | Met by design: the barrel with its nozzle and the molds come from a local machine shop; the plunger is only cross-drilled | Build sequence review |
 | R16 | Repeatable parts | Part mass within ±3 % over 10 consecutive shots | Not verifiable at TRL 3 | Later bench trials (TRL 4, not in the current phase) |
 
@@ -63,7 +67,7 @@ Table 1. Requirements.
 
 ## Requirements not met or at risk
 
-- **R14 cost:** $507 for the press against $500, with molds counted as tooling; $597 with the first mold. The $7 overrun comes from the mold cooling fan; options are in `docs/REVIEW.md` and MMD-DDR-002 (O3), "Proposed, awaiting Amish".
+- **R14 cost:** $507 for the press against $520, with molds counted as tooling; $597 with the first mold. The budget was set to $520 by Amish on 2026-09-26 (MMD-DDR-002, O3), which closes the $7 overrun; the $13 margin is thin against indicative prices, so R14 stays at risk until quotations exist.
 - **R9 mass:** 39.2 kg against 40 kg, with an assumed 8 kg arbor press head; the margin depends on the real press.
 - **R2 shot size:** met only if each top-up of flake is tamped with the press while loading.
 - **R16** cannot be assessed until hardware exists (TRL 4, on hold).

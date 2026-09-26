@@ -3,9 +3,9 @@ doc_id: MMD-PRB-001
 title: MicroMold problem statement
 project: MicroMold
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,11 +25,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget approved by Amish ($520)
 ---
 
 # MicroMold problem statement
 
-Small recycling groups can collect, sort, wash and shred plastic, but they struggle to turn the flake into products that people will pay for. Selling baled or shredded plastic returns little, and injection molding, the process that makes most small plastic parts, normally needs machines and steel tooling far beyond a community budget. MicroMold aims to close that gap with a bench-top injection press that a local workshop can build for a few hundred dollars and that runs aluminum molds a small machine shop can cut. The target is $500 for the press, with molds counted as tooling (MMD-DDR-002); the TRL 3 estimate is $507 (MMD-CAL-001).
+Small recycling groups can collect, sort, wash and shred plastic, but they struggle to turn the flake into products that people will pay for. Selling baled or shredded plastic returns little, and injection molding, the process that makes most small plastic parts, normally needs machines and steel tooling far beyond a community budget. MicroMold aims to close that gap with a bench-top injection press that a local workshop can build for a few hundred dollars and that runs aluminum molds a small machine shop can cut. The target is $520 for the press, with molds counted as tooling (MMD-DDR-002, approved by Amish on 2026-09-26); the TRL 3 estimate is $507 (MMD-CAL-001).
 
 ## The problem in numbers
 
@@ -51,7 +55,7 @@ Typical context: a covered workshop or container with single-phase mains (230 V 
 
 ## Constraints
 
-- Garage-buildable prototype for $500 USD in parts for the press, with molds counted as tooling (`project.yaml`; MMD-DDR-001 D8, MMD-DDR-002); see MMD-REQ-001 R14 for the current estimate.
+- Garage-buildable prototype for $520 USD in parts for the press, with molds counted as tooling (`project.yaml`; MMD-DDR-001 D8, MMD-DDR-002); see MMD-REQ-001 R14 for the current estimate.
 - Single-phase mains, 1 kW or less, so it runs from an ordinary socket or a small generator.
 - Only the barrel and the molds may need machining; everything else built with hand tools, a drill press and optional welding.
 - Molds in aluminum, cut on a manual mill or small CNC, so a new product costs tens to low hundreds of dollars in tooling rather than thousands.

@@ -168,7 +168,7 @@ Amish wrote, in chat on 2026-09-25: "i accept all your recommendations, go with 
 
 1. **O1:** the specific first co-design partner and its city or region. No recommendation.
 2. **O2:** first product molds after the test plaque. No recommendation.
-3. **O3 (new):** the press is $507 against $500. Options: (a) raise `budget_usd` to $520; (b) keep $500 and recheck against real quotations at TRL 4, since $7 is within the accuracy of indicative prices; (c) count the mold cooling fan as workshop equipment outside the press budget, as the molds are. Recommendation: (b).
+3. **O3 (new):** the press is $507 against $500. Options: (a) raise `budget_usd` to $520; (b) keep $500 and recheck against real quotations at TRL 4, since $7 is within the accuracy of indicative prices; (c) count the mold cooling fan as workshop equipment outside the press budget, as the molds are. Recommendation: (b). **Decided by Amish, 2026-09-26: `budget_usd` $520 (option (a)); see "Session 2026-09-26: budget approved".**
 
 ### Cross-repo actions
 
@@ -182,3 +182,20 @@ None. MicroMold uses none of the shared components, and no decision needs anothe
 ### TRL 4
 
 TRL 4 remains on hold by Amish's instruction. Decided but on hold: recruiting the co-design partner (D10), choosing and weighing a real arbor press to confirm the head mass behind R9 (N2), and any build, purchase or trial of the press, heaters or fan. No test, build, firmware or PCB material was created.
+
+## Session 2026-09-26: sources strengthened
+
+- README, "By country or region": the uncited "Latin America (Brazil, Colombia)" row is replaced by a Brazil row citing the National Solid Waste Policy, Law 12,305 of 2010, on the official Planalto site (arts. 36 and 42: priority for cooperatives of low-income waste pickers and federal support for their equipment). Colombia is dropped because no source was verified for it.
+- README, South Asia row: the uncited reference to large informal recycling sectors is removed.
+- README, burning platform: the OECD 9 % recycling figure now also cites the OECD February 2022 press release, which states the figure directly; wording trimmed to what that release says.
+- All other README links (World Bank *What a Waste 3.0*, Basel Convention, NEMA, US EPA, Precious Plastic Academy, US Patent 133,229) were fetched and confirmed. "What sparked the idea" unchanged; it already rests on the patent record.
+- No controlled document changed; no budget change (O3 remains open).
+
+## Session 2026-09-26: budget approved
+
+Amish wrote, in chat on 2026-09-26: "i approve all the budget items." O3 is decided: budget set to $520 to cover the priced BOM (MMD-DDR-002 v0.2).
+
+- `project.yaml` `budget_usd` $500 to $520; README budget and cost lines updated.
+- R14 target $500 to $520; status **not met to at risk** ($507 press, $13 or 2.5 % margin on indicative prices; $597 with one mold, the mold being tooling).
+- Requirement counts (MMD-CAL-001 v0.3): 0 not met, 3 at risk, 8 met on paper, 4 met by design, 1 not verifiable (was 1, 2, 8, 4, 1).
+- Documents: MMD-PRB-001 v0.5, MMD-PRC-001 v0.5, MMD-REQ-001 v0.5, MMD-CAL-001 v0.3 (`sizing.py` now reports the margin when under budget), MMD-DDR-002 v0.2; `bom/bom-notes.md`; PDFs rebuilt. No media shows the budget, so none was regenerated.
