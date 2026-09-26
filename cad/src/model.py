@@ -1,4 +1,4 @@
-"""MicroMold parametric model (build123d), TRL 3.
+"""MicroMold parametric model (build123d), TRL 3 (updated for MMD-DDR-002: mold cooling fan).
 
 Run from the repo root:  python cad/src/model.py
 Exports STEP and STL into cad/step and cad/stl for the assembly, the barrel set
@@ -32,7 +32,7 @@ PARAMS = {
     "nozzle_tip_z": 190.0,               # set by the tallest mold stack, see derived()
     "flange": (80.0, 10.0),              # barrel flange OD, thickness (sits on the bracket)
     "funnel": (80.0, 22.0),              # funnel OD, height above the flange
-    "heater": (54.0, 50.0),              # band heater OD, width
+    "heater": (54.0, 50.0),              # band heater OD, width (two 300 W bands, DDR-002)
     "heater_z": (290.0, 410.0),          # band heater centers
     "jacket": (116.0, 6.0, 14.0),        # jacket and guard OD; clearance above nozzle, below bracket
     "bracket": (110.0, 150.0, 20.0),     # barrel bracket X, Y, thickness (TRL 3: 20 mm plate)
@@ -65,6 +65,10 @@ PARAMS = {
     "hood_face": (150.0, 100.0),         # side hood face, Y x Z
     "hood_x": -100.0,                    # hood face plane
     "duct_d": 100.0,
+    # mold cooling fan (DDR-002): 120 mm axial fan on an angle bracket, +X side, blowing through the shield side
+    "cool_fan": (38.0, 120.0, 120.0),    # X depth, Y, Z
+    "cool_fan_x": 140.0,                 # fan center X (shield side at 115 mm, base edge at 160 mm)
+    "cool_fan_z": 145.0,                 # fan center Z, level with the test mold parting line
     # control box (on the bench, left of the press)
     "ctrl": (200.0, 130.0, 120.0),
     "ctrl_xy": (-330.0, -10.0),
@@ -238,11 +242,20 @@ def build_parts(p=PARAMS):
     hood = hood - box(hxf + 1, 0, hz, 6, fy - 4, fz - 4)                                  # open face
     hood = hood + box(hxf - 60, 0, hz + fz / 2 + 60, p["duct_d"], p["duct_d"], 120)       # duct stub (massing)
     m["hood"] = hood
+
+    # 18 mold cooling fan on an angle bracket bolted to the base plate (DDR-002)
+    fx, fyy, fzz = p["cool_fan"]
+    xc, zc2 = p["cool_fan_x"], p["cool_fan_z"]
+    fan = box(xc, 0, zc2, fx, fyy, fzz) - b.Pos(xc, 0, zc2) * b.Rotation(0, 90, 0) * b.Cylinder(fyy / 2 - 4, fx + 2)
+    fan = fan + b.Pos(xc, 0, zc2) * b.Rotation(0, 90, 0) * b.Cylinder(20, fx - 4)       # hub
+    z_leg0 = bt
+    leg = box(xc, 0, (z_leg0 + zc2 - fzz / 2) / 2, 3, 60, zc2 - fzz / 2 - z_leg0) + box(xc - 10, 0, bt + 1.5, 20, 60, 3)
+    m["coolfan"] = fan + leg
     return m
 
 
 ORDER = ["base", "drive", "ram", "loadcell", "plunger", "barrel", "heaters", "nozzle", "bracket",
-         "guard", "clamp", "mold", "ctrl", "wiring", "shield", "hood"]
+         "guard", "clamp", "mold", "ctrl", "wiring", "shield", "hood", "coolfan"]
 
 
 def assembly(p=PARAMS, parts=None):

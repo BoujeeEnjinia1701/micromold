@@ -2,7 +2,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Advanced Manufacturing · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $400 USD · **Difficulty:** 3 of 5
+**Area:** Advanced Manufacturing · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $500 USD · **Difficulty:** 3 of 5
 
 A desktop injection molding press for recycled plastic: a lever or screw press with a heated barrel and interchangeable aluminum molds, turning shredded waste plastic into small useful parts.
 
@@ -12,7 +12,7 @@ A desktop injection molding press for recycled plastic: a lever or screw press w
 
 ## Concept rationale
 
-Molding turns sorted flake into finished parts, which sell for far more than flake sold by weight, and it lets a community make the small parts it would otherwise import. MicroMold uses the simplest injection process that still gives useful pressure: a heated barrel, a hand-driven plunger and a bolted aluminum mold. The drive is the rack and pinion of a 1 t arbor press on a taller column, turned by a ratchet handle, which gives a long stroke and 22.5:1 advantage from one bought tool (the brief allows a lever or screw drive; this choice is adopted for TRL 3 and open for Amish's review).
+Molding turns sorted flake into finished parts, which sell for far more than flake sold by weight, and it lets a community make the small parts it would otherwise import. MicroMold uses the simplest injection process that still gives useful pressure: a heated barrel, a hand-driven plunger and a bolted aluminum mold. The drive is the rack and pinion of a 1 t arbor press on a taller column, turned by a ratchet handle, which gives a long stroke and 22.5:1 advantage from one bought tool (the brief allows a lever or screw drive; Amish chose this one on 2026-09-25).
 
 It is open and garage-buildable because the value is in local making. Only the barrel and the molds need a lathe or mill, which most towns have in a machine shop, and a new mold costs tens of dollars in aluminum and machining rather than thousands for steel tooling. Open drawings let groups repair the press, share molds and adapt it, as the Precious Plastic community has done for its own machines.
 
@@ -47,7 +47,7 @@ Recycling groups need products that pay for collection, and exporting scrap is g
 
 ## What sparked the idea
 
-It came out of a September 2026 review of Design Molecule's applied research areas against the open projects already in the lab. It extends the circular economy work of WasteWise and PotPress into manufacturing. The trigger was the open Precious Plastic injection machine: a proven design, but a floor-standing lever press of 1.3 m and 23 kg that reaches about 45 bar ([Precious Plastic Academy](https://onearmy.github.io/academy/build/injection)). A smaller press with about twice the pressure would suit schools, repair shops and groups with a single bench.
+The starting point was the machine widely credited as the first injection molder. In 1872 the brothers John Wesley and Isaiah Smith Hyatt of Albany, New York, patented an apparatus in which a plunger pressed celluloid stock through a heated cylinder and out of a discharge nozzle, with a two-part mold held shut by a clamp to receive it ([US Patent 133,229, 1872](https://patents.google.com/patent/US133229A/en)). Every part of MicroMold is already in that patent: a plunger, a heated vertical barrel, a nozzle and a clamped split mold. Industry later moved to reciprocating screws and machines of many tonnes, but the plunger layout remains the simplest way to mold small parts, and it asks for no motor, gearbox or screw. The gap between that 150-year-old principle and the open lever press of Precious Plastic, which reaches about 45 bar from a floor-standing frame ([Precious Plastic Academy](https://onearmy.github.io/academy/build/injection)), is the space MicroMold aims at: a bench press with about twice the pressure for recycled flake.
 
 ## Problem
 
@@ -55,7 +55,7 @@ Community recycling produces shredded plastic with few local uses, and small-bat
 
 ## Concept
 
-A bench-top, hand-operated plunger injection press. The rack-and-pinion head of a 1 t arbor press, on a taller steel column and turned by a ratchet handle, drives a 22 mm plunger down a vertical barrel heated by two 250 W band heaters and a 100 W nozzle heater, each zone under PID control. Melt fills a bolted two-plate aluminum mold held against a 4 mm nozzle by a screw lift table inside a perforated shield, a load cell under the ram shows the injection force, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations give up to 34 g of HDPE per shot at 8.9 MPa (89 bar) with 250 N on the handle in about four ratchet pulls, a 14.8 min warm-up, about 9 parts per hour and 635 W from a single-phase socket. Parts cost $495 for the press and $585 with one mold, over the $400 budget, and the press weighs about 38.5 kg, over its 35 kg target (see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md)).
+A bench-top, hand-operated plunger injection press. The rack-and-pinion head of a 1 t arbor press, on a taller steel column and turned by a ratchet handle, drives a 22 mm plunger down a vertical barrel heated by two 300 W band heaters and a 100 W nozzle heater, each zone under PID control. Melt fills a bolted two-plate aluminum mold held against a 4 mm nozzle by a screw lift table inside a perforated shield, where a small fan cools the mold; a load cell under the ram shows the injection force, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations give up to 34 g of HDPE per shot at 8.9 MPa (89 bar) with 250 N on the handle in about four ratchet pulls, a 12.2 min warm-up, about 11 parts per hour and 753 W from a single-phase socket. Parts cost $507 for the press and $597 with one mold, $7 over the $500 budget, and the press weighs about 39.2 kg against its 40 kg target (see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md)).
 
 ![Material flow](media/flow.png)
 
@@ -63,12 +63,13 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- Heated steel barrel (22 mm bore) with two 250 W band heaters, and a 4 mm nozzle with a 100 W heater
+- Heated steel barrel (22 mm bore) with two 300 W band heaters, and a 4 mm nozzle with a 100 W heater
 - Rack-and-pinion drive head from a 1 t arbor press on a steel column, with a 450 mm ratchet handle
 - 22 mm plunger with a load cell, on a glass-epoxy thermal spacer, for force and pressure indication
 - Two-plate aluminum mold set on a screw lift table
 - Insulation jacket and perforated guard; perforated nozzle zone shield
 - Side fume hood with a 100 mm inline duct fan
+- 120 mm mold cooling fan on the base plate
 - Control box with two PID controllers, SSRs, fused inlet and independent thermal cut-out
 
 The priced bill of materials is in [bom/bom.csv](bom/bom.csv); the parametric model is [cad/src/model.py](cad/src/model.py), with STEP and STL exports in `cad/step/` and `cad/stl/`.
@@ -100,4 +101,4 @@ Controlled documents follow the portfolio [documentation standard](.kit/STANDARD
 - **Hardware** (CAD, drawings, BOM, electronics): [CERN-OHL-S v2](LICENSE)
 - **Software** (firmware, scripts, notebooks): [MIT](LICENSE-SOFTWARE)
 
-A project of the [Design Molecule](https://designmolecule.com) lab. Extending strong areas set.
+A project of the [Design Molecule](https://designmolecule.com) lab.

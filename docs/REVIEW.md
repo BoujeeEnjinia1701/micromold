@@ -39,16 +39,18 @@ Requirements not met or at risk:
 
 ### Proposed, awaiting Amish
 
-1. **Drive:** (a) simple lever, (b) rack and pinion from a 1 t arbor press on a taller column, (c) screw press. Recommendation: (b), with (c) as a variant for small, thick parts.
-2. **Layout:** vertical barrel with the mold below. Recommendation: vertical.
-3. **Injection:** plunger rather than a reciprocating screw for the first build.
-4. **Heating:** two PID zones (barrel and nozzle), about $15 more than one zone. Recommendation: two zones.
-5. **Mold clamping:** bolted two-plate molds on a screw lift table now; a toggle clamp frame (about $40 more) as an upgrade.
-6. **Pressure indication:** a 10 kN load cell under the ram (about $30) rather than a spring-scale reading on the handle.
-7. **First mold:** a 64 x 50 x 6 mm test plaque; product molds after co-design.
-8. **Budget:** (a) keep $400 and count molds as tooling outside the machine budget; (b) raise to about $500 to include one mold; (c) drop the load cell and nozzle zone to reach about $450 with a mold. Recommendation: (a). `project.yaml` stays at $400 until Amish decides.
-9. **Fume control:** add a small hood and duct fan (about $40 to $60) at TRL 3, and keep a written condition to operate under extraction or outdoors. Recommendation: both.
-10. **First co-design partner:** a Precious Plastic workspace, a waste picker cooperative or a technical college. Recommendation: a group that already shreds HDPE or PP.
+Update 2026-09-25: Amish accepted all recommendations (MMD-DDR-002). Items 1 to 10 are decided as marked below; item 8 was later superseded by the $500 figure.
+
+1. **Drive:** (a) simple lever, (b) rack and pinion from a 1 t arbor press on a taller column, (c) screw press. Recommendation: (b), with (c) as a variant for small, thick parts. **Decided by Amish, 2026-09-25: go with recommendation.**
+2. **Layout:** vertical barrel with the mold below. Recommendation: vertical. **Decided by Amish, 2026-09-25: go with recommendation.**
+3. **Injection:** plunger rather than a reciprocating screw for the first build. **Decided by Amish, 2026-09-25: go with recommendation.**
+4. **Heating:** two PID zones (barrel and nozzle), about $15 more than one zone. Recommendation: two zones. **Decided by Amish, 2026-09-25: go with recommendation.**
+5. **Mold clamping:** bolted two-plate molds on a screw lift table now; a toggle clamp frame (about $40 more) as an upgrade. **Decided by Amish, 2026-09-25: go with recommendation.**
+6. **Pressure indication:** a 10 kN load cell under the ram (about $30) rather than a spring-scale reading on the handle. **Decided by Amish, 2026-09-25: go with recommendation.**
+7. **First mold:** a 64 x 50 x 6 mm test plaque; product molds after co-design. **Decided by Amish, 2026-09-25: go with recommendation.**
+8. **Budget:** (a) keep $400 and count molds as tooling outside the machine budget; (b) raise to about $500 to include one mold; (c) drop the load cell and nozzle zone to reach about $450 with a mold. Recommendation: (a). `project.yaml` stays at $400 until Amish decides. **Decided by Amish, 2026-09-25: go with recommendation.**
+9. **Fume control:** add a small hood and duct fan (about $40 to $60) at TRL 3, and keep a written condition to operate under extraction or outdoors. Recommendation: both. **Decided by Amish, 2026-09-25: go with recommendation.**
+10. **First co-design partner:** a Precious Plastic workspace, a waste picker cooperative or a technical college. Recommendation: a group that already shreds HDPE or PP. **Decided by Amish, 2026-09-25: go with recommendation.**
 
 ### Safety concerns
 
@@ -102,17 +104,17 @@ Key numbers: 22.5:1 drive, 3.8 ratchet pulls per shot; 13.2 kN and 34.7 MPa if a
 
 ### Decisions recorded (MMD-DDR-001)
 
-Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review: D1 rack-and-pinion drive from a 1 t arbor press, screw press as a variant; D2 vertical barrel, mold below; D3 plunger injection; D4 two PID zones; D5 bolted two-plate molds on a screw lift table, toggle clamp later; D6 10 kN load cell; D7 test plaque first; D8 keep $400 with molds as tooling outside the machine budget (applied as a redefinition of R14; `budget_usd` unchanged, no new figure was recommended); D9 side hood with duct fan plus a written condition to run under it or outdoors; D10 first co-design partner to be a group that already shreds HDPE or PP. No pitch or problem rewording was recommended, so none was applied. MicroMold uses none of the batch's shared components, so no cross-repo interface applies.
+Decided by Amish, 2026-09-25: go with recommendation (MMD-DDR-002; recorded at the time as adopted for TRL 3 and open for his review): D1 rack-and-pinion drive from a 1 t arbor press, screw press as a variant; D2 vertical barrel, mold below; D3 plunger injection; D4 two PID zones; D5 bolted two-plate molds on a screw lift table, toggle clamp later; D6 10 kN load cell; D7 test plaque first; D8 keep $400 with molds as tooling outside the machine budget (applied as a redefinition of R14; `budget_usd` unchanged, no new figure was recommended); D9 side hood with duct fan plus a written condition to run under it or outdoors; D10 first co-design partner to be a group that already shreds HDPE or PP. No pitch or problem rewording was recommended, so none was applied. MicroMold uses none of the batch's shared components, so no cross-repo interface applies.
 
 ### Still awaiting Amish
 
 1. **O1, the specific first co-design partner and its city or region.** No recommendation was made.
 2. **O2, first product molds after the test plaque.** For co-design; no recommendation was made.
-3. **New, budget (R14).** Options: (a) raise `budget_usd` to $500 for the press, molds still as tooling; (b) count the fume extraction ($48) as workshop equipment outside the budget, which leaves the press at $447, still over; (c) drop the load cell and the ratchet, which would break R3's pressure reading and the shot. Recommendation: (a). Not applied; `budget_usd` stays at $400.
-4. **New, mass target (R9).** Options: (a) relax to 40 kg for a bench-bolted press; (b) keep 35 kg and lighten the base plate, bracket and clamp. Recommendation: (a), after the head mass of a real press is known. Not applied.
-5. **New, heater rating (R5).** Recommendation: two 300 W bands instead of 250 W, giving 12.2 min (700 W in all, R10 still met). Not applied.
-6. **New, mold cooling (R6).** Recommendation: a small fan at the mold cooling station, which keeps the mold near 47 °C. Not applied.
-7. **New, feedstock grade (R1).** Recommendation: add to R1 that flake comes from injection-molded items (caps, crates, buckets), because bottle-grade HDPE would need about 24 MPa. Not applied.
+3. **New, budget (R14).** Options: (a) raise `budget_usd` to $500 for the press, molds still as tooling; (b) count the fume extraction ($48) as workshop equipment outside the budget, which leaves the press at $447, still over; (c) drop the load cell and the ratchet, which would break R3's pressure reading and the shot. Recommendation: (a). Not applied; `budget_usd` stays at $400. **Decided by Amish, 2026-09-25: go with recommendation** (applied, MMD-DDR-002).
+4. **New, mass target (R9).** Options: (a) relax to 40 kg for a bench-bolted press; (b) keep 35 kg and lighten the base plate, bracket and clamp. Recommendation: (a), after the head mass of a real press is known. Not applied. **Decided by Amish, 2026-09-25: go with recommendation** (applied, MMD-DDR-002).
+5. **New, heater rating (R5).** Recommendation: two 300 W bands instead of 250 W, giving 12.2 min (700 W in all, R10 still met). Not applied. **Decided by Amish, 2026-09-25: go with recommendation** (applied, MMD-DDR-002).
+6. **New, mold cooling (R6).** Recommendation: a small fan at the mold cooling station, which keeps the mold near 47 °C. Not applied. **Decided by Amish, 2026-09-25: go with recommendation** (applied, MMD-DDR-002).
+7. **New, feedstock grade (R1).** Recommendation: add to R1 that flake comes from injection-molded items (caps, crates, buckets), because bottle-grade HDPE would need about 24 MPa. Not applied. **Decided by Amish, 2026-09-25: go with recommendation** (applied, MMD-DDR-002).
 
 ### Safety concerns
 
@@ -132,3 +134,51 @@ Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for 
 ### Recommended next step
 
 TRL 4 is on hold by Amish's instruction; this repo stops at TRL 3. Amish's review is needed on the adopted items D1 to D10, the TRL 3 design changes and the new items 3 to 7 above, above all the budget and mass targets. For the record only, TRL 4 would need: a chosen arbor press with its ram measured, a built barrel, nozzle and test mold, a lab test report (TST, `environment: lab`) of warm-up, shot mass and repeatability (R16), melt pressure from the load cell, mold temperature over a run and fume capture, and build log entries. None of this has been started.
+
+## Session 2026-09-25: recommendations accepted
+
+Amish wrote, in chat on 2026-09-25: "i accept all your recommendations, go with them across all repos." Every MicroMold item with a recommendation is now "Decided by Amish, 2026-09-25: go with recommendation", recorded in `docs/decisions/0002-recommendations-accepted.md` (MMD-DDR-002 v0.1). Items without a recommendation stay open. `trl: 3` and `trl_target: 3` are unchanged.
+
+### Decisions applied and what changed
+
+- **D1 to D10 (MMD-DDR-001, now v0.2):** drive, layout, plunger injection, two PID zones, bolted molds on a lift table, load cell, test plaque, molds as tooling, side hood plus written condition, and a partner that already shreds HDPE or PP. Wording only; the design already followed them.
+- **N1, budget:** `budget_usd` $400 to $500 in `project.yaml`; R14 target $400 to $500; README budget line updated.
+- **N2, mass target:** R9 35 kg to 40 kg.
+- **N3, heaters:** barrel bands 2 x 250 W to 2 x 300 W (BOM item 7, same price); warm-up 14.8 to 12.2 min; heaters 600 to 700 W.
+- **N4, mold cooling:** new BOM item 18, a 120 mm mains axial fan on an angle bracket on the base plate ($12.00, 0.7 kg assumed), added to `cad/src/model.py`, STEP and STL, drawing MMD-DWG-001 (Rev P1 to P2) and all media. Mold about 92 to 47 °C; cycle 6.4 to 5.2 min (now soak limited); 9.4 to 11.6 parts per hour.
+- **N5, feedstock:** R1 now requires flake from injection-molded items (caps, crates, buckets) and excludes bottle-grade HDPE.
+- Knock-on numbers (MMD-CAL-001 v0.1 to v0.2): press cost $495 to $507, with one mold $585 to $597; mass 38.5 to 39.2 kg; connected load 635 to 753 W (5.3 to 6.3 A at 120 V); energy about 21 to 20 Wh per shot.
+- Documents: MMD-PRB-001 v0.4, MMD-PRC-001 v0.4, MMD-REQ-001 v0.4, MMD-CAL-001 v0.2 (script `docs/04-calcs/sizing.py` updated), MMD-DDR-001 v0.2, new MMD-DDR-002 v0.1; `bom/bom-notes.md`; PDFs rebuilt.
+- Also this session: every generated file re-rendered so the footer shows designmolecule.com; README "What sparked the idea" rewritten around the Hyatt brothers' 1872 plunger molding patent (US 133,229).
+
+### Requirement status (MMD-CAL-001 v0.2)
+
+1 not met, 2 at risk, 8 met on paper, 4 met by design, 1 not verifiable at TRL 3 (was 2, 3, 6, 4, 1).
+
+| ID | Status | Key number |
+| --- | --- | --- |
+| R14 Affordable | **Not met** | $507 press against $500, over by $7 (the mold fan); $597 with one mold |
+| R9 Bench size and mass | At risk | 39.2 kg against 40 kg, with an assumed 8 kg press head |
+| R2 Shot size | At risk | 34.2 g ideal; about 25 g if the fresh charge is not tamped |
+| R3, R5, R6, R7, R8, R10, R11, R13 | Met on paper | 8.9 MPa; 12.2 min; 11.6 per hour; 45 cm²; $90 mold; 753 W; skin 48 °C; 124 m³/h |
+| R1, R4, R12, R15 | Met by design | Injection-grade flake only; two PID zones; electrical features; only barrel and molds machined |
+| R16 Repeatable parts | Not verifiable at TRL 3 | Needs hardware |
+
+### Still awaiting Amish
+
+1. **O1:** the specific first co-design partner and its city or region. No recommendation.
+2. **O2:** first product molds after the test plaque. No recommendation.
+3. **O3 (new):** the press is $507 against $500. Options: (a) raise `budget_usd` to $520; (b) keep $500 and recheck against real quotations at TRL 4, since $7 is within the accuracy of indicative prices; (c) count the mold cooling fan as workshop equipment outside the press budget, as the molds are. Recommendation: (b).
+
+### Cross-repo actions
+
+None. MicroMold uses none of the shared components, and no decision needs another repo to change.
+
+### Safety concerns
+
+- The mold cooling fan adds a mains-voltage fan beside the hot zone: keep its finger guard, route its lead away from the barrel and nozzle, and earth its bracket.
+- Unchanged: overload on the handle (about 35 MPa), the ratchet holding the ram under load, fume capture assumed rather than calculated, and mains heaters. A handle stop or pull limit is still recommended before any build.
+
+### TRL 4
+
+TRL 4 remains on hold by Amish's instruction. Decided but on hold: recruiting the co-design partner (D10), choosing and weighing a real arbor press to confirm the head mass behind R9 (N2), and any build, purchase or trial of the press, heaters or fan. No test, build, firmware or PCB material was created.

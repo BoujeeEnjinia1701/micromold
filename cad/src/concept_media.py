@@ -1,4 +1,4 @@
-"""MicroMold concept media (TRL 3), generated from the parametric model.
+"""MicroMold concept media (TRL 3, with MMD-DDR-002), generated from the parametric model.
 
 Run from the repo root:  python cad/src/concept_media.py
 Takes the parts from cad/src/model.py (PARAMS), adds a 0.9 m workbench and a 1.75 m person
@@ -49,7 +49,7 @@ parts = [
     Part("Plunger load cell and spacer", m["loadcell"], "#7C3AED", 4, (-170, 0, 250)),
     Part("Plunger, 22 mm", m["plunger"], "#D1D5DB", 5, (0, 0, 200)),
     Part("Heated barrel", m["barrel"], "#78716C", 6, (0, 0, 80)),
-    Part("Band heaters, 2 x 250 W", m["heaters"], "#C2410C", 7, (220, -60, 80)),
+    Part("Band heaters, 2 x 300 W", m["heaters"], "#C2410C", 7, (220, -60, 80)),
     Part("Nozzle and nozzle heater", m["nozzle"], "#D4A017", 8, (0, 0, 10)),
     Part("Barrel bracket and heat break", m["bracket"], "#0F766E", 9, (0, 170, 170)),
     Part("Insulation jacket and guard", m["guard"], "#94A3B8", 10, (400, -80, 80)),
@@ -59,6 +59,7 @@ parts = [
     Part("Heater and sensor wiring", m["wiring"], "#111827", 14, (-120, -200, -60)),
     Part("Nozzle zone shield", m["shield"], "#A8A29E", 16, (0, -520, -40), alpha=1.0),
     Part("Fume hood and duct", m["hood"], "#CBD5E1", 17, (-260, 0, 120)),
+    Part("Mold cooling fan", m["coolfan"], "#0369A1", 18, (260, 0, 0)),
 ]
 
 # Context for scale: workbench and a 1.75 m person (hero and blueprint isometric only)
@@ -74,8 +75,8 @@ render_all(
     parts, project="MicroMold", title="Desktop injection press concept", dwg_no="MMD-DWG-010",
     key_figures=[f"22 mm bore, 120 mm in the bore: {S['shot']:.0f} g HDPE shot (ideal)",
                  f"{S['p_design']:.1f} MPa ({S['p_design'] * 10:.0f} bar) at 250 N, ratchet drive, {S['pulls']:.0f} pulls",
-                 f"600 W heaters, two PID zones; about {S['t_warm']:.0f} min warm-up",
-                 f"About {S['cycle_air']:.1f} min per shot, {60 / S['cycle_air']:.0f} per hour (estimate)",
+                 f"{S['P_heat']:.0f} W heaters, two PID zones; about {S['t_warm']:.0f} min warm-up",
+                 f"About {S['cycle']:.1f} min per shot with mold fan, {60 / S['cycle']:.0f} per hour (estimate)",
                  f"Side fume hood, about {S['Qh']:.0f} m3/h; HDPE, PP, LDPE, PS only",
                  f"${S['press_cost']:.0f} press, ${S['total_cost']:.0f} with one mold (indicative)"],
     scale_figure=False, context=context,

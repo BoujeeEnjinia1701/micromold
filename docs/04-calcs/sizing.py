@@ -1,4 +1,4 @@
-"""MicroMold sizing calculations, MMD-CAL-001 v0.1 (TRL 3).
+"""MicroMold sizing calculations, MMD-CAL-001 v0.2 (TRL 3, with the MMD-DDR-002 decisions).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Imports PARAMS and derived() from cad/src/model.py, reads bom/bom.csv and project.yaml,
@@ -52,6 +52,9 @@ A = {
     "k_steel": 50.0, "k_mica": 0.5, "k_g11": 0.30,
     "approach": 1.20,        # PID approach and heater lag on warm-up
     "fan_W": 25.0, "ctrl_W": 10.0,
+    "heater_W": 300.0,       # each barrel band (DDR-002; was 250 W)
+    "cool_fan_W": 18.0,      # 120 mm mains axial fan at the mold (DDR-002)
+    "mass_target": 40.0,     # kg, R9 (DDR-002; was 35 kg)
     "V_capture": 0.40,       # m/s capture velocity at the funnel (quiet air, low release velocity)
     "x_capture": 0.10,       # m, funnel axis to hood face
 }
@@ -177,7 +180,7 @@ fa, fb, fc = fill(4.0, 3.0, A["fill_s"])
 p_fill = fa + fb + fc
 t_frz = 0.3 * 3.0e-3 ** 2 / A["alpha_part"]
 out("E5", f"A 6 mm sprue core in a 50 C mold freezes in about {t_frz:.0f} s, so pauses of about 1 s between ratchet pulls are tolerable")
-out("E6", f"Bottle-grade HDPE (melt flow index below 1) is about five times as viscous: fill would need about {5 * p_fill:.0f} MPa, beyond the press; use flake from injection-molded items")
+out("E6", f"Bottle-grade HDPE (melt flow index below 1) is about five times as viscous: fill would need about {5 * p_fill:.0f} MPa, beyond the press; R1 now requires flake from injection-molded items")
 R["R3"] = (f"{p_d:.1f} MPa at eta {A['eta_design']} ({p_c:.1f} at {eta_calc:.2f}); fill needs about {p_fill:.1f} MPa in {A['fill_s']:.0f} s", "8 MPa at 250 N or less", "Met on paper")
 
 # ---------------- F. Plunger clearance ----------------
@@ -215,15 +218,15 @@ mL = mfin * P["plunger_len"] / 1000
 Q_pl = A["k_steel"] * area * 1e-6 * mfin * (150 - A["T_amb"]) * tanh(mL)
 Q_loss = Q_jacket + Q_fun + Q_noz + Q_brk + Q_pl
 out("G3", f"Standing losses at 220 C: jacket {Q_jacket:.0f}, funnel {Q_fun:.0f}, nozzle {Q_noz:.0f}, bracket heat break {Q_brk:.0f} (mica pads {G_brk:.2f} W/K), plunger {Q_pl:.0f}: {Q_loss:.0f} W")
-P_bar = 2 * 250.0
+P_bar = 2 * A["heater_W"]
 t_bar = E_barrel * 1000 / (P_bar - 0.5 * (Q_loss - Q_noz)) * A["approach"] / 60
 E_noz = nozzle_kg * A["cp_steel"] * (A["T_set"] - 20)
 t_noz = E_noz * 1000 / (100 - 0.5 * Q_noz) * A["approach"] / 60
 out("G4", f"Warm-up: barrel zone {t_bar:.1f} min, nozzle zone {t_noz:.1f} min (with a {A['approach']:.1f} allowance for PID approach)")
-R["R5"] = (f"{t_bar:.1f} min (barrel zone)", "15 min or less", "At risk" if t_bar > 0.9 * 15 else "Met on paper")
-t_300 = E_barrel * 1000 / (600.0 - 0.5 * (Q_loss - Q_noz)) * A["approach"] / 60
-out("G4b", f"With two 300 W bands instead of 250 W (700 W in all, {300 / (pi * 4.2 * 5.0):.1f} W/cm2) the barrel zone warms in {t_300:.1f} min")
-wd = 250 / (pi * 4.2 * 5.0)
+R["R5"] = (f"{t_bar:.1f} min (barrel zone, 2 x {A['heater_W']:.0f} W)", "15 min or less", "At risk" if t_bar > 0.9 * 15 else "Met on paper")
+t_250 = E_barrel * 1000 / (500.0 - 0.5 * (Q_loss - Q_noz)) * A["approach"] / 60
+out("G4b", f"With the former two 250 W bands (TRL 3 v0.1) the barrel zone took {t_250:.1f} min; the {A['heater_W']:.0f} W bands save {t_250 - t_bar:.1f} min")
+wd = A["heater_W"] / (pi * 4.2 * 5.0)
 out("G5", f"Band heater watt density {wd:.1f} W/cm2 (mica bands are commonly rated to about 7.7 W/cm2, 50 W/in2)")
 theta = 1 / cosh(mL)
 T_top = A["T_amb"] + theta * (150 - A["T_amb"])
@@ -248,6 +251,7 @@ m_mold = 2 * mx * my * mt / 1e3 * A["rho_al"] / 1000
 area_mold = 2 * 2 * (mx * my + mx * mt + my * mt) / 1e6
 cyc = 6.0
 res = {}
+fixed = sum(s for _, s in steps if s)
 for tag, hh, name in (("H2", A["h_air"], "still air"), ("H3", A["h_fan"], "fan")):
     Tw = A["T_amb"] + Q_shot / (cyc * 60) / (hh * area_mold)
     tc = (P["cavity"][2] / 1000) ** 2 / (pi ** 2 * A["alpha_part"]) * log(4 / pi * (A["T_melt"] - Tw) / (A["T_eject"] - Tw)) / 60
@@ -257,17 +261,22 @@ for nm in ("still air", "fan"):
     tc = res[nm][1]
     tot = sum(s for _, s in steps if s) + tc
     out("H4" if nm == "still air" else "H5", f"Cycle with {nm} mold cooling: {tot:.1f} min, {60 / tot:.1f} parts per hour; fresh charge soaks about {2 * tot - 1:.0f} min over two cycles (needs {t_flake:.1f})")
-tot_air = sum(s for _, s in steps if s) + res["still air"][1]
-R["R6"] = (f"{60 / tot_air:.1f} per hour in still air, mold about {res['still air'][0]:.0f} C", "8 per hour or more", "At risk")
+tot_air = fixed + res["still air"][1]
+tot_fan = fixed + res["fan"][1]
+cyc_soak = (t_flake + 1) / 2                  # fresh charge must soak about two cycles
+cyc_design = max(tot_fan, cyc_soak)
+out("H6", f"Design cycle with the mold cooling fan (DDR-002): {cyc_design:.1f} min ({'soak' if cyc_soak > tot_fan else 'cooling'} limited), {60 / cyc_design:.1f} parts per hour, mold about {res['fan'][0]:.0f} C")
+R["R6"] = (f"{60 / cyc_design:.1f} per hour with the mold fan, mold about {res['fan'][0]:.0f} C", "8 per hour or more", "Met on paper")
 
 # ---------------- I. Power and energy (R10) ----------------
-P_heat = 2 * 250 + 100
-P_tot = P_heat + A["fan_W"] + A["ctrl_W"]
-out("I1", f"Connected load {P_tot:.0f} W ({P_heat} W heaters, {A['fan_W']:.0f} W fan, {A['ctrl_W']:.0f} W controls): {P_tot / 230:.1f} A at 230 V, {P_tot / 120:.1f} A at 120 V")
+P_heat = P_bar + 100
+aux = A["fan_W"] + A["ctrl_W"] + A["cool_fan_W"]
+P_tot = P_heat + aux
+out("I1", f"Connected load {P_tot:.0f} W ({P_heat:.0f} W heaters, {A['fan_W']:.0f} W duct fan, {A['cool_fan_W']:.0f} W mold fan, {A['ctrl_W']:.0f} W controls): {P_tot / 230:.1f} A at 230 V, {P_tot / 120:.1f} A at 120 V")
 E_plastic = A["charge_g"] / 1000 * (A["cp_pe"] * (A["T_melt"] - A["T_amb"]) + A["h_fus"]) / 3.6
-E_shot = E_plastic + (Q_loss + A["fan_W"] + A["ctrl_W"]) * tot_air / 60
-out("I2", f"Energy per shot: {E_plastic:.1f} Wh into the plastic + {(Q_loss + A['fan_W'] + A['ctrl_W']) * tot_air / 60:.1f} Wh losses and auxiliaries over {tot_air:.1f} min = {E_shot:.0f} Wh, {E_shot / A['part_g']:.2f} kWh per kg of parts")
-duty = (Q_loss - Q_noz + E_plastic * 60 / tot_air) / P_bar
+E_shot = E_plastic + (Q_loss + aux) * cyc_design / 60
+out("I2", f"Energy per shot: {E_plastic:.1f} Wh into the plastic + {(Q_loss + aux) * cyc_design / 60:.1f} Wh losses and auxiliaries over {cyc_design:.1f} min = {E_shot:.0f} Wh, {E_shot / A['part_g']:.2f} kWh per kg of parts")
+duty = (Q_loss - Q_noz + E_plastic * 60 / cyc_design) / P_bar
 out("I3", f"Barrel zone duty at steady running about {100 * duty:.0f} %")
 R["R10"] = (f"{P_tot:.0f} W; {P_tot / 120:.1f} A at 120 V", "1 kW or less; 10 A or less at 120 V", "Met on paper")
 
@@ -293,13 +302,15 @@ mass = {
     "mold set with bolts": m_mold + 0.35,
     "nozzle zone shield": 0.9,
     "hood on the press (assumed)": 0.6,
+    "mold cooling fan and bracket (assumed)": 0.7,
     "hardware (assumed)": 1.0,
 }
 m_tot = sum(mass.values())
 out("K1", "Mass: " + "; ".join(f"{k} {v:.1f}" for k, v in mass.items()) + f"; total {m_tot:.1f} kg without the control box")
 out("K2", f"Footprint {bx:.0f} x {by:.0f} mm; top of the handle {D['handle_top']:.0f} mm above the bench at the highest start of a pull ({P['handle_up_deg']:.0f} deg); ram top {D['ram1']:.0f} mm")
-out("K3", f"Mass over the 35 kg target by {m_tot - 35:.1f} kg; the largest items are the base plate, the assumed 8 kg arbor press head and the column")
-R["R9"] = (f"{bx:.0f} x {by:.0f} mm; {D['handle_top']:.0f} mm; {m_tot:.1f} kg", "350 x 300 mm; 1.1 m; 35 kg", "Not met" if m_tot > 35 else ("At risk" if m_tot > 0.95 * 35 else "Met on paper"))
+mt_ = A["mass_target"]
+out("K3", f"Mass {mt_ - m_tot:.1f} kg under the {mt_:.0f} kg target (DDR-002; was 35 kg), {100 * m_tot / mt_:.0f} % of it; the largest items are the base plate, the assumed 8 kg arbor press head and the column")
+R["R9"] = (f"{bx:.0f} x {by:.0f} mm; {D['handle_top']:.0f} mm; {m_tot:.1f} kg", f"350 x 300 mm; 1.1 m; {mt_:.0f} kg", "Not met" if m_tot > mt_ else ("At risk" if m_tot > 0.95 * mt_ else "Met on paper"))
 
 # ---------------- L. Cost (R14, R8) ----------------
 rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
@@ -309,9 +320,9 @@ fume = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows if r["item"
 press = tot - mold_cost
 out("L1", f"BOM {len(rows)} lines, all priced: ${tot:.2f} with one mold; press alone ${press:.2f}; mold ${mold_cost:.2f}; fume extraction ${fume:.2f}")
 out("L2", f"Against budget_usd ${budget:.0f}: press alone (redefined R14 scope) over by ${press - budget:.2f}; press and one mold (original scope) over by ${tot - budget:.2f}; press without fume extraction ${press - fume:.2f}")
-R["R14"] = (f"${press:.0f} press; ${tot:.0f} with one mold", f"Press ${budget:.0f} or less, molds as tooling", "Not met")
+R["R14"] = (f"${press:.0f} press; ${tot:.0f} with one mold", f"Press ${budget:.0f} or less, molds as tooling", "Not met" if press > budget else ("At risk" if press > 0.95 * budget else "Met on paper"))
 R["R8"] = (f"${mold_cost:.0f} (indicative)", "$100 or less", "Met on paper")
-R["R1"] = ("HDPE, PP, LDPE, PS within 150 to 260 C; PVC excluded by label and procedure", "Four resins; PVC excluded", "Met by design")
+R["R1"] = ("HDPE, PP, LDPE, PS within 150 to 260 C from injection-molded items; PVC and bottle-grade HDPE excluded by label and procedure", "Four resins, injection grade; PVC excluded", "Met by design")
 R["R12"] = ("Earthed frame, fused inlet, DP switch, RCD or GFCI, 250 C wiring", "As listed", "Met by design")
 R["R15"] = ("Only the barrel set and molds need a lathe or mill (local shop)", "Hand tools, drill press, optional welding", "Met by design")
 R["R16"] = ("Needs hardware", "Mass within 3 % over 10 shots", "Not verifiable at TRL 3")
@@ -330,5 +341,5 @@ print("[M] Counts: " + ", ".join(f"{counts.get(s, 0)} {s}" for s in order))
 assert len(R) == 16
 
 RESULTS = {"shot": shot, "p_design": p_d, "p_calc": p_c, "eta_calc": eta_calc, "pulls": pulls, "t_warm": t_bar,
-           "cycle_air": tot_air, "loss_W": Q_loss, "P_tot": P_tot, "mass": m_tot, "press_cost": press, "total_cost": tot,
+           "cycle_air": tot_air, "cycle": cyc_design, "T_mold": res["fan"][0], "P_heat": P_heat, "loss_W": Q_loss, "P_tot": P_tot, "mass": m_tot, "press_cost": press, "total_cost": tot,
            "A_max": A_max, "E_shot": E_shot, "E_plastic": E_plastic, "p_fill": p_fill, "Qh": Qh * 3600}

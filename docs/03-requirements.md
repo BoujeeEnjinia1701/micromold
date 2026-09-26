@@ -3,7 +3,7 @@ doc_id: MMD-REQ-001
 title: MicroMold requirements
 project: MicroMold
 doc_type: Requirements
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,11 +21,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: TRL 3 status from MMD-CAL-001; R14 redefined to the press excluding molds and R13 to name the hood (MMD-DDR-001 D8, D9)
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # MicroMold requirements
 
-These are the requirements for the concept, checked by calculation at TRL 3 in MMD-CAL-001. Targets are proposals for review, not yet validated with users, and will be revised after co-design sessions (see MMD-PRB-001). "Met on paper" means met by calculation, and "met by design" means met by a stated feature; neither is demonstrated on hardware. Two targets changed in v0.3 under MMD-DDR-001, whose items are adopted for TRL 3 pending Amish's review: R14 now covers the press without molds (D8), and R13 names the hood (D9).
+These are the requirements for the concept, checked by calculation at TRL 3 in MMD-CAL-001. Targets are proposals for review, not yet validated with users, and will be revised after co-design sessions (see MMD-PRB-001). "Met on paper" means met by calculation, and "met by design" means met by a stated feature; neither is demonstrated on hardware. Two targets changed in v0.3 under MMD-DDR-001: R14 covers the press without molds (D8), and R13 names the hood (D9). Three more changed in v0.4 under MMD-DDR-002, decided by Amish on 2026-09-25: R1 requires injection-grade flake, R9 allows 40 kg (was 35 kg) and R14 allows $500 (was $400). Status is from MMD-CAL-001 v0.2, which includes the 300 W barrel bands and the mold cooling fan.
 
 The **reference part** used throughout is a 30 g HDPE test plaque, 64 x 50 x 6 mm, molded from washed, dried flake of 3 to 8 mm.
 
@@ -33,20 +37,20 @@ Table 1. Requirements.
 
 | ID | Requirement | Target | Status (MMD-CAL-001) | Verification (TRL 3 or later) |
 | --- | --- | --- | --- | --- |
-| R1 | Process the safe recycled thermoplastics | HDPE, PP, LDPE and PS flake of 3 to 8 mm; PVC excluded by procedure and labeling | Met by design; injection-grade flake needed (CAL E6) | Design review; material trials later |
+| R1 | Process the safe recycled thermoplastics | HDPE, PP, LDPE and PS flake of 3 to 8 mm from injection-molded items (caps, crates, buckets); bottle-grade HDPE and PVC excluded by procedure and labeling | Met by design (bottle grade would need about 24 MPa, CAL E6) | Design review; material trials later |
 | R2 | Shot size | 30 g or more of HDPE per injection | **At risk:** 34.2 g ideal, about 25 g if the fresh charge is not tamped | Swept-volume calculation; later weighed shots |
 | R3 | Injection pressure | 8 MPa (80 bar) or more at the melt with 250 N or less on the handle | Met on paper: 8.9 MPa at 0.60 drive efficiency (12.4 MPa at 0.84); fill needs about 4.8 MPa | Force and friction calculation; later load cell reading |
 | R4 | Temperature control | Barrel and nozzle zones each settable from 150 to 260 °C, held within ±5 °C at the thermocouple; independent cut-out above 280 °C | Met by design, unverified | Controller and heater datasheets; later logging |
-| R5 | Warm-up | Cold start to 220 °C in 15 min or less | **At risk:** 14.8 min | Heat capacity calculation; later timed start |
-| R6 | Throughput | 8 or more reference parts per hour with one mold | **At risk:** 9.4 per hour, but the mold settles at about 92 °C in still air | Cycle-time estimate; later timed trials |
+| R5 | Warm-up | Cold start to 220 °C in 15 min or less | Met on paper: 12.2 min with two 300 W bands | Heat capacity calculation; later timed start |
+| R6 | Throughput | 8 or more reference parts per hour with one mold | Met on paper: 11.6 per hour with the mold cooling fan, mold about 47 °C (soak limited) | Cycle-time estimate; later timed trials |
 | R7 | Mold envelope | Molds up to 150 x 120 mm footprint and 40 to 120 mm stack height; 40 cm² or more projected area at full pressure | Met on paper: 45 cm²; stacks of 30 to 120 mm fit | Clamp force calculation; model |
 | R8 | Low-cost tooling | A two-plate aluminum mold for the reference part machinable on a manual mill or small CNC for $100 or less | Met on paper: $90 (indicative) | Quotation from a local shop |
-| R9 | Bench size and mass | Press footprint 350 x 300 mm or less, top of handle 1.1 m or less above the bench, mass 35 kg or less without the control box | **Not met on mass:** 38.5 kg; 320 x 260 mm and 1,089 mm met | Model and mass estimate |
-| R10 | Power supply | Single-phase 230 V or 120 V, 1 kW or less, 10 A or less at 120 V | Met on paper: 635 W, 5.3 A at 120 V | Heater and fan ratings |
+| R9 | Bench size and mass | Press footprint 350 x 300 mm or less, top of handle 1.1 m or less above the bench, mass 40 kg or less without the control box | **At risk on mass:** 39.2 kg with an assumed 8 kg press head; 320 x 260 mm and 1,089 mm met | Model and mass estimate |
+| R10 | Power supply | Single-phase 230 V or 120 V, 1 kW or less, 10 A or less at 120 V | Met on paper: 753 W, 6.3 A at 120 V | Heater and fan ratings |
 | R11 | Touch-safe outer surfaces | Guard and jacket 60 °C or less at 220 °C set point and 25 °C ambient; nozzle and mold zone guarded | Met on paper: skin 48 °C; nozzle zone shield added | Thermal calculation |
 | R12 | Electrical safety | Earthed frame, fused inlet, double-pole switch, RCD or GFCI supply, heaters and wiring rated for 250 °C at the barrel | Met by design, unverified | Design review against IEC 60204-1 principles |
 | R13 | Fume control | A side hood with a duct fan at the funnel, and operation only under it or outdoors; set points above 260 °C blocked in the controller | Met on paper: about 124 m³/h | Hood calculation; design review |
-| R14 | Affordable | Parts for the press, excluding molds (tooling, see R8), $400 or less | **Not met: $495** ($585 with one mold) | Priced BOM (`bom/bom.csv`) |
+| R14 | Affordable | Parts for the press, excluding molds (tooling, see R8), $500 or less | **Not met: $507** ($597 with one mold) | Priced BOM (`bom/bom.csv`) |
 | R15 | Garage-buildable | Everything except the barrel and the mold built with hand tools, a drill press and optional welding | Met by design: the barrel with its nozzle and the molds come from a local machine shop; the plunger is only cross-drilled | Build sequence review |
 | R16 | Repeatable parts | Part mass within ±3 % over 10 consecutive shots | Not verifiable at TRL 3 | Later bench trials (TRL 4, not in the current phase) |
 
@@ -59,9 +63,7 @@ Table 1. Requirements.
 
 ## Requirements not met or at risk
 
-- **R14 cost:** $495 for the press against $400, even with molds counted as tooling; $585 with the first mold. Options are in `docs/REVIEW.md`, "Proposed, awaiting Amish".
-- **R9 mass:** 38.5 kg against 35 kg, with an assumed 8 kg arbor press head. Options are in `docs/REVIEW.md`.
+- **R14 cost:** $507 for the press against $500, with molds counted as tooling; $597 with the first mold. The $7 overrun comes from the mold cooling fan; options are in `docs/REVIEW.md` and MMD-DDR-002 (O3), "Proposed, awaiting Amish".
+- **R9 mass:** 39.2 kg against 40 kg, with an assumed 8 kg arbor press head; the margin depends on the real press.
 - **R2 shot size:** met only if each top-up of flake is tamped with the press while loading.
-- **R5 warm-up:** 14.8 min against 15 min; 300 W bands would give 12.2 min (proposed).
-- **R6 throughput:** met on paper at 9.4 per hour, but in still air the mold runs at about 92 °C and parts may warp; a cooling fan is proposed.
-- **R16** cannot be assessed until hardware exists (TRL 4, outside the current phase).
+- **R16** cannot be assessed until hardware exists (TRL 4, on hold).

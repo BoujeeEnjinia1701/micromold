@@ -1,4 +1,4 @@
-"""MicroMold general arrangement sheet MMD-DWG-001, Rev P1 (TRL 3).
+"""MicroMold general arrangement sheet MMD-DWG-001, Rev P2 (TRL 3, MMD-DDR-002).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/MMD-DWG-001.svg, .pdf and .png from the parametric model in
@@ -18,7 +18,7 @@ from model import PARAMS as P, build_parts, derived  # noqa: E402
 
 DATE = "2026-09-25"
 PRESS = ["base", "drive", "ram", "loadcell", "plunger", "barrel", "heaters", "nozzle", "bracket",
-         "guard", "clamp", "mold", "shield", "hood"]
+         "guard", "clamp", "mold", "shield", "hood", "coolfan"]
 
 
 def safe_project_views(part, workdir, line_weight=0.35):
@@ -99,10 +99,11 @@ def main():
     work = ROOT / "cad" / "drawings" / "_views"
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="MicroMold", title="General arrangement", dwg_no="MMD-DWG-001", rev="P1",
+    s = Sheet(project="MicroMold", title="General arrangement", dwg_no="MMD-DWG-001", rev="P2",
               author="Amish Chadha", date=DATE, scale=0.1, theme="technical",
               material="Steel frame and barrel; 6061 mold; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
-              revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC")])
+              revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
+                         ("P2", "Mold cooling fan added; 300 W bands (MMD-DDR-002)", DATE, "AC")])
     s.add_ortho(views, names=("front", "right"))
     k = s.scale
     c = ortho_cells(s, views)
@@ -136,6 +137,7 @@ def main():
     L += leader(X(0), Z(D["bar0"] + 150), X(bb.min.X) - 30, Z(D["bar0"] + 60), "BARREL, HEATERS, JACKET", "end")
     L += leader(X(-P["shield"][0] / 2), Z(D["noz0"] - 60), X(bb.min.X) - 30, Z(D["noz0"] - 60), "NOZZLE ZONE SHIELD", "end")
     L += leader(X(-40), Z(D["split"]), X(bb.min.X) - 30, Z(D["split"] - 60), "TEST MOLD ON LIFT TABLE", "end")
+    L += leader(X(P["cool_fan_x"]), Z(P["cool_fan_z"] - 40), X(bb.max.X) + 6, Z(P["cool_fan_z"] - 100), "MOLD COOLING FAN")
 
     # top view (from +Z): X to the right, Y up the sheet
     x, y, w, h = c["top"]
@@ -171,6 +173,7 @@ def main():
         f"Test mold {P['mold'][0]:.0f} x {P['mold'][1]:.0f} x {2 * P['mold'][2]:.0f}; four M10 8.8 at 20 kN",
         f"Load cell 10 kN on a {P['spacer_t']:.0f} mm G-11 thermal spacer",
         f"Hood face {P['hood_face'][0]:.0f} x {P['hood_face'][1]:.0f}, {-P['hood_x']:.0f} from the axis; {P['duct_d']:.0f} duct",
+        f"Mold cooling fan {P['cool_fan'][1]:.0f} x {P['cool_fan'][2]:.0f} x {P['cool_fan'][0]:.0f} at X {P['cool_fan_x']:.0f}; barrel bands 2 x 300 W",
         "Third-angle; front view from -Y (operator side)",
     ], x=276, y=148, width=146)
     out = s.save(ROOT / "cad" / "drawings" / "MMD-DWG-001")
