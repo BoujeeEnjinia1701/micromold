@@ -1,16 +1,18 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-1 Base plate,1,"Steel plate 320 x 260 x 12 mm, drilled for bench bolts, column and clamp",Local steel stockist,25.00,make,Indicative price; offcut plus cutting
-2 Column and drive head,1,"1 t arbor press (rack-and-pinion head, pinion shaft, handle) plus 80 x 60 x 3 mm steel tube column about 0.9 m",Tool retailer and steel stockist,85.00,buy,"Indicative: press about $65, tube about $20; drive choice proposed, awaiting Amish"
-3 Rack ram,1,"28 mm square rack ram, about 150 mm travel needed",Included with item 2,0.00,buy,Included in item 2; travel to be checked
-4 Plunger load cell,1,"10 kN (1 t) compression load cell, HX711 amplifier, 4-digit display",Electronics distributor,30.00,buy,Indicative price
-5 Plunger,1,"22 mm ground steel rod, 200 mm, end turned for the load cell coupling",Local stockist and machine shop,15.00,make,Indicative price
-6 Heated barrel,1,"42 mm steel bar, bored and honed to 22 mm, 260 mm long, with loading funnel and flange",Local machine shop,45.00,make,Indicative price; lathe work
-7 Band heater,2,"250 W mica band heater, 42 mm ID x 50 mm, mains voltage to suit region",Heater supplier,12.00,buy,Indicative price
-8 Nozzle and nozzle heater,1,"Steel nozzle, 3 mm orifice, radiused tip; 100 W band heater",Local machine shop and heater supplier,20.00,make,Indicative price
-9 Barrel bracket and heat break,1,"10 mm steel plate bracket with mica washers and M8 bolts",Local steel stockist,15.00,make,Indicative price
-10 Insulation jacket and guard,1,"25 mm mineral wool, aluminum skin, perforated steel guard",Building supplier,20.00,make,Indicative price
-11 Mold clamp,1,"Screw jack with handle, 170 x 130 mm lift table, guides",Tool retailer and local make,30.00,make,Indicative price
-12 Aluminum mold set,1,"Two 6061 plates 120 x 90 x 45 mm, test plaque cavity, sprue bushing, four M10 x 90 class 8.8 bolts",Local machine shop,90.00,make,Indicative price including CNC or manual milling; tooling
-13 Control box,1,"Two PID controllers, two 25 A SSRs with heat sink, fused IEC inlet, double-pole switch, 280 °C thermal cut-out, earthed enclosure",Electronics distributor,55.00,buy,Indicative price
+1 Base plate,1,"Steel plate 320 x 260 x 12 mm (S235 or A36), drilled for bench bolts, column and clamp",Local steel stockist (offcut and cutting),25.00,make,Indicative price
+2 Column and drive head,1,"1 t arbor press (rack-and-pinion head, pinion shaft, about 20 mm pitch radius) on an 80 x 60 x 3 mm steel tube column 0.9 m; the press's fixed handle is replaced by a 1/2 in drive ratchet handle about 450 mm long on a socket fitted to the pinion shaft",Tool retailer (arbor press and ratchet) and steel stockist (tube),110.00,buy,"Indicative: press about $65, tube about $20, ratchet handle and socket about $25; ratchet added at TRL 3 (MMD-CAL-001 B)"
+3 Rack ram,1,"28 mm square rack ram, 255 mm or longer, 150 mm travel with the rack still engaged",Included with item 2,0.00,buy,Included in item 2; ram length and travel to be confirmed on the chosen press
+4 Plunger load cell,1,"10 kN (1 t) compression load cell with HX711 amplifier and 4-digit display; 10 mm glass-epoxy (G-11) thermal spacer under the cell",Electronics distributor; plastics stockist for the spacer,35.00,buy,Indicative: cell and display about $30; spacer about $5 (added at TRL 3)
+5 Plunger,1,"22 mm ground steel rod, 200 mm, cross-drilled for a pinned floating coupling to the load cell",Bearing and linear motion supplier,15.00,buy,Indicative price; drilled on a drill press
+6 Heated barrel,1,"42 mm steel bar, bored and honed to 22 mm, 260 mm long, with 80 mm flange and loading funnel",Local machine shop,45.00,make,Indicative price; lathe work
+7 Band heater,2,"250 W mica band heater, 42 mm ID x 50 mm, mains voltage to suit region",Industrial heater supplier,12.00,buy,Indicative price
+8 Nozzle and nozzle heater,1,"Steel nozzle, 4 mm orifice, radiused tip; 100 W band heater",Local machine shop and industrial heater supplier,20.00,make,Indicative price; orifice 4 mm from TRL 3 (was 3 mm)
+9 Barrel bracket and heat break,1,"20 mm steel plate bracket 110 x 150 mm welded to the column; four mica pads 15 x 15 x 3 mm under the flange and mica washers on four M8 bolts",Local steel stockist and industrial heater supplier (mica),18.00,make,Indicative price; plate thickened from 10 mm at TRL 3
+10 Insulation jacket and guard,1,"25 mm mineral wool, aluminum skin, perforated steel guard",Building supplier and sheet metal stockist,20.00,make,Indicative price
+11 Mold clamp,1,"Tr20 x 4 screw jack with handwheel, 170 x 130 x 12 mm lift table, 100 mm travel, two guide rods",Tool retailer and bearing supplier,30.00,make,Indicative price
+12 Aluminum mold set (tooling),1,"Two 6061 plates 120 x 90 x 45 mm, test plaque cavity, sprue 5 to 7 mm taper, four M10 x 110 class 8.8 bolts with nuts and hardened washers",Local machine shop,90.00,make,Indicative price including CNC or manual milling; tooling outside the press budget (MMD-DDR-001 D8)
+13 Control box,1,"Two PID controllers with set point limit, two 25 A SSRs with heat sink, fused IEC inlet, double-pole switch, 280 °C independent thermal cut-out, fan outlet, earthed enclosure",Electronics distributor,55.00,buy,Indicative price
 14 Heater and sensor wiring,1,"250 °C wire, glass-fiber sleeving, two K-type thermocouples, ferrules, earth leads",Electronics distributor,20.00,buy,Indicative price
-15 Hardware and consumables,1,"Bench bolts, M6 to M10 fasteners, thermal paste, labels",Hardware store,15.00,buy,Indicative price; not modeled
+15 Hardware and consumables,1,"Bench bolts, M6 to M10 fasteners, anti-seize, labels",Hardware store,15.00,buy,Indicative price; not modeled
+16 Nozzle zone shield,1,"1.5 mm perforated steel sheet, two sides and a hinged front with a perforated window, 230 x 170 mm plan",Sheet metal stockist,15.00,make,Indicative price; added at TRL 3 (R11)
+17 Fume hood and duct fan,1,"Side hood 150 x 100 mm face in 1 mm aluminum; 100 mm inline duct fan rated 170 m³/h or more free air; 3 m of 100 mm aluminum flexible duct and clamps",Hardware store and ventilation supplier,48.00,buy,"Indicative: fan about $30, hood about $8, duct about $10; added at TRL 3 (MMD-DDR-001 D9)"

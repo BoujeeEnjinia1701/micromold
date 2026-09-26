@@ -66,3 +66,69 @@ Requirements not met or at risk:
 ### Recommended next step
 
 Review this note and the media. If approved, run `/advance-trl3` to calculate the drive force and efficiency, plunger clearance, melt soak time, heater and insulation sizing, and bolt clamp limits; choose a specific arbor press and confirm its ram travel; add a nozzle shield and fume hood; and produce the parametric model and drawing sheet.
+
+## Session 2026-09-25: TRL 3
+
+Amish asked for this batch of repos to be taken through the usual process with the instruction "you know the drill, nothing gets past TRL 3". He has not reviewed this repo's TRL 2 items one by one, so every item with a recommendation is adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review. This session ran `/advance-trl3` on that basis and stopped at TRL 3.
+
+### What was done
+
+- `docs/decisions/0001-trl2-review-decisions.md` (MMD-DDR-001 v0.1, status proposed): ten items adopted as recommended for TRL 3 (D1 to D10), two left open (O1, O2).
+- `docs/04-calcs/01-sizing.md` (MMD-CAL-001 v0.1) and `docs/04-calcs/sizing.py`: shot size and mold stack, drive and ratchet, structure at design and overload, mold clamp, fill pressure through the nozzle and sprue, plunger clearance, heat (warm-up, losses, skin, load cell), melt soak, mold heat and cycle, power and energy, fume hood, mass, cost, and a status for every requirement. The script imports the model's parameters and reads the BOM and `project.yaml`; every number in the note is printed by it.
+- `cad/src/model.py`: parametric build123d model of the press (16 modeled BOM items) with the vertical stack derived from the parameters. Exports `cad/step/` and `cad/stl/` for `micromold-assembly`, `barrel-set` and `mold-set`.
+- `cad/src/sheets.py` and `cad/drawings/MMD-DWG-001.svg`, `.pdf`, `.png`: general arrangement at Rev P1, 1:10, marked "CONCEPT, NOT FOR FABRICATION" and "PRELIMINARY, NOT FOR FABRICATION". MMD-DWG-001 was free because the concept blueprint is MMD-DWG-010. To fit 1:10, the top view is placed beside the right view and labeled "relocated".
+- `bom/bom.csv` (17 lines, all priced with a supplier type, $585.00) and `bom/bom-notes.md`.
+- `cad/src/concept_media.py` now builds from the model; all of `media/` was re-rendered and every image checked. The cutaway now cuts on the injection axis (a project-side wrapper; the kit is unchanged), because the kit's cutter sat about 20 mm behind the axis and showed the barrel whole.
+- MMD-PRB-001, MMD-PRC-001 and MMD-REQ-001 revised to v0.3; `README.md` and `project.yaml` (`trl: 3`, `trl_target: 3`, evidence list) updated. PDFs rebuilt in `docs/pdf/`.
+
+Design changes found necessary by the calculations, applied for TRL 3 within the adopted items and open for Amish's review: a 450 mm ratchet handle on the pinion (one pull moves the plunger only about 31 mm, and a shot needs 120 mm); a 4 mm nozzle orifice and a sprue tapering from 5 to 7 mm (the 3 mm nozzle needed up to 12.1 MPa to fill); a 10 mm G-11 spacer under the load cell (otherwise about 94 °C); a 20 mm bracket plate on four mica pads (a 10 mm plate yields at overload); a perforated nozzle zone shield; the nozzle tip raised from 152 to 190 mm so that 120 mm mold stacks fit; a 255 mm ram; M10 x 110 mold bolts; and a pinned floating coupling on the plunger.
+
+### Requirement status (MMD-CAL-001, Table 4)
+
+2 not met, 3 at risk, 6 met on paper, 4 met by design, 1 not verifiable at TRL 3.
+
+| ID | Status | Key number |
+| --- | --- | --- |
+| R14 Affordable | **Not met** | Press $495 against $400 (redefined scope, molds as tooling); $585 with one mold against the same $400 |
+| R9 Bench size and mass | **Not met** (mass) | 38.5 kg against 35 kg, with an assumed 8 kg arbor press head; footprint 320 x 260 mm and handle 1,089 mm met |
+| R2 Shot size | At risk | 34.2 g ideal; about 25 g if the fresh charge is not tamped with the press |
+| R5 Warm-up | At risk | 14.8 min against 15 min |
+| R6 Throughput | At risk | 9.4 parts per hour, but the mold settles at about 92 °C in still air |
+| R3, R7, R8, R10, R11, R13 | Met on paper | 8.9 MPa at 250 N (11 % margin; fill needs 4.8 MPa); 45 cm²; $90 mold; 635 W; skin 48 °C; 124 m³/h hood |
+| R1, R4, R12, R15 | Met by design | Safe resins; two PID zones with limits; electrical features; only the barrel and molds machined |
+| R16 Repeatable parts | Not verifiable at TRL 3 | Needs hardware |
+
+Key numbers: 22.5:1 drive, 3.8 ratchet pulls per shot; 13.2 kN and 34.7 MPa if an operator hangs 700 N on the handle (1.35 times the press rating); column 96.6 MPa and bracket 117 MPa at that overload; 103 W standing losses; about 21 Wh per shot.
+
+### Decisions recorded (MMD-DDR-001)
+
+Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review: D1 rack-and-pinion drive from a 1 t arbor press, screw press as a variant; D2 vertical barrel, mold below; D3 plunger injection; D4 two PID zones; D5 bolted two-plate molds on a screw lift table, toggle clamp later; D6 10 kN load cell; D7 test plaque first; D8 keep $400 with molds as tooling outside the machine budget (applied as a redefinition of R14; `budget_usd` unchanged, no new figure was recommended); D9 side hood with duct fan plus a written condition to run under it or outdoors; D10 first co-design partner to be a group that already shreds HDPE or PP. No pitch or problem rewording was recommended, so none was applied. MicroMold uses none of the batch's shared components, so no cross-repo interface applies.
+
+### Still awaiting Amish
+
+1. **O1, the specific first co-design partner and its city or region.** No recommendation was made.
+2. **O2, first product molds after the test plaque.** For co-design; no recommendation was made.
+3. **New, budget (R14).** Options: (a) raise `budget_usd` to $500 for the press, molds still as tooling; (b) count the fume extraction ($48) as workshop equipment outside the budget, which leaves the press at $447, still over; (c) drop the load cell and the ratchet, which would break R3's pressure reading and the shot. Recommendation: (a). Not applied; `budget_usd` stays at $400.
+4. **New, mass target (R9).** Options: (a) relax to 40 kg for a bench-bolted press; (b) keep 35 kg and lighten the base plate, bracket and clamp. Recommendation: (a), after the head mass of a real press is known. Not applied.
+5. **New, heater rating (R5).** Recommendation: two 300 W bands instead of 250 W, giving 12.2 min (700 W in all, R10 still met). Not applied.
+6. **New, mold cooling (R6).** Recommendation: a small fan at the mold cooling station, which keeps the mold near 47 °C. Not applied.
+7. **New, feedstock grade (R1).** Recommendation: add to R1 that flake comes from injection-molded items (caps, crates, buckets), because bottle-grade HDPE would need about 24 MPa. Not applied.
+
+### Safety concerns
+
+- Overload: body weight on the handle takes the press to 1.35 times its rating and about 35 MPa of melt pressure, enough to open the test mold's parting line and spit melt. The shield is essential, and a handle stop or pull limit is recommended before any build.
+- The ratchet holds the ram under load; releasing the pawl can let the handle spring back.
+- Fumes: capture from the nozzle zone relies on the plume rising to the side hood, which is assumed, not calculated. PVC and unknown plastics stay excluded.
+- Hot funnel top (about 150 °C) is a working surface; gloves are required when loading.
+- Mains heaters on a steel frame: earthing, fused inlet, RCD or GFCI and an independent cut-out remain required, with wiring done or checked by a qualified electrician.
+
+### Gaps and notes
+
+- Citations: WebFetch could not be used in this session (the fetch permission was not granted in time) and the WebSearch quota is exhausted, so the ram travel and head mass of 1 t arbor presses, commercial bench-top press figures and the Latin America fact in the README table remain unverified and are left out. Material and flow properties in MMD-CAL-001 are typical handbook values stated as assumptions, not cited.
+- Kit cutaway: the kit cuts at the mean Y of the parts; `cad/src/concept_media.py` replaces it with a cut on Y = 0 so the bore shows.
+- The hood is drawn floating beside the funnel; its bracket to the column is not modeled.
+- Existing material beyond TRL 3: `build-log/README.md` (scaffold) is present, untouched and not extended. No test, build, firmware or PCB material exists.
+
+### Recommended next step
+
+TRL 4 is on hold by Amish's instruction; this repo stops at TRL 3. Amish's review is needed on the adopted items D1 to D10, the TRL 3 design changes and the new items 3 to 7 above, above all the budget and mass targets. For the record only, TRL 4 would need: a chosen arbor press with its ram measured, a built barrel, nozzle and test mold, a lab test report (TST, `environment: lab`) of warm-up, shot mass and repeatability (R16), melt pressure from the load cell, mold temperature over a run and fume capture, and build log entries. None of this has been started.

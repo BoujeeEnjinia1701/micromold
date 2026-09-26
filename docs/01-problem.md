@@ -3,7 +3,7 @@ doc_id: MMD-PRB-001
 title: MicroMold problem statement
 project: MicroMold
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,11 +17,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (users, context, constraints, out of scope, prior work with sources)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: TRL 3 update (budget covers the press with molds as tooling, fume extraction, feedstock grade, co-design partner type; MMD-DDR-001)
 ---
 
 # MicroMold problem statement
 
-Small recycling groups can collect, sort, wash and shred plastic, but they struggle to turn the flake into products that people will pay for. Selling baled or shredded plastic returns little, and injection molding, the process that makes most small plastic parts, normally needs machines and steel tooling far beyond a community budget. MicroMold aims to close that gap with a bench-top injection press that a local workshop can build for about $400 and that runs aluminum molds a small machine shop can cut.
+Small recycling groups can collect, sort, wash and shred plastic, but they struggle to turn the flake into products that people will pay for. Selling baled or shredded plastic returns little, and injection molding, the process that makes most small plastic parts, normally needs machines and steel tooling far beyond a community budget. MicroMold aims to close that gap with a bench-top injection press that a local workshop can build for a few hundred dollars and that runs aluminum molds a small machine shop can cut. The target is $400 for the press, with molds counted as tooling; the TRL 3 estimate is $495 (MMD-CAL-001).
 
 ## The problem in numbers
 
@@ -39,16 +43,17 @@ Primary users (to be confirmed through co-design):
 - **Schools, technical and vocational colleges and design courses** teaching polymer processing, mold design and the circular economy.
 - **Repair shops and small workshops** that need short runs of simple replacement parts (knobs, spacers, bushings, clips) that are no longer sold.
 
-Typical context: a covered workshop or container with single-phase mains (230 V or 120 V), a bench, hand tools, a drill press and access to a local machine shop with a lathe and a mill. Feedstock is washed, dried and shredded flake of one resin type, sorted by the group itself or with tools such as WasteWise Scan. MicroMold sits at the end of the plastics line described in the ReflowEconomy playbook.
+Typical context: a covered workshop or container with single-phase mains (230 V or 120 V), a bench, hand tools, a drill press and access to a local machine shop with a lathe and a mill. Feedstock is washed, dried and shredded flake of one resin type, preferably from injection-molded items such as caps, crates and buckets, because bottle-grade HDPE flows too stiffly for a hand press (MMD-CAL-001, E6), sorted by the group itself or with tools such as WasteWise Scan. MicroMold sits at the end of the plastics line described in the ReflowEconomy playbook.
 
 ## Constraints
 
-- Garage-buildable prototype for about $400 USD in parts (`project.yaml`); see MMD-REQ-001 R14 for the current estimate.
+- Garage-buildable prototype for $400 USD in parts for the press, with molds counted as tooling (`project.yaml`; MMD-DDR-001 D8); see MMD-REQ-001 R14 for the current estimate.
 - Single-phase mains, 1 kW or less, so it runs from an ordinary socket or a small generator.
 - Only the barrel and the molds may need machining; everything else built with hand tools, a drill press and optional welding.
 - Molds in aluminum, cut on a manual mill or small CNC, so a new product costs tens to low hundreds of dollars in tooling rather than thousands.
 - Safe processing only: HDPE, PP, LDPE and PS. PVC must never be heated, because it releases hydrogen chloride and other harmful products ([Precious Plastic Academy, "Plastic basics"](https://onearmy.github.io/academy/plastic/basics)).
-- Hand-operated injection, so no hydraulics or motors are needed at TRL 2.
+- Hand-operated injection, so no hydraulics or motors are needed; the only motor is the fume extraction fan.
+- Fumes must be captured at the press (a side hood and duct fan) or the press run outdoors (MMD-DDR-001 D9).
 
 ## Out of scope
 
@@ -70,7 +75,7 @@ Typical context: a covered workshop or container with single-phase mains (230 V 
 
 This design is for communities the author is not part of, so requirements come from the people who will use it.
 
-- [ ] Identify a local partner organization (Helpful Engineering network, NGO or university)
+- [ ] Identify a local partner organization (Helpful Engineering network, NGO or university). Adopted for TRL 3, open for Amish's review: the first partner is to be a group that already shreds HDPE or PP (MMD-DDR-001 D10); the specific partner and place are proposed, awaiting Amish.
 - [ ] Run co-design sessions with intended users; record who, where and what was learned
 - [ ] Validate load, distance, terrain and cost assumptions in the field
 - [ ] Revise requirements (REQ) from findings before freezing the design

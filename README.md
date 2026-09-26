@@ -1,18 +1,18 @@
 # MicroMold
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Advanced Manufacturing · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $400 USD · **Difficulty:** 3 of 5
+**Area:** Advanced Manufacturing · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $400 USD · **Difficulty:** 3 of 5
 
 A desktop injection molding press for recycled plastic: a lever or screw press with a heated barrel and interchangeable aluminum molds, turning shredded waste plastic into small useful parts.
 
 ![MicroMold concept](media/hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/MMD-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
-Molding turns sorted flake into finished parts, which sell for far more than flake sold by weight, and it lets a community make the small parts it would otherwise import. MicroMold uses the simplest injection process that still gives useful pressure: a heated barrel, a hand-driven plunger and a bolted aluminum mold. The proposed drive is the rack, pinion and handle of a 1 t arbor press on a taller column, which gives a long stroke and about 22:1 advantage from one bought tool (the brief allows a lever or screw drive; the choice is awaiting Amish).
+Molding turns sorted flake into finished parts, which sell for far more than flake sold by weight, and it lets a community make the small parts it would otherwise import. MicroMold uses the simplest injection process that still gives useful pressure: a heated barrel, a hand-driven plunger and a bolted aluminum mold. The drive is the rack and pinion of a 1 t arbor press on a taller column, turned by a ratchet handle, which gives a long stroke and 22.5:1 advantage from one bought tool (the brief allows a lever or screw drive; this choice is adopted for TRL 3 and open for Amish's review).
 
 It is open and garage-buildable because the value is in local making. Only the barrel and the molds need a lathe or mill, which most towns have in a machine shop, and a new mold costs tens of dollars in aluminum and machining rather than thousands for steel tooling. Open drawings let groups repair the press, share molds and adapt it, as the Precious Plastic community has done for its own machines.
 
@@ -55,7 +55,7 @@ Community recycling produces shredded plastic with few local uses, and small-bat
 
 ## Concept
 
-A bench-top, hand-operated plunger injection press. The rack-and-pinion head of a 1 t arbor press, on a taller steel column, drives a 22 mm plunger down a vertical barrel heated by two 250 W band heaters and a 100 W nozzle heater, each zone under PID control. Melt fills a bolted two-plate aluminum mold held against the nozzle by a screw lift table, and a load cell under the ram shows the injection force. First-order estimates: about 34 g of HDPE per shot at about 9 MPa (90 bar) with 250 N on the handle, about 12 min warm-up, about 10 parts per hour and about 600 W from a single-phase socket. Parts cost about $399 for the press and about $489 with one mold, over the $400 budget; fume extraction is not yet included (see the [review note](docs/REVIEW.md)).
+A bench-top, hand-operated plunger injection press. The rack-and-pinion head of a 1 t arbor press, on a taller steel column and turned by a ratchet handle, drives a 22 mm plunger down a vertical barrel heated by two 250 W band heaters and a 100 W nozzle heater, each zone under PID control. Melt fills a bolted two-plate aluminum mold held against a 4 mm nozzle by a screw lift table inside a perforated shield, a load cell under the ram shows the injection force, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations give up to 34 g of HDPE per shot at 8.9 MPa (89 bar) with 250 N on the handle in about four ratchet pulls, a 14.8 min warm-up, about 9 parts per hour and 635 W from a single-phase socket. Parts cost $495 for the press and $585 with one mold, over the $400 budget, and the press weighs about 38.5 kg, over its 35 kg target (see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md)).
 
 ![Material flow](media/flow.png)
 
@@ -63,18 +63,19 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- Heated steel barrel (22 mm bore) with two 250 W band heaters, and a nozzle with a 100 W heater
-- Rack-and-pinion drive head from a 1 t arbor press on a steel column (proposed)
-- 22 mm plunger with a load cell for force and pressure indication
+- Heated steel barrel (22 mm bore) with two 250 W band heaters, and a 4 mm nozzle with a 100 W heater
+- Rack-and-pinion drive head from a 1 t arbor press on a steel column, with a 450 mm ratchet handle
+- 22 mm plunger with a load cell, on a glass-epoxy thermal spacer, for force and pressure indication
 - Two-plate aluminum mold set on a screw lift table
-- Insulation jacket and perforated guard
+- Insulation jacket and perforated guard; perforated nozzle zone shield
+- Side fume hood with a 100 mm inline duct fan
 - Control box with two PID controllers, SSRs, fused inlet and independent thermal cut-out
 
-The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv); the parametric model is [cad/src/model.py](cad/src/model.py), with STEP and STL exports in `cad/step/` and `cad/stl/`.
 
 ## Safety
 
-> **Safety:** Hot barrel, nozzle and molten plastic at up to 260 °C: use guards, heat-resistant gloves, long sleeves and eye protection, and keep faces off the injection axis. Process only HDPE, PP, LDPE and PS; never heat PVC or unknown plastics, and work under local exhaust or outdoors. Mains-voltage heaters: earth all metal parts, use a fused inlet and an RCD or GFCI supply, and have mains wiring done or checked by a qualified electrician to local electrical code. Keep hands clear of the rack and handle. See the safety section of the [design precis](docs/02-concept.md).
+> **Safety:** Hot barrel, nozzle and molten plastic at up to 260 °C: use guards, heat-resistant gloves, long sleeves and eye protection, and keep faces off the injection axis. Close the nozzle zone shield before injecting. Process only HDPE, PP, LDPE and PS; never heat PVC or unknown plastics, and run the hood fan whenever the heaters are on, or work outdoors. Mains-voltage heaters: earth all metal parts, use a fused inlet and an RCD or GFCI supply, and have mains wiring done or checked by a qualified electrician to local electrical code. Keep hands clear of the rack, and release the ratchet pawl only with the handle in hand. See the safety section of the [design precis](docs/02-concept.md).
 
 ## Repository layout
 
