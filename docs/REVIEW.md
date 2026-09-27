@@ -199,3 +199,36 @@ Amish wrote, in chat on 2026-09-26: "i approve all the budget items." O3 is deci
 - R14 target $500 to $520; status **not met to at risk** ($507 press, $13 or 2.5 % margin on indicative prices; $597 with one mold, the mold being tooling).
 - Requirement counts (MMD-CAL-001 v0.3): 0 not met, 3 at risk, 8 met on paper, 4 met by design, 1 not verifiable (was 1, 2, 8, 4, 1).
 - Documents: MMD-PRB-001 v0.5, MMD-PRC-001 v0.5, MMD-REQ-001 v0.5, MMD-CAL-001 v0.3 (`sizing.py` now reports the margin when under budget), MMD-DDR-002 v0.2; `bom/bom-notes.md`; PDFs rebuilt. No media shows the budget, so none was regenerated.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose MicroMold on 2026-09-26 for the first batch of product renders, in the style of a product-design portfolio shot: finished-product geometry, studio lighting and a light seamless background.
+
+### What was added
+
+- `cad/src/product_model.py`: an appearance model for photoreal renders, built on `PARAMS`, `derived()` and `build_parts()` in `cad/src/model.py`. It exposes `product_parts()` (84 parts: 64 shell, 10 internal, 9 accessory, 1 context), `TITLE` and `RENDER_VIEWS` (hero and exploded). It adds:
+  - Fillets on the base plate, column tube, press head, bracket, lift table, mold plates, control box and fan frame.
+  - Fasteners: bench bolts and washers, gib screws with lock nuts on the head, a pinion shaft nut, M10 mold bolts with washers and nuts, heater clamp screws and fan bracket bolts.
+  - Rack teeth on the ram, a ratchet head with a reversing lever, a ribbed rubber grip and a ball knob on the handle.
+  - A visible mold parting line with pry slots, a sprue bushing seat and a stamp; nut slots in the lift table; guide rods and bushes on the screw jack; rubber grips on the tommy bar.
+  - Mica band heaters with clamp lugs and ceramic terminal blocks; a nozzle with a radiused tip and its heater band; the jacket as an aluminum skin inside a slotted steel guard.
+  - Perforated sides and a perforated window in the nozzle zone shield, hinges, a latch knob and a hot-surface warning label.
+  - The fume hood with a face lip, round duct stub, band clamp and a short run of flexible duct; the cooling fan with blades, finger guard and bracket.
+  - The control box with two lit PID controllers (process and set values), a lit force display for the load cell, a lit mains rocker switch, a cut-out reset button, a name plate, side vents, glands and a rear inlet; heater wiring in glass-fiber sleeving (fabric material) and a load cell lead.
+  - Accessories: a tray of recycled flake and three molded test plaques. Context: a compact section of workbench top.
+- `README.md`: hero image now points to `media/render-hero.png`, with a link to `media/render-exploded.png`. The render files are produced separately by the render pipeline.
+
+### Differences from model.py
+
+Each is appearance only; none changes a main dimension or interface.
+
+1. **Fume duct.** `model.py` shows a square 100 mm massing block for the duct stub. The appearance model uses a round 100 mm duct stub of the same height with a band clamp, then a short run of flexible duct bending toward the back, cut short, because the inline fan and its 3 m of duct (BOM 17) have no position in the model. Proposed, awaiting Amish. Recommendation: accept for renders; place the inline fan in `model.py` only if a later layout needs it.
+2. **Guide rods.** BOM 11 lists two guide rods that `model.py` does not model. The appearance model shows them under the lift table at X = ±62 mm with bushes on the base plate. Proposed, awaiting Amish. Recommendation: accept; confirm their positions when the clamp is detailed.
+3. **Shield window.** `model.py` leaves the window opening in the shield front empty so the mold shows. The appearance model fills it with the perforated panel that BOM 16 specifies (10 mm square holes), so the mold is partly hidden in the hero render. Proposed, awaiting Amish. Recommendation: keep the perforated panel, since it is the safety guard as specified.
+4. **Mold bolts.** `model.py` shows only the bolt heads. The appearance model shows full M10 bolts with washers, hex heads and nuts in slots in the lift table; the head top sits at the same height. Proposed, awaiting Amish. Recommendation: accept.
+5. **Control box front.** The two PID envelopes are kept. A force display, mains rocker switch and cut-out reset button are added below them, in the box front, from BOM 4 and BOM 13. Proposed, awaiting Amish. Recommendation: accept; the panel layout is illustrative.
+6. **Display values.** The lit readouts show illustrative set points (210 °C barrel, 225 °C nozzle) and 0.00 kN force with the plunger raised. These are not recommendations. Proposed, awaiting Amish. Recommendation: accept as illustrative.
+
+### Status
+
+This is an appearance model only: no tolerances, no fabrication detail and no change to `model.py`, the BOM or the controlled documents. `trl` stays 3, and TRL 4 remains on hold by Amish's instruction.
