@@ -1,4 +1,4 @@
-"""MicroMold general arrangement sheet MMD-DWG-001, Rev P2 (TRL 3, MMD-DDR-002).
+"""MicroMold general arrangement sheet MMD-DWG-001, Rev P3 (TRL 3, MMD-DDR-002).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/MMD-DWG-001.svg, .pdf and .png from the parametric model in
@@ -53,12 +53,12 @@ def ortho_cells(sheet, views, names=("front", "right")):
     """Repeat Sheet.add_ortho's layout arithmetic for a front and right view pair (no top view
     above the front, so that the sheet can be drawn at 1:10). Returns {name: (x, y, w, h)}."""
     ax, ay, aw, ah = M + 10, M + 16, 245, TB_Y - M - 20
-    gap, lab = 14, 12
+    gap, lab, dl = 14, 12, 11
     dims = {n: _viewbox(Path(views[n]).read_text())[2:] for n in names}
     fw, fh = dims["front"]; rw, rh = dims["right"]
     k = sheet.scale
-    ax += (aw - (k * (fw + rw) + gap)) / 2
-    ay += (ah - (k * max(fh, rh) + gap + 2 * lab)) / 2
+    ax += (aw - (k * (fw + rw) + gap + dl)) / 2 + dl
+    ay += (ah - (k * max(fh, rh) + gap + 2 * lab + dl)) / 2 + dl
     front_y = ay + lab + gap
     row_h = k * max(fh, rh)
     return {"front": (ax, front_y, k * fw, row_h), "right": (ax + k * fw + gap, front_y, k * rw, row_h)}
@@ -99,11 +99,12 @@ def main():
     work = ROOT / "cad" / "drawings" / "_views"
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="MicroMold", title="General arrangement", dwg_no="MMD-DWG-001", rev="P2",
+    s = Sheet(project="MicroMold", title="General arrangement", dwg_no="MMD-DWG-001", rev="P3",
               author="Amish Chadha", date=DATE, scale=0.1, theme="technical",
               material="Steel frame and barrel; 6061 mold; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
-                         ("P2", "Mold cooling fan added; 300 W bands (MMD-DDR-002)", DATE, "AC")])
+                         ("P2", "Mold cooling fan added; 300 W bands (MMD-DDR-002)", DATE, "AC"),
+                         ("P3", "Layout and labels tidied", "2026-09-30", "AC")])
     s.add_ortho(views, names=("front", "right"))
     k = s.scale
     c = ortho_cells(s, views)
@@ -120,12 +121,11 @@ def main():
     Z = lambda mz: y + h - (mz - bb.min.Z) * k
     zb = Z(0)
     L.append(f'<line x1="{X(bb.min.X) - 4:.2f}" y1="{zb:.2f}" x2="{X(bb.max.X) + 4:.2f}" y2="{zb:.2f}" stroke="{INK}" stroke-width="0.35"/>')
-    L.append(_t(X(bb.max.X) + 2, zb - 1, "BENCH TOP", 2.0, 600, MUTED, "end"))
-    xr = X(bb.min.X) - 4
+    L.append(_t(X(bb.max.X) + 4, zb + 3.5, "BENCH TOP", 2.0, 600, MUTED, "end"))
+    xr = X(bb.min.X) - 14     # the kit draws the overall height at 7 mm
     for i, (zz, label) in enumerate(((D["noz0"], f"{D['noz0']:.0f} nozzle tip"),
                                      (D["bar1"], f"{D['bar1']:.0f} barrel top"),
-                                     (D["pin_z"], f"{D['pin_z']:.0f} pinion"),
-                                     (D["overall_h"], f"{D['overall_h']:,.0f} handle top"))):
+                                     (D["pin_z"], f"{D['pin_z']:.0f} pinion"))):
         xd = xr - 6 * i
         L += [ext(X(0), Z(zz), xd - 1, Z(zz))]
         L += dim_v(xd, Z(zz), zb, label)
@@ -147,8 +147,8 @@ def main():
     y0b, y1b = P["base_y"] - by / 2, P["base_y"] + by / 2
     L += [ext(Xt(-bx / 2), Yt(y1b), Xt(-bx / 2), Yt(bb.max.Y) - 5), ext(Xt(bx / 2), Yt(y1b), Xt(bx / 2), Yt(bb.max.Y) - 5)]
     L += dim_h(Xt(-bx / 2), Xt(bx / 2), Yt(bb.max.Y) - 4, f"{bx:.0f} base")
-    L += [ext(Xt(bx / 2), Yt(y0b), Xt(bb.max.X) + 5, Yt(y0b)), ext(Xt(bx / 2), Yt(y1b), Xt(bb.max.X) + 5, Yt(y1b))]
-    L += dim_v(Xt(bb.max.X) + 4, Yt(y1b), Yt(y0b), f"{by:.0f}", side=1)
+    L += [ext(Xt(bx / 2), Yt(y0b), Xt(bb.max.X) + 7, Yt(y0b)), ext(Xt(bx / 2), Yt(y1b), Xt(bb.max.X) + 7, Yt(y1b))]
+    L += dim_v(Xt(bb.max.X) + 6, Yt(y1b), Yt(y0b), f"{by:.0f}")
     L.append(_t(Xt(bb.min.X), Yt(bb.min.Y) - 1, "OPERATOR SIDE (-Y)", 1.9, 400, MUTED, "start"))
 
     # right view (from +X): Y to the right... looking along -X, +Y appears to the right
@@ -161,7 +161,7 @@ def main():
                 f"RATCHET HANDLE {P['handle_len']:.0f}, {P['handle_up_deg']:.0f} DEG UP TO 60 DEG DOWN")
 
     s._layers += L
-    s.add_svg(views["iso"], 276, 32, 140, 100, label="Isometric view", sublabel="Not to scale; control box not shown")
+    s.add_svg(views["iso"], 276, 37, 140, 96, label="Isometric view", sublabel="Not to scale; control box not shown")
     fo, _ = P["flange"]
     s.add_notes("Main dimensions and interfaces (mm)", [
         f"Barrel {P['barrel_od']:.0f} OD, bore {P['bore']:.0f} (22 H8/f7 plunger fit), {P['barrel_len']:.0f} long",
@@ -175,7 +175,7 @@ def main():
         f"Hood face {P['hood_face'][0]:.0f} x {P['hood_face'][1]:.0f}, {-P['hood_x']:.0f} from the axis; {P['duct_d']:.0f} duct",
         f"Mold cooling fan {P['cool_fan'][1]:.0f} x {P['cool_fan'][2]:.0f} x {P['cool_fan'][0]:.0f} at X {P['cool_fan_x']:.0f}; barrel bands 2 x 300 W",
         "Third-angle; front view from -Y (operator side)",
-    ], x=276, y=148, width=146)
+    ], x=276, y=148, width=140)
     out = s.save(ROOT / "cad" / "drawings" / "MMD-DWG-001")
     shutil.rmtree(work, ignore_errors=True)
     print(f"wrote {out} and .pdf, .png at scale 1:{1 / k:g}")
