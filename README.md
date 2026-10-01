@@ -2,13 +2,13 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1388477306.svg)](https://zenodo.org/badge/latestdoi/1388477306) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/micromold/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/micromold/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/micromold/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/micromold)
 
-**Area:** Advanced Manufacturing · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $520 USD · **Difficulty:** 3 of 5
+**Area:** Advanced Manufacturing · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 520 (estimated cost USD 544) · **Difficulty:** 3 of 5
 
 A desktop injection molding press for recycled plastic: a lever or screw press with a heated barrel and interchangeable aluminum molds, turning shredded waste plastic into small useful parts.
 
 ![MicroMold: desktop injection molding press for recycled plastic, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/MMD-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/MMD-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -55,7 +55,7 @@ Community recycling produces shredded plastic with few local uses, and small-bat
 
 ## Concept
 
-A bench-top, hand-operated plunger injection press. The rack-and-pinion head of a 1 t arbor press, on a taller steel column and turned by a ratchet handle, drives a 22 mm plunger down a vertical barrel heated by two 300 W band heaters and a 100 W nozzle heater, each zone under PID control. Melt fills a bolted two-plate aluminum mold held against a 4 mm nozzle by a screw lift table inside a perforated shield, where a small fan cools the mold; a load cell under the ram shows the injection force, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations give up to 34 g of HDPE per shot at 8.9 MPa (89 bar) with 250 N on the handle in about four ratchet pulls, a 12.2 min warm-up, about 11 parts per hour and 753 W from a single-phase socket. Parts cost $507 for the press against the $520 budget and $597 with one mold, and the press weighs about 39.2 kg against its 40 kg target (see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md)).
+A bench-top, hand-operated plunger injection press. The rack-and-pinion head of a 1 t arbor press, on a taller steel column and turned by a ratchet handle, drives a 22 mm plunger down a vertical barrel heated by two 300 W band heaters and a 100 W nozzle heater, each zone under PID control. Melt fills a bolted two-plate aluminum mold held against a 4 mm nozzle by a screw lift table inside a perforated shield, where a small fan cools the mold; a load cell under the ram shows the injection force, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations give up to 34 g of HDPE per shot at 8.9 MPa (89 bar) with 250 N on the handle in about four ratchet pulls, a 12.3 min warm-up, about 11 parts per hour and 753 W from a single-phase socket. Value-engineering target: USD 520. Estimated cost of the constructable design: USD 544 for the press (USD 24 over the target) and USD 638 with one mold; the press weighs about 39.0 kg against its 40 kg target (see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md)).
 
 ![Material flow](media/flow.png)
 
@@ -66,13 +66,19 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - Heated steel barrel (22 mm bore) with two 300 W band heaters, and a 4 mm nozzle with a 100 W heater
 - Rack-and-pinion drive head from a 1 t arbor press on a steel column, with a 450 mm ratchet handle
 - 22 mm plunger with a load cell, on a glass-epoxy thermal spacer, for force and pressure indication
-- Two-plate aluminum mold set on a screw lift table
+- Two-plate aluminum mold set on a lift table raised by a handwheel nut on a Tr20 screw
 - Insulation jacket and perforated guard; perforated nozzle zone shield
 - Side fume hood with a 100 mm inline duct fan
 - 120 mm mold cooling fan on the base plate
 - Control box with two PID controllers, SSRs, fused inlet and independent thermal cut-out
 
 The priced bill of materials is in [bom/bom.csv](bom/bom.csv); the parametric model is [cad/src/model.py](cad/src/model.py), with STEP and STL exports in `cad/step/` and `cad/stl/`.
+
+## Building the prototype
+
+![MicroMold prototype: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
+
+The [prototype build plan](docs/05-build-plan.md) (MMD-BLD-001) shows, in pictures, how to make each of the seventeen components and put them together in fourteen steps; nothing has been built yet. The frame is a steel column welded to a base plate with a shelf and a head plate, the barrel, nozzle and mold come from a local machine shop, the arbor press head is cut from its frame and bolted on, and the shield, fan bracket and hood are cut and folded from sheet. Writing the plan made the design buildable: the head and barrel fixings, the screw lift, the split jacket, the plunger coupling and the mold fastening were redesigned and fixings added (MMD-DDR-003, open for Amish's review). Every picture is drawn from the model, which checks that each part touches what it should, clears what it should not and can be put in place in the order given. Decisions still open are in the [design decisions register](docs/06-design-decisions.md).
 
 ## Safety
 

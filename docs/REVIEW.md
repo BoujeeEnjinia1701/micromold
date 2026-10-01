@@ -238,3 +238,59 @@ This is an appearance model only: no tolerances, no fabrication detail and no ch
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-01: kit 1.7.0, constructable design and prototype build plan
+
+Amish approved the build plan format on 2026-09-30 and asked for it across all repos, with outstanding decisions kept in a separate register. He also wrote: "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations." This session brought MicroMold to that standard. Nothing was built or bought; `trl` stays 3.
+
+### What was done
+
+- Kit 1.7.0 installed (`.kit/`, `.claude/commands/`); `CLAUDE.md` replaced by `.kit/CLAUDE.md`.
+- Constructability review with build123d checks: `cad/src/model.py` rewritten as separate components (`build_components()`), grouped by BOM line for the existing media (`build_parts()`), with `python cad/src/model.py --check`: 155 checks (no unintended overlap, every joint touching, clearances, full stroke, table at both ends of travel, assembly order, a process and BOM line for every part). All pass.
+- `docs/decisions/0003-design-for-construction.md` (MMD-DDR-003 v0.1, Draft): every change, made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+- `bom/bom.csv` (19 lines; line 19 added) and `bom/bom-notes.md`; `docs/04-calcs/sizing.py` and MMD-CAL-001 v0.4 (mass, heights, heat, cost against the value-engineering target); MMD-REQ-001 v0.6; MMD-PRC-001 v0.6; `README.md` (links line, "Building the prototype"); `project.yaml` (`design_state: constructable`, new evidence).
+- STEP and STL regenerated; general arrangement MMD-DWG-001 Rev P4; concept media regenerated from the new model.
+- `cad/src/build_plan_media.py`: overview, base plate hole layout, 14 making sketches (MMD-DWG-101 to 114), 11 joint close-ups and 14 assembly step pictures.
+- `docs/05-build-plan.md` (MMD-BLD-001 v0.1) and `docs/06-design-decisions.md` (MMD-DEC-001 v0.1). PDFs rebuilt in `docs/pdf/`.
+
+### Design changes made for construction (MMD-DDR-003)
+
+1. Press head: cut from its frame and bolted to an 8 mm head plate welded to the column, four M10 countersunk screws reached through holes in the column (it overlapped the column by 30 mm, with no fixing).
+2. Barrel bracket: a 20 mm shelf welded to the column face plus an 8 mm back plate welded up the column corners (it cut into the 3 mm wall and was fixed only to it); mica pads now in the stack.
+3. Barrel flange 100 mm with four M8 cap screws; funnel 64 mm (was 80 mm) so the screws can be reached.
+4. Nozzle screws into an M30 x 1.5 thread in the barrel; spherical tip in a 2 mm spherical seat in the mold (test mold table now at 102 mm).
+5. Jacket made as two half shells hung on four tabs, spacers and M5 screws (it floated, and as one sleeve could not be fitted with the barrel in place).
+6. Load cell, 56 mm G-11 spacer and a drilled plunger coupling on screws that never cross the spacer; ball-lock pin for the plunger (stack 5 mm taller; handle top 1,094 mm).
+7. Screw lift: a Tr20 screw welded under the table, turned by a handwheel nut on the base plate, dropping through a hole in the bench; the column face stops the table turning (the concept's 100 mm jack could not fit in 50 mm).
+8. Mold: M10 cap screws into thread inserts, two dowels; sprue taper turned the right way.
+9. Shield sides on folded feet screwed to the base; front on two hinges and a latch.
+10. Mold fan on a plate bracket with an intake hole; fan 4 mm closer to the mold.
+11. Hood held by an L-shaped arm on rivnuts in the column.
+12. Heater wiring rerouted over the shield.
+13. Ratchet adapter made from the press's lever hub with a welded 1/2 in square drive.
+14. Base plate 8 mm (was 12 mm) and head and back plates 8 mm, keeping mass under 40 kg.
+15. Assembly order fixed: barrel in from above before the press head; band heaters clamp on after; plunger unit fitted as one piece.
+
+### Key results
+
+- Mass 39.0 kg against 40 kg (R9 at risk; head mass assumed). Handle top 1,094 mm (R9 met on height).
+- Value-engineering target: USD 520. Estimated cost of the constructable design: USD 544 for the press (USD 24 over the target); USD 638 with the test mold. The construction parts added USD 37.
+- Warm-up 12.3 min (was 12.2 min); other results unchanged. Counts: none not met, 2 at risk (R2, R9), 8 met on paper, 4 met by design, 1 not verifiable at TRL 3, R14 over the value-engineering target.
+
+### Proposed, awaiting Amish
+
+All in the design decisions register (MMD-DEC-001): accept the changes above; how flake is loaded with only 8 mm between the raised plunger and the funnel (recommend lifting the plunger out on its ball-lock pin); the hole through the bench for the lift screw; a handle stop or torque-limiting socket; and the earlier open items (partner, product molds, appearance model differences).
+
+### Stale media (made on Amish's Mac, not regenerated here)
+
+The design changed visibly, so these need redoing with `/render-product` after `cad/src/product_model.py` is updated: `media/render-hero.png`, `media/render-exploded.png` (and any other `media/render-*.png`), `media/card.png` and `media/social-preview.png`. They show the concept's head position, 80 mm flange and funnel, the screw jack block with a front crank, mold bolts with nuts, guide rods, and the old fan bracket.
+
+### Safety concerns
+
+- Overload on the handle is still unlimited (about 35 MPa at 700 N); a torque-limiting socket is recommended (register item 4).
+- Loading flake with the plunger lifted out means handling a plunger whose top end is about 94 °C; heat-resistant gloves are required.
+- The barrel is fitted from above and the press weighs 39 kg: two people to lift it, and the bench must be drilled.
+
+### Recommended next step
+
+Amish reviews MMD-DDR-003 and the register. TRL 4 (buying the arbor press, confirming the items listed for purchase, building and testing) stays on hold.

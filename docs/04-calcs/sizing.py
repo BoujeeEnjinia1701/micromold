@@ -1,4 +1,5 @@
-"""MicroMold sizing calculations, MMD-CAL-001 v0.2 (TRL 3, with the MMD-DDR-002 decisions).
+"""MicroMold sizing calculations, MMD-CAL-001 v0.4 (TRL 3, with the MMD-DDR-002 decisions and the
+constructable design of MMD-DDR-003).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Imports PARAMS and derived() from cad/src/model.py, reads bom/bom.csv and project.yaml,
@@ -14,7 +15,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "cad" / "src"))
-from model import PARAMS as P, derived  # noqa: E402
+from model import PARAMS as P, derived, construction_mass  # noqa: E402
 
 D = derived(P)
 OUT = []
@@ -148,7 +149,7 @@ F_cav = cav * 100 * p_d
 d_pl = F_cav * span ** 3 / (48 * A["E_al"] * Ip)
 s_pl = F_cav * span / 4 / (my * mt ** 2 / 6)
 out("D4", f"Plate bending between bolt rows ({span:.0f} mm span): {s_pl:.0f} MPa, deflection {d_pl * 1000:.0f} um (HDPE flash begins at about 20 to 30 um)")
-R["R7"] = (f"{A_max:.0f} cm2 at {p_d:.1f} MPa; stacks {D['noz0'] - table_max:.0f} to {D['noz0'] - P['table_min_top'] - P['mold_drop']:.0f} mm; 170 x 130 mm table", "150 x 120 mm, 40 to 120 mm stack, 40 cm2", "Met on paper")
+R["R7"] = (f"{A_max:.0f} cm2 at {p_d:.1f} MPa; stacks {D['noz0'] - table_max:.0f} to {D['noz0'] - P['table_min_top'] - P['mold_drop']:.0f} mm; {P['table'][0]:.0f} x {P['table'][1]:.0f} mm table", "150 x 120 mm, 40 to 120 mm stack, 40 cm2", "Met on paper")
 
 
 # ---------------- E. Fill pressure through nozzle and sprue (R3) ----------------
@@ -194,7 +195,8 @@ out("F9", f"Hot bore grows {grow * 1000:.0f} um more than a 100 C plunger: recom
 
 # ---------------- G. Heat: warm-up, losses, skin, load cell (R5, R11, R4) ----------------
 steel_barrel = pi / 4 * (P["barrel_od"] ** 2 - P["bore"] ** 2) * P["barrel_len"] / 1000 * A["rho_steel"] / 1000
-steel_top = (pi / 4 * (P["flange"][0] ** 2 - P["bore"] ** 2) * (P["flange"][1] + P["funnel"][1]) * 0.6) / 1000 * A["rho_steel"] / 1000
+steel_top = (pi / 4 * (P["flange"][0] ** 2 - P["bore"] ** 2) * P["flange"][1]
+             + pi / 4 * (P["funnel"][0] ** 2 - P["bore"] ** 2) * (P["funnel"][1] - P["flange"][1]) * 0.5) / 1000 * A["rho_steel"] / 1000   # flange; funnel about half solid
 nozzle_kg = 0.30
 m_barrel_zone = steel_barrel + steel_top + 0.30               # plus two heaters
 wool_kg = pi / 4 * (P["jacket"][0] ** 2 - 60 ** 2) * 240 / 1e9 * 100
@@ -298,13 +300,14 @@ mass = {
     "barrel set and heaters": steel_barrel + steel_top + 0.30 + nozzle_kg,
     "plunger, load cell and spacer": area * P["plunger_len"] / 1e6 * A["rho_steel"] + 0.40,
     "jacket and guard (assumed)": 1.0,
-    "clamp (table plus jack, assumed 1.5 kg)": P["table"][0] * P["table"][1] * P["table"][2] / 1e6 * A["rho_steel"] + 1.5,
+    "lift table plate": P["table"][0] * P["table"][1] * P["table"][2] / 1e6 * A["rho_steel"],
     "mold set with bolts": m_mold + 0.35,
     "nozzle zone shield": 0.9,
     "hood on the press (assumed)": 0.6,
     "mold cooling fan and bracket (assumed)": 0.7,
     "hardware (assumed)": 1.0,
 }
+mass.update(construction_mass(P))          # parts added by MMD-DDR-003
 m_tot = sum(mass.values())
 out("K1", "Mass: " + "; ".join(f"{k} {v:.1f}" for k, v in mass.items()) + f"; total {m_tot:.1f} kg without the control box")
 out("K2", f"Footprint {bx:.0f} x {by:.0f} mm; top of the handle {D['handle_top']:.0f} mm above the bench at the highest start of a pull ({P['handle_up_deg']:.0f} deg); ram top {D['ram1']:.0f} mm")
@@ -320,9 +323,9 @@ fume = sum(float(r["unit_cost_usd"]) * float(r["qty"]) for r in rows if r["item"
 press = tot - mold_cost
 out("L1", f"BOM {len(rows)} lines, all priced: ${tot:.2f} with one mold; press alone ${press:.2f}; mold ${mold_cost:.2f}; fume extraction ${fume:.2f}")
 def _vs(x):
-    return f"over by ${x:.2f}" if x > 0 else f"under by ${-x:.2f}"
-out("L2", f"Against budget_usd ${budget:.0f}: press alone (redefined R14 scope) {_vs(press - budget)} ({(budget - press) / budget * 100:.1f} % margin); press and one mold (original scope) {_vs(tot - budget)}; press without fume extraction ${press - fume:.2f}")
-R["R14"] = (f"${press:.0f} press; ${tot:.0f} with one mold", f"Press ${budget:.0f} or less, molds as tooling", "Not met" if press > budget else ("At risk" if press > 0.95 * budget else "Met on paper"))
+    return f"${x:.2f} over" if x > 0 else f"${-x:.2f} under"
+out("L2", f"Value-engineering target (budget_usd, a hypothetical control target): ${budget:.0f}. Press alone (R14 scope) ${press:.2f}, {_vs(press - budget)} the target; press and one mold ${tot:.2f}, {_vs(tot - budget)}; press without fume extraction ${press - fume:.2f}")
+R["R14"] = (f"${press:.0f} press, ${abs(press - budget):.0f} {'over' if press > budget else 'under'} the target; ${tot:.0f} with one mold", f"Press at or under the ${budget:.0f} value-engineering target, molds as tooling", "Over the value-engineering target" if press > budget else "Within the value-engineering target")
 R["R8"] = (f"${mold_cost:.0f} (indicative)", "$100 or less", "Met on paper")
 R["R1"] = ("HDPE, PP, LDPE, PS within 150 to 260 C from injection-molded items; PVC and bottle-grade HDPE excluded by label and procedure", "Four resins, injection grade; PVC excluded", "Met by design")
 R["R12"] = ("Earthed frame, fused inlet, DP switch, RCD or GFCI, 250 C wiring", "As listed", "Met by design")
@@ -330,7 +333,7 @@ R["R15"] = ("Only the barrel set and molds need a lathe or mill (local shop)", "
 R["R16"] = ("Needs hardware", "Mass within 3 % over 10 shots", "Not verifiable at TRL 3")
 
 # ---------------- M. Results table ----------------
-order = {"Not met": 0, "At risk": 1, "Met on paper": 2, "Met by design": 3, "Not verifiable at TRL 3": 4}
+order = {"Not met": 0, "Over the value-engineering target": 1, "At risk": 2, "Within the value-engineering target": 3, "Met on paper": 4, "Met by design": 5, "Not verifiable at TRL 3": 6}
 ids = sorted(R, key=lambda k: (order[R[k][2]], int(k[1:])))
 print("[M] Requirement status")
 for k in ids:

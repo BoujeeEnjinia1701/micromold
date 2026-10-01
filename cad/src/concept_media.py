@@ -1,4 +1,4 @@
-"""MicroMold concept media (TRL 3, with MMD-DDR-002), generated from the parametric model.
+"""MicroMold concept media (TRL 3, constructable design of MMD-DDR-003), generated from the parametric model.
 
 Run from the repo root:  python cad/src/concept_media.py
 Takes the parts from cad/src/model.py (PARAMS), adds a 0.9 m workbench and a 1.75 m person
@@ -42,6 +42,7 @@ def cut_on_axis(parts, keep="+Y"):
 
 concept.cutaway_parts = cut_on_axis
 m = build_parts()
+m["clamp"] = m["clamp"] & (Pos(0, 0, 2500) * Box(5000, 5000, 5000))   # lift screw end below the bench top left off (MMD-DDR-003)
 parts = [
     Part("Base plate", m["base"], "#4B5563", 1, (0, 140, -220)),
     Part("Column, drive head and ratchet handle", m["drive"], "#1F2937", 2, (0, 280, 0)),

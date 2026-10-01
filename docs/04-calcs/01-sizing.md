@@ -3,9 +3,9 @@ doc_id: MMD-CAL-001
 title: MicroMold sizing calculations
 project: MicroMold
 doc_type: Calculation
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,17 +21,21 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget approved by Amish ($520, MMD-DDR-002); R14 from not met to at risk
+- version: "0.4"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: "Constructable design (MMD-DDR-003): mass, heights, heat and cost updated; budget treated as a value-engineering target"
 ---
 
 # MicroMold sizing calculations
 
-On paper, MicroMold meets twelve of its sixteen requirements (eight by calculation, four by design), has three at risk, misses none and leaves one that only hardware can show. This issue includes the decisions Amish made on 2026-09-25 (MMD-DDR-002): a 40 kg mass target, two 300 W barrel bands, a mold cooling fan and injection-grade feedstock in R1. On 2026-09-26 Amish approved a `budget_usd` of $520 to cover the priced BOM (MMD-DDR-002). Cost (R14) is now at risk: the press alone is $507 against $520 with molds counted as tooling, a 2.5 % margin, and $597 with the first mold. The other two at risk are mass (R9, 39.2 kg against 40 kg with an assumed 8 kg arbor press head) and shot size (R2, if the fresh charge is not tamped). The 300 W bands bring warm-up to 12.2 min (R5), and the fan keeps the mold near 47 °C, so throughput (R6) is 11.6 parts per hour, limited by melt soak. The v0.1 calculations also showed that the TRL 2 concept could not work as drawn: a single pull of the arbor press handle moves the plunger only about 31 mm, not the 120 mm a shot needs, so a ratchet handle drives the pinion. Five more changes followed: a 4 mm nozzle orifice with a tapered sprue, a glass-epoxy spacer that keeps the load cell cool, a 20 mm bracket plate on mica pads, a nozzle zone shield, and a nozzle tip raised to 190 mm so that 120 mm mold stacks fit. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
+On paper, MicroMold meets twelve of its sixteen requirements (eight by calculation, four by design), has two at risk, misses none, is over its value-engineering target on cost and leaves one requirement that only hardware can show. Version 0.4 follows the constructable design of MMD-DDR-003 (2026-10-01): plates and fixings added, an 8 mm base plate, a 100 mm flange, a screw lift with a handwheel nut and a plunger coupling. This issue includes the decisions Amish made on 2026-09-25 (MMD-DDR-002): a 40 kg mass target, two 300 W barrel bands, a mold cooling fan and injection-grade feedstock in R1. On 2026-09-26 Amish approved a `budget_usd` of $520 to cover the priced BOM (MMD-DDR-002). `budget_usd` is a hypothetical value-engineering target, not a limit (Amish, 2026-10-01). Value-engineering target: USD 520. Estimated cost of the constructable design: USD 544 for the press (USD 24 over the target), USD 638 with the first mold, which is tooling (R14). The two at risk are mass (R9, 39.0 kg against 40 kg with an assumed 8 kg arbor press head) and shot size (R2, if the fresh charge is not tamped). The 300 W bands bring warm-up to 12.3 min (R5), and the fan keeps the mold near 47 °C, so throughput (R6) is 11.6 parts per hour, limited by melt soak. The v0.1 calculations also showed that the TRL 2 concept could not work as drawn: a single pull of the arbor press handle moves the plunger only about 31 mm, not the 120 mm a shot needs, so a ratchet handle drives the pinion. Five more changes followed: a 4 mm nozzle orifice with a tapered sprue, a glass-epoxy spacer that keeps the load cell cool, a 20 mm bracket plate on mica pads, a nozzle zone shield, and a nozzle tip raised to 190 mm so that 120 mm mold stacks fit. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
 
 > **Safety:** These are first-principles estimates for a paper proof of concept. They do not replace a pressure and electrical safety review of a built press. The barrel, nozzle and mold reach 180 to 260 °C, the melt is under pressure, the heaters run at mains voltage and an operator can load the press to about 1.35 times its rating. See MMD-PRC-001, Safety.
 
 ## Scope and method
 
-The note checks every requirement in MMD-REQ-001 v0.5 against the design in MMD-PRC-001 v0.5 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS` and `derived()` stack-up, so the bore, stroke, nozzle height, table travel, bracket, mold and hood used here are those in the STEP files and in drawing MMD-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py`.
+The note checks every requirement in MMD-REQ-001 v0.6 against the design in MMD-PRC-001 v0.6 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS` and `derived()` stack-up, so the bore, stroke, nozzle height, table travel, bracket, mold and hood used here are those in the STEP files and in drawing MMD-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py`.
 
 The design case is the reference part of MMD-REQ-001: a 30 g HDPE test plaque, 64 x 50 x 6 mm, molded from washed, dried flake of 3 to 8 mm at a 220 °C barrel set point in a 25 °C workshop.
 
@@ -57,7 +61,7 @@ The design case is the reference part of MMD-REQ-001: a 30 g HDPE test plaque, 6
 - **Swept volume.** The 22 mm plunger has 380.1 mm² of area. Of the 150 mm stroke, the first 30 mm clears the funnel and 120 mm is in the bore, sweeping 45.6 cm³ [A1], or 34.2 g of HDPE melt, 14 % above the 30 g target [A2].
 - **Reservoir.** At full stroke 140 mm of bore (53.2 cm³, 40 g) stays below the plunger tip, so the barrel holds 2.2 shots [A3], and each charge soaks for about two cycles before it is injected.
 - **Compaction eats stroke.** Only 15 mm of stroke is spare once 30 g has been delivered. If the fresh charge on top is still loose flake at 0.55 g/cm³ when the operator injects, compacting it takes about 32 mm and the shot falls to about 25 g [A4]. Tamping each top-up with the press while loading is therefore part of the process, and R2 is **at risk** until a trial shows the charge is dense enough.
-- **Mold stack.** With the nozzle tip at 190 mm and a lift table that travels from 60 to 160 mm, mold stacks from 30 to 120 mm fit with 10 mm to drop clear of the nozzle; the 90 mm test mold sits at 100 mm [A5]. The TRL 2 layout, with the nozzle at 152 mm, could not take a 120 mm stack.
+- **Mold stack.** With the nozzle tip at 190 mm and a lift table that travels from 60 to 160 mm, mold stacks from 30 to 120 mm fit with 10 mm to drop clear of the nozzle; the 90 mm test mold sits at 102 mm, because the nozzle tip seats 2 mm deep in the mold's spherical seat [A5]. The TRL 2 layout, with the nozzle at 152 mm, could not take a 120 mm stack.
 - **Mold footprint.** The column face is 65 mm behind the axis, so molds up to 120 mm deep across Y fit, and a 150 x 120 mm mold goes in with its long side along X [A6].
 
 ## B. Drive, force and the ratchet (R3, R2)
@@ -71,7 +75,7 @@ The design case is the reference part of MMD-REQ-001: a 30 g HDPE test plaque, 6
 ## C. Structure and overload
 
 - **Barrel.** The thick-walled barrel (42 mm OD, 22 mm bore) sees a hoop stress of 1.76 times the melt pressure: 15.6 MPa at design and 61.0 MPa at overload, a factor of 3.3 on 85 % of yield at 220 °C [C1].
-- **Column.** The barrel axis is 95 mm in front of the column center, so the 80 x 60 x 3 mm tube carries a bending moment between the bracket and the drive head: 34.5 MPa at 4.71 kN (factor 6.8) and 96.6 MPa at the 13.2 kN overload (factor 2.4) [C2, C3]. The frame opens about 0.29 mm at the ram in use [C4], so the plunger joins the load cell through a pinned floating coupling and is guided only by the bore.
+- **Column.** The barrel axis is 95 mm in front of the column center, so the 80 x 60 x 3 mm tube carries a bending moment between the bracket and the drive head: 34.5 MPa at 4.71 kN (factor 6.8) and 96.6 MPa at the 13.2 kN overload (factor 2.4) [C2, C3]. The frame opens about 0.31 mm at the ram in use, over the 358 mm between the shelf and the pinion [C4], so the plunger joins the load cell through a pinned floating coupling and is guided only by the bore.
 - **Bracket (change).** The bracket cantilevers 65 mm from the column face. A 10 mm plate, as in the TRL 2 BOM, reaches 167 MPa in use (factor 1.4) and would yield at overload (468 MPa, factor 0.5). A 20 mm plate gives 42 MPa in use and 117 MPa at overload, a factor of 2.0 [C5a, C5b, C6a, C6b]. BOM item 9 is now a 20 mm plate.
 - **Plunger and load cell.** Plunger buckling is not a concern (567 kN, 43 times the overload force) [C7]. The 10 kN load cell sees 4.71 kN in use and 13.2 kN at overload, inside the 150 % safe overload typical of such cells but above its rated range [C8]; a handle stop that limits the pull is still recommended (Safety).
 
@@ -104,10 +108,10 @@ The design case is the reference part of MMD-REQ-001: a 30 g HDPE test plaque, 6
 
 ## G. Heat: warm-up, losses, skin and load cell (R5, R11, R4)
 
-- **Heat to store.** The barrel zone holds 2.05 kg of barrel, about 0.70 kg of flange and funnel and 0.30 kg of heaters, and needs 340 kJ to reach 220 °C including 40 g of cold plastic and the mineral wool [G1].
-- **Jacket.** 220 mm of 25 mm mineral wool loses 18 W, with the skin at 48 °C at a 220 °C set point [G2]. R11's 60 °C limit is met on paper for the jacket.
+- **Heat to store.** The barrel zone holds 2.05 kg of barrel, about 0.72 kg of flange and funnel and 0.30 kg of heaters, and needs 342 kJ to reach 220 °C including 40 g of cold plastic and the mineral wool [G1].
+- **Jacket.** 217 mm of 25 mm mineral wool loses 17 W, with the skin at 48 °C at a 220 °C set point [G2]. R11's 60 °C limit is met on paper for the jacket.
 - **Standing losses.** At 220 °C: jacket 18 W, funnel 18 W, nozzle 21 W, bracket heat break 35 W through four mica pads (0.25 W/K) and plunger 12 W, 103 W in all [G3]. The TRL 2 figure was about 80 W.
-- **Warm-up.** With two 300 W bands (MMD-DDR-002) the barrel zone reaches 220 °C in 12.2 min and the nozzle zone in 6.6 min [G4]. R5 (15 min) is met on paper. The 250 W bands of v0.1 took 14.8 min, 2.7 min longer [G4b].
+- **Warm-up.** With two 300 W bands (MMD-DDR-002) the barrel zone reaches 220 °C in 12.3 min and the nozzle zone in 6.6 min [G4]. R5 (15 min) is met on paper. The 250 W bands of v0.1 would take 14.9 min, 2.7 min longer [G4b].
 - **Heater loading.** The 300 W bands run at 4.5 W/cm², well inside the roughly 7.7 W/cm² (50 W/in²) usual for mica bands [G5].
 - **Load cell (change).** The plunger behaves as a fin: with its tip at 150 °C its top end reaches about 94 °C, too hot for a strain-gauge load cell. A 10 mm G-11 glass-epoxy spacer (88 K/W) under the cell keeps it at about 27 °C [G6]. The spacer is added to BOM item 4 (about $5).
 - **Temperature control (R4).** Two PID loops with a 150 to 260 °C set range, a set point limit and an independent 280 °C cut-out meet R4 by design; the ±5 °C hold needs a test later.
@@ -143,18 +147,18 @@ A flanged side hood with a 150 x 100 mm face, 100 mm from the funnel axis, needs
 
 ## K. Mass and size (R9)
 
-- **Mass (at risk).** Base plate 7.8 kg, column 5.7 kg, arbor press head, ram and ratchet 8.0 kg (assumed), bracket 2.6 kg, barrel set and heaters 3.4 kg, plunger and load cell 1.0 kg, jacket and guard 1.0 kg, clamp 3.6 kg, mold set 3.0 kg, shield 0.9 kg, hood 0.6 kg, mold cooling fan and bracket 0.7 kg and hardware 1.0 kg: 39.2 kg without the control box [K1], 0.8 kg under the 40 kg target set by MMD-DDR-002 (98 % of it) [K3]. With the head mass still assumed, R9 is **at risk**. The TRL 2 figure of 32 kg left out the bracket, the table and the mold bolts and had a lighter bracket.
-- **Size.** The footprint is 320 x 260 mm and the handle reaches 1,089 mm above the bench at the highest start of a pull; the ram top is at 1,015 mm [K2]. Both meet R9.
+- **Mass (at risk).** Base plate 5.2 kg (8 mm, MMD-DDR-003), column 5.7 kg, arbor press head, ram and ratchet 8.0 kg (assumed), shelf 2.6 kg, barrel set and heaters 3.4 kg, plunger and load cell 1.0 kg, jacket and guard 1.0 kg, lift table plate 2.0 kg, mold set 3.0 kg, shield 0.9 kg, hood 0.6 kg, mold cooling fan and bracket 0.7 kg and hardware 1.0 kg, plus the parts added for construction: head mounting plate and screws 1.2 kg, shelf back plate 0.8 kg, plunger coupling, pin and spacer 0.3 kg, ratchet adapter 0.1 kg, lift screw and handwheel nut 1.0 kg, hood arm 0.2 kg, shield feet, hinges and latch 0.2 kg and jacket hangers 0.1 kg: 39.0 kg without the control box [K1], 1.0 kg under the 40 kg target set by MMD-DDR-002 (97 % of it) [K3]. With the head mass still assumed, R9 is **at risk**. The TRL 2 figure of 32 kg left out the bracket, the table and the mold bolts and had a lighter bracket.
+- **Size.** The footprint is 320 x 260 mm and the handle reaches 1,094 mm above the bench at the highest start of a pull; the ram top is at 1,020 mm [K2]. Both meet R9.
 
 ## L. Cost (R14, R8)
 
-The BOM has 18 lines, all priced: $597.00 with one mold, of which the press is $507.00, the test mold $90.00 and the fume extraction $48.00 [L1]. Against `budget_usd` of $520 (approved by Amish on 2026-09-26, MMD-DDR-002; was $500, and $400 before that):
+The BOM has 19 lines, all priced: $638.00 with one mold, of which the press is $544.00, the test mold $94.00 and the fume extraction $48.00 [L1]. `budget_usd` is a hypothetical value-engineering target, not a spending limit (Amish, 2026-10-01; $520 since 2026-09-26, MMD-DDR-002):
 
-- **Press alone (MMD-DDR-001 D8 scope):** $507.00, under by $13.00 (2.5 % margin). With indicative prices and less than 5 % margin, R14 is **at risk** [L2].
-- **Press and one mold:** $597.00, over by $77.00; the mold is tooling outside the budget [L2].
-- Without the fume extraction the press would be $459.00 [L2].
+- **Value-engineering target: USD 520. Estimated cost of the constructable design: USD 544 for the press (USD 24 over the target)** [L2]. R14 is over the value-engineering target; the cost drivers and savings worth trying are in the design decisions register (MMD-DEC-001).
+- **Press and one mold:** $638.00, $118.00 over the target; the mold is tooling outside it [L2].
+- Without the fume extraction the press would be $496.00 [L2].
 
-The mold at $90.00 meets R8 ($100) on an indicative price. MMD-DDR-002 added the mold cooling fan ($12.00, item 18); the 300 W bands cost about the same as the 250 W bands. The $7 overrun that remained at $500 is closed by the $520 budget (O3 decided, 2026-09-26).
+The mold at $94.00 meets R8 ($100) on an indicative price. MMD-DDR-002 added the mold cooling fan ($12.00, item 18). MMD-DDR-003 added $37.00 of parts for construction (line 19, the shelf back plate and cap screws, the shield's hinges and latch) and $4.00 of mold screws, inserts and dowels.
 
 ## M. Results against every requirement
 
@@ -162,14 +166,14 @@ The mold at $90.00 meets R8 ($100) on an indicative price. MMD-DDR-002 added the
 
 | ID | Requirement | Value | Target | Status |
 | --- | --- | --- | --- | --- |
-| R14 | Affordable | $507 press; $597 with one mold | Press $520 or less, molds as tooling | **At risk** |
-| R9 | Bench size and mass | 320 x 260 mm; 1,089 mm; 39.2 kg | 350 x 300 mm; 1.1 m; 40 kg | **At risk** (mass) |
+| R14 | Affordable | $544 press, $24 over the target; $638 with one mold | Press at or under the $520 value-engineering target, molds as tooling | **Over the value-engineering target** |
+| R9 | Bench size and mass | 320 x 260 mm; 1,094 mm; 39.0 kg | 350 x 300 mm; 1.1 m; 40 kg | **At risk** (mass) |
 | R2 | Shot size | 34.2 g ideal; about 25 g if the fresh charge is loose flake | 30 g or more | **At risk** |
 | R3 | Injection pressure | 8.9 MPa at 0.60 efficiency (12.4 MPa at 0.84); fill needs about 4.8 MPa in 10 s | 8 MPa at 250 N or less | Met on paper |
-| R5 | Warm-up | 12.2 min (barrel zone, 2 x 300 W) | 15 min or less | Met on paper |
+| R5 | Warm-up | 12.3 min (barrel zone, 2 x 300 W) | 15 min or less | Met on paper |
 | R6 | Throughput | 11.6 per hour with the mold fan, mold about 47 °C | 8 per hour or more | Met on paper |
-| R7 | Mold envelope | 45 cm² at 8.9 MPa; stacks 30 to 120 mm; 170 x 130 mm table | 150 x 120 mm, 40 to 120 mm stack, 40 cm² | Met on paper |
-| R8 | Low-cost tooling | $90 (indicative) | $100 or less | Met on paper |
+| R7 | Mold envelope | 45 cm² at 8.9 MPa; stacks 30 to 120 mm; 170 x 126 mm table | 150 x 120 mm, 40 to 120 mm stack, 40 cm² | Met on paper |
+| R8 | Low-cost tooling | $94 (indicative) | $100 or less | Met on paper |
 | R10 | Power supply | 753 W; 6.3 A at 120 V | 1 kW or less; 10 A or less at 120 V | Met on paper |
 | R11 | Touch-safe surfaces | Jacket skin 48 °C; nozzle zone shield added | 60 °C or less; nozzle and mold zone guarded | Met on paper |
 | R13 | Fume control | Hood and fan, 124 m³/h; set point limit 260 °C | Exhaust hood or outdoors; set points above 260 °C blocked | Met on paper |
@@ -179,7 +183,7 @@ The mold at $90.00 meets R8 ($100) on an indicative price. MMD-DDR-002 added the
 | R15 | Garage-buildable | Only the barrel set and molds need a lathe or mill (local shop) | Hand tools, drill press, optional welding | Met by design |
 | R16 | Repeatable parts | Needs hardware | Mass within ±3 % over 10 shots | Not verifiable at TRL 3 |
 
-Counts: 0 not met, 3 at risk, 8 met on paper, 4 met by design, 1 not verifiable at TRL 3.
+Counts: 0 not met, 2 at risk, 8 met on paper, 4 met by design, 1 not verifiable at TRL 3; R14 over the value-engineering target.
 
 ## Checks against the TRL 2 figures
 
@@ -193,11 +197,11 @@ Counts: 0 not met, 3 at risk, 8 met on paper, 4 met by design, 1 not verifiable 
 | Nozzle at 152 mm; 40 to 120 mm stacks | 120 mm stacks did not fit | Nozzle tip raised to 190 mm |
 | 10 mm bracket plate | Yields at overload | 20 mm plate |
 | Load cell on the plunger | About 94 °C | G-11 spacer added |
-| Warm-up about 10 to 12 min | 14.8 min in v0.1; 12.2 min with 300 W bands | 300 W bands (MMD-DDR-002) |
+| Warm-up about 10 to 12 min | 14.8 min in v0.1; 12.3 min with 300 W bands and the constructable flange | 300 W bands (MMD-DDR-002) |
 | Standing losses about 80 W | 103 W | Precis updated |
 | About 6 min per shot, 10 per hour | 6.4 min in still air (mold about 92 °C); 5.2 min, 11.6 per hour with a fan | Mold cooling fan (MMD-DDR-002) |
 | About 600 W | 753 W with 300 W bands and both fans | Precis updated |
 | About 14 Wh per shot, 0.5 kWh per kg | About 20 Wh, 0.66 kWh per kg | Precis updated |
-| About 32 kg | 39.2 kg with the fan | R9 target 40 kg (MMD-DDR-002); at risk |
-| Handle knob about 1.06 m | 1,089 mm at the start of a pull | Precis updated |
-| $399 press, $489 with one mold | $507 press, $597 with one mold | `budget_usd` $520 (MMD-DDR-002, 2026-09-26); R14 at risk, $13 margin |
+| About 32 kg | 39.0 kg with the fan and the parts added for construction | R9 target 40 kg (MMD-DDR-002); at risk |
+| Handle knob about 1.06 m | 1,094 mm at the start of a pull | Precis updated |
+| $399 press, $489 with one mold | $544 press, $638 with one mold | Value-engineering target $520; $24 over (MMD-DDR-003) |

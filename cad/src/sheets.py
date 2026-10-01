@@ -1,4 +1,4 @@
-"""MicroMold general arrangement sheet MMD-DWG-001, Rev P3 (TRL 3, MMD-DDR-002).
+"""MicroMold general arrangement sheet MMD-DWG-001, Rev P4 (TRL 3, constructable design MMD-DDR-003).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/MMD-DWG-001.svg, .pdf and .png from the parametric model in
@@ -16,7 +16,7 @@ sys.path[:0] = [str(ROOT / ".kit"), str(ROOT / "cad" / "src")]
 from drawing import Sheet, _viewbox, _t, M, TB_Y, INK, MUTED  # noqa: E402
 from model import PARAMS as P, build_parts, derived  # noqa: E402
 
-DATE = "2026-09-25"
+DATE = "2026-10-01"
 PRESS = ["base", "drive", "ram", "loadcell", "plunger", "barrel", "heaters", "nozzle", "bracket",
          "guard", "clamp", "mold", "shield", "hood", "coolfan"]
 
@@ -95,16 +95,19 @@ def main():
     from build123d import Compound
     D = derived(P)
     parts = build_parts()
-    asm = Compound(children=[parts[k] for k in PRESS])
+    from build123d import Box, Pos
+    above = Pos(0, 0, 2500) * Box(5000, 5000, 5000)          # the lift screw's end below the bench top is left off
+    asm = Compound(children=[(parts[k] & above) if k == "clamp" else parts[k] for k in PRESS])
     work = ROOT / "cad" / "drawings" / "_views"
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="MicroMold", title="General arrangement", dwg_no="MMD-DWG-001", rev="P3",
+    s = Sheet(project="MicroMold", title="General arrangement", dwg_no="MMD-DWG-001", rev="P4",
               author="Amish Chadha", date=DATE, scale=0.1, theme="technical",
               material="Steel frame and barrel; 6061 mold; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
-              revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
-                         ("P2", "Mold cooling fan added; 300 W bands (MMD-DDR-002)", DATE, "AC"),
-                         ("P3", "Layout and labels tidied", "2026-09-30", "AC")])
+              revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", "2026-09-25", "AC"),
+                         ("P2", "Mold cooling fan added; 300 W bands (MMD-DDR-002)", "2026-09-25", "AC"),
+                         ("P3", "Layout and labels tidied", "2026-09-30", "AC"),
+                         ("P4", "Design made constructable (MMD-DDR-003)", "2026-10-01", "AC")])
     s.add_ortho(views, names=("front", "right"))
     k = s.scale
     c = ortho_cells(s, views)
@@ -165,15 +168,16 @@ def main():
     fo, _ = P["flange"]
     s.add_notes("Main dimensions and interfaces (mm)", [
         f"Barrel {P['barrel_od']:.0f} OD, bore {P['bore']:.0f} (22 H8/f7 plunger fit), {P['barrel_len']:.0f} long",
-        f"Flange {fo:.0f} OD on 4 mica pads on a {P['bracket'][2]:.0f} mm bracket at {D['brk1']:.0f}",
+        f"Flange {fo:.0f} OD, 4 x M8 on mica pads; {P['bracket'][2]:.0f} mm shelf at {D['brk1']:.0f}",
         f"Nozzle orifice {P['nozzle_orifice']:.0f}; sprue 5 to 7 taper; tip at {D['noz0']:.0f}",
         f"Stroke {P['stroke']:.0f}, {D['in_bore']:.0f} in the bore; ram {D['ram_len']:.0f} long, 28 square",
         f"Pinion r {P['pinion_r']:.0f}; ratchet handle {P['handle_len']:.0f}; {P['handle_len'] / P['pinion_r']:.1f}:1",
-        f"Lift table {P['table'][0]:.0f} x {P['table'][1]:.0f}, top {P['table_min_top']:.0f} to {P['table_min_top'] + P['table_travel']:.0f}; stack 30 to 120",
-        f"Test mold {P['mold'][0]:.0f} x {P['mold'][1]:.0f} x {2 * P['mold'][2]:.0f}; four M10 8.8 at 20 kN",
+        f"Lift table {P['table'][0]:.0f} x {P['table'][1]:.0f}, top {P['table_min_top']:.0f} to {P['table_min_top'] + P['table_travel']:.0f}; Tr20 screw, handwheel nut",
+        f"Test mold {P['mold'][0]:.0f} x {P['mold'][1]:.0f} x {2 * P['mold'][2]:.0f}; four M10 8.8 in inserts at 20 kN",
         f"Load cell 10 kN on a {P['spacer_t']:.0f} mm G-11 thermal spacer",
         f"Hood face {P['hood_face'][0]:.0f} x {P['hood_face'][1]:.0f}, {-P['hood_x']:.0f} from the axis; {P['duct_d']:.0f} duct",
         f"Mold cooling fan {P['cool_fan'][1]:.0f} x {P['cool_fan'][2]:.0f} x {P['cool_fan'][0]:.0f} at X {P['cool_fan_x']:.0f}; barrel bands 2 x 300 W",
+        f"Lift screw runs on {-(D['table_top'] - P['lift_screw'][1]):.0f} below the bench top (not drawn), through a 25 mm hole",
         "Third-angle; front view from -Y (operator side)",
     ], x=276, y=148, width=140)
     out = s.save(ROOT / "cad" / "drawings" / "MMD-DWG-001")
