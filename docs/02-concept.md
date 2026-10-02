@@ -3,9 +3,9 @@ doc_id: MMD-PRC-001
 title: MicroMold design precis
 project: MicroMold
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Constructable design (MMD-DDR-003) and build plan (MMD-BLD-001); budget read as a value-engineering target
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Decisions of 2026-10-02 (MMD-DEC-001 v0.2): lift-out loading with a plunger rest, torque-limiting socket against overload, first product mold, first candidate partner'
 ---
 
 # MicroMold design precis
@@ -48,7 +52,7 @@ MicroMold is a bench-top, hand-operated plunger injection press for recycled HDP
 ## How it works
 
 1. **Heat.** Two PID controllers drive the barrel zone (two 300 W band heaters) and the nozzle zone (a 100 W band heater) to the set point for the resin, for example 210 °C for HDPE. An insulation jacket and a perforated guard keep the outer surface near 48 °C. The duct fan runs whenever the heaters are on. Feedstock is flake from injection-molded items such as caps, crates and buckets; bottle-grade HDPE is too stiff for a hand press.
-2. **Load.** With the plunger raised, the operator pours washed, dried flake into the funnel and tamps each of two or three top-ups down with the press itself, because loose flake has about a third to a half of the density of melt and an untamped charge wastes stroke (MMD-CAL-001, A4).
+2. **Load.** The operator pulls the ball-lock pin, lifts the plunger out and sets it on a plunger rest on the column, never on the bench (decided by Amish, 2026-10-02), pours washed, dried flake into the funnel, refits the plunger and tamps each of two or three top-ups down with the press itself, because loose flake has about a third to a half of the density of melt and an untamped charge wastes stroke (MMD-CAL-001, A4).
 3. **Soak.** The fresh charge melts above the melt left from the last shot. The barrel holds 2.2 shots, so each charge soaks for about two cycles, about 12 min, against the 9.3 min a 22 mm column of tamped flake needs.
 4. **Clamp.** The operator bolts the two mold plates together, sets the mold on the lift table, closes the shield's front and turns the handwheel nut, reached under the front, until the nozzle seats in the mold's spherical seat.
 5. **Inject and hold.** The operator fills the mold in about four pulls of the ratchet handle, each moving the plunger about 31 mm, over about 10 s; the pawl holds the ram between pulls. The operator then holds pressure for about 30 s while the gate freezes. A load cell above the plunger shows its force, so the melt pressure (force divided by 380 mm² of plunger area) can be read and logged.
@@ -124,11 +128,11 @@ These follow MMD-DDR-001 and MMD-DDR-002. Each was decided by Amish, 2026-09-25:
 - **Two heat zones (D4).** A separate nozzle zone stops the nozzle freezing between shots at the cost of a second PID and SSR.
 - **Bolted two-plate aluminum molds on a lift table (D5).** Bolts are slow but cheap and hold 45 cm² at full pressure. A toggle clamp frame (about $40) is a later upgrade. The nozzle tip is now 190 mm above the bench so that 120 mm stacks fit.
 - **Load cell for pressure indication (D6).** A number for each shot helps a group learn and record settings. A glass-epoxy spacer keeps the cell cool.
-- **First mold: a test plaque (D7).** A 64 x 50 x 6 mm plaque shows fill, shrinkage and surface quality and can be cut into test bars. Product molds follow co-design.
+- **First mold: a test plaque (D7).** A 64 x 50 x 6 mm plaque shows fill, shrinkage and surface quality and can be cut into test bars. The first product mold is a flat, single-cavity part of 25 g or less that fits the 120 x 90 mm plates, such as a coaster, tile or cable clip, chosen with the partner from what it can sell (decided by Amish, 2026-10-02).
 - **Budget (D8, DDR-002).** The budget covers the press and is $520, approved by Amish on 2026-09-26 to cover the priced BOM; molds are tooling, reported separately (R8). On 2026-10-01 Amish set out that the budget is a hypothetical value-engineering target, not a limit. The constructable press is estimated at $544, $24 over the target (MMD-DDR-003).
 - **Fume control (D9).** A side hood with a duct fan at the funnel, plus a written condition to run only under it or outdoors.
 - **Heaters, mold cooling, mass and feedstock (DDR-002).** Two 300 W barrel bands for a 12.3 min warm-up; a 120 mm fan at the mold so parts eject from a mold near 47 °C; a 40 kg mass target for a bench-bolted press; and injection-grade flake only.
-- **Co-design partner type (D10).** The first partner is to be a group that already shreds HDPE or PP; the specific partner and place remain open.
+- **Co-design partner type (D10).** The first partner is to be a group that already shreds HDPE or PP; the first candidate to approach is a Precious Plastic workspace near Irving, Texas (decided by Amish, 2026-10-02).
 
 ![Exploded view](../media/exploded.png)
 
@@ -138,8 +142,9 @@ These follow MMD-DDR-001 and MMD-DDR-002. Each was decided by Amish, 2026-09-25:
 
 > **Safety:** MicroMold combines mains voltage, surfaces and molten plastic at up to 260 °C, stored pressure in the melt, a long ratchet lever and plastic fumes. It is a concept for a supervised workshop, not a consumer appliance.
 
+- **Hot plunger.** The plunger's top end reaches about 94 °C. Lift it out for loading only in heat-resistant gloves and set it on the plunger rest on the column, never on the bench.
 - **Hot surfaces and melt.** The barrel, nozzle, mold and purge reach 180 to 260 °C, and molten plastic sticks to skin. The funnel top is a working surface at about 150 °C. Keep the jacket guard and the nozzle zone shield in place, wear heat-resistant gloves, long sleeves and eye protection, and never look down the barrel.
-- **Pressure.** Trapped melt can spit from the nozzle or the parting line. An operator hanging body weight on the handle can reach about 35 MPa, which would open the parting line of the test mold (MMD-CAL-001, D3). Close the shield before injecting, keep faces away from the axis and fit a handle stop or a pull limit.
+- **Pressure.** Trapped melt can spit from the nozzle or the parting line. An operator hanging body weight on the handle can reach about 35 MPa, which would open the parting line of the test mold (MMD-CAL-001, D3). Close the shield before injecting and keep faces away from the axis. A torque-limiting socket on the ratchet adapter, set so the ram cannot exceed the press rating, limits the force whoever pulls (decided by Amish, 2026-10-02); it is checked against the load cell at TRL 4.
 - **Fumes.** Process only HDPE, PP, LDPE and PS within their published ranges. Never heat PVC, which releases hydrogen chloride, or unknown and mixed plastics ([Precious Plastic Academy](https://onearmy.github.io/academy/plastic/basics)). Overheated PS can release styrene. Run the hood fan whenever the heaters are on, or work outdoors. Set point limits of 260 °C are set in both controllers.
 - **Mains electricity.** Heaters run at mains voltage next to steel parts. Earth the frame and every metal part, use a fused inlet, double-pole switch and an RCD (30 mA) or GFCI supply, rate wiring at the barrel for 250 °C, and fit an independent thermal cut-out. Mains wiring must be done or checked by a qualified electrician to local electrical code.
 - **Moving parts and lever.** The ratchet holds the ram under load: release the pawl only with the handle in hand. The ram and pinion can pinch; keep hands clear of the rack. The mold cooling fan runs at mains voltage: keep its finger guard fitted and its lead clear of the hot barrel and nozzle.
@@ -152,6 +157,6 @@ These follow MMD-DDR-001 and MMD-DDR-002. Each was decided by Amish, 2026-09-25:
 - How dense is a tamped, part-melted charge at injection time? This sets R2.
 - Is the fan enough to keep the mold near 47 °C in practice, and how dense is the charge after the shorter soak-limited cycle? This sets R6.
 - Nozzle temperature for each resin, and mold design rules for the group's own machinists: draft, venting, gate size and ejection.
-- Which first products would sell locally? This needs the co-design partner (MMD-DDR-001, O1 and O2).
+- Which first products would sell locally? The first product mold is a flat part of 25 g or less, such as a coaster, tile or cable clip (decided 2026-10-02); which one is chosen with the co-design partner.
 
 Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html). General arrangement: [MMD-DWG-001](../cad/drawings/MMD-DWG-001.pdf).

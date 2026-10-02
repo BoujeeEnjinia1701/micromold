@@ -294,3 +294,40 @@ The design changed visibly, so these need redoing with `/render-product` after `
 ### Recommended next step
 
 Amish reviews MMD-DDR-003 and the register. TRL 4 (buying the arbor press, confirming the items listed for purchase, building and testing) stays on hold.
+
+## Session 2026-10-02: open decisions decided
+
+Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This approves the recommendation written for each open decision in the design decisions register (MMD-DEC-001 v0.1). trl stays 3; no build or test work was done, and the model, BOM quantities and prices, and pictures are unchanged.
+
+### Decisions recorded
+
+Seven decisions, all moved to Decisions made in MMD-DEC-001, dated 2026-10-02:
+
+1. MMD-DDR-003 accepted, P1 to P15, with one condition: P1 (cutting the head from the arbor press casting and tapping four M10 holes in its back) is confirmed against the bought press before it is cut.
+2. Loading: option (a), lift the plunger out on its ball-lock pin to load, with a simple plunger rest on the column so the hot plunger is never laid on the bench.
+3. Lift screw: option (a), a 25 mm hole through the bench.
+4. Overload: option (b), a torque-limiting socket on the ratchet adapter, set so the ram cannot exceed the press rating, checked against the load cell at TRL 4.
+5. First co-design partner: a community plastic recycling workspace that already shreds HDPE or PP; a Precious Plastic workspace near Irving, Texas, is the first candidate to approach.
+6. First product mold: a flat, single-cavity part of 25 g or less that fits the 120 x 90 mm plates, such as a coaster, tile or cable clip, chosen with the partner.
+7. Appearance model: accept differences 1, 3, 5 and 6; update 2 and 4 to the constructable design and add the screw lift, flange and fan bracket at the same time.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (MMD-DEC-001 v0.2): open decisions moved to Decisions made; the 2026-09-30 row updated.
+- `docs/decisions/0003-design-for-construction.md` (MMD-DDR-003 v0.2, status Draft): accepted with the P1 condition; A1 to A3 accepted, with the plunger rest added to A1; consequence added.
+- `docs/decisions/0001-trl2-review-decisions.md` (MMD-DDR-001 v0.3) and `docs/decisions/0002-recommendations-accepted.md` (MMD-DDR-002 v0.3): O1 and O2 recorded as decided.
+- `docs/02-concept.md` (MMD-PRC-001 v0.7): loading step with the plunger rest; pressure safety rule (torque-limiting socket replaces "fit a handle stop or a pull limit"); a hot plunger safety note; first product mold; first candidate partner.
+- `docs/01-problem.md` (MMD-PRB-001 v0.6): first candidate partner.
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 1 (model and drawings): before cutting, check the bought press head against P1 (casting thickness behind the four M10 holes, 20 mm thread depth) and revise `cad/src/model.py` and MMD-DWG-001 if it differs.
+2. Decision 2 (model, BOM, build plan pictures): add the plunger rest on the column to the model, a BOM line, the build plan (component, joint and step pictures) and its loading step.
+3. Decision 4 (model, BOM, build plan pictures, calculations): add the torque-limiting socket to the ratchet adapter in the model and the BOM, set its torque in MMD-CAL-001 from the press rating, and update build plan section 3.6 and safety stop S4.
+4. Decision 6 (drawings): sketch the first product mold (flat, single cavity, 25 g or less, on the 120 x 90 mm plates) once the partner picks the part.
+5. Decision 7 (pictures): update `cad/src/product_model.py` (no guide rods; cap screws into inserts; the screw lift, flange and fan bracket as built) and re-render the photoreal renders, card and social preview on Amish's Mac.
+
+### Points found in the review
+
+- Value engineering counts moving the duct fan and duct (USD 48) into shared workshop extraction as a saving that brings the press to USD 496; that removes cost from scope rather than saving it, so it does not compare like with like with the USD 520 target.
+- Overload protection (decision 4) had been recommended since TRL 3 and is still not in the model or BOM; it must be added before any build (follow-up 3).

@@ -3,9 +3,9 @@ doc_id: MMD-DDR-003
 title: MicroMold design for construction
 project: MicroMold
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Changes that make the concept physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Accepted by Amish on 2026-10-02 with P1 to be confirmed against the bought press before cutting, including the recommendations for A1 to A3 (plunger rest added to A1)
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. The items in Table 3 change what the press does, how it is installed or its safety case, so they are "Proposed, awaiting Amish" and are listed in the design decisions register (MMD-DEC-001).
+- **Status:** accepted, with one condition. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers every change in Tables 1 and 2 and the recommendations in Table 3 (A1 to A3), which are now decided as recommended and recorded in the design decisions register (MMD-DEC-001). Condition: P1 (cutting the head from the arbor press casting and tapping four M10 holes in its back) is confirmed against the bought press before it is cut. A1 adds a plunger rest on the column, and A3 adds a torque-limiting socket on the ratchet adapter; neither is in the model yet.
 
 ## Context
 
@@ -59,15 +63,17 @@ The model was checked with build123d: every pair of components for shared volume
 | Drawing | MMD-DWG-001 Rev P4; making sketches MMD-DWG-101 to 114 added. | Follows the model. |
 | Documents | MMD-CAL-001 v0.4, MMD-REQ-001 v0.6, MMD-PRC-001 v0.6. | Follows the model. |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Items that change what the press does, how it is installed or its safety case: proposed, then accepted by Amish as recommended on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | Loading. With the plunger raised its tip is only 8 mm above the funnel rim (the concept's stack), too little to pour flake under it. This changes how the press is used, so it is not made here. | (a) pull the ball-lock pin and lift the plunger out to load, then refit it to tamp and inject (the coupling already allows this); (b) a press with 40 mm more ram travel and a taller column (handle top about 1,134 mm, over R9's 1.1 m); (c) a side loading chute into the funnel. | (a): no new part. The plunger's top end runs at about 94 °C [G6], so it is handled in the heat-resistant gloves already required. |
-| A2 | The lift screw drops through a 25 mm hole in the bench, up to 50 mm below a 40 mm bench top, so the press needs a bench it may drill. | (a) accept; (b) a 60 mm riser frame under the base plate, which raises the handle top over 1.1 m (R9). | (a). |
-| A3 | Handle stop or pull limit. Recommended since TRL 3 (a 700 N pull reaches about 35 MPa and 1.35 times the press rating) but never decided, and not in the model. | (a) a stop on the ratchet arc; (b) a torque-limiting socket on the adapter; (c) rely on the written procedure and the shield. | (b): it limits force whoever pulls. |
+| A1 | Loading. With the plunger raised its tip is only 8 mm above the funnel rim (the concept's stack), too little to pour flake under it. This changes how the press is used, so it is not made here. | (a) pull the ball-lock pin and lift the plunger out to load, then refit it to tamp and inject (the coupling already allows this); (b) a press with 40 mm more ram travel and a taller column (handle top about 1,134 mm, over R9's 1.1 m); (c) a side loading chute into the funnel. | (a): no new part. The plunger's top end runs at about 94 °C [G6], so it is handled in the heat-resistant gloves already required. Accepted 2026-10-02, with a simple plunger rest on the column so the hot plunger is never laid on the bench. |
+| A2 | The lift screw drops through a 25 mm hole in the bench, up to 50 mm below a 40 mm bench top, so the press needs a bench it may drill. | (a) accept; (b) a 60 mm riser frame under the base plate, which raises the handle top over 1.1 m (R9). | (a). Accepted 2026-10-02. |
+| A3 | Handle stop or pull limit. Recommended since TRL 3 (a 700 N pull reaches about 35 MPa and 1.35 times the press rating) but never decided, and not in the model. | (a) a stop on the ratchet arc; (b) a torque-limiting socket on the adapter; (c) rely on the written procedure and the shield. | (b): it limits force whoever pulls. Accepted 2026-10-02: the socket is set so the ram cannot exceed the press rating and is checked against the load cell at TRL 4. |
 
 ## Consequences
+
+- Accepted by Amish on 2026-10-02 with the condition on P1. With A1 to A3 accepted: flake is loaded with the plunger lifted out and laid on a plunger rest on the column; the bench is drilled for the lift screw; a torque-limiting socket on the ratchet adapter limits the ram force to the press rating. The plunger rest and the socket are still to be added to the model, the BOM and the build plan.
 
 - `design_state: constructable` in `project.yaml`. The build plan MMD-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`).
 - Requirement status (MMD-CAL-001 v0.4): none not met, 2 at risk (R2, R9), 8 met on paper, 4 met by design, 1 not verifiable at TRL 3, and R14 over the value-engineering target by USD 24.

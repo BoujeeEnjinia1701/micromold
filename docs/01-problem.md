@@ -3,9 +3,9 @@ doc_id: MMD-PRB-001
 title: MicroMold problem statement
 project: MicroMold
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget approved by Amish ($520)
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: First candidate co-design partner, as decided by Amish on 2026-10-02
 ---
 
 # MicroMold problem statement
@@ -83,7 +87,7 @@ Typical context: a covered workshop or container with single-phase mains (230 V 
 
 This design is for communities the author is not part of, so requirements come from the people who will use it.
 
-- [ ] Identify a local partner organization (Helpful Engineering network, NGO or university). Decided by Amish, 2026-09-25: the first partner is to be a group that already shreds HDPE or PP (MMD-DDR-001 D10); the specific partner and place are proposed, awaiting Amish. Recruiting is on hold while TRL 4 is on hold.
+- [ ] Identify a local partner organization (Helpful Engineering network, NGO or university). Decided by Amish, 2026-09-25: the first partner is to be a group that already shreds HDPE or PP (MMD-DDR-001 D10); Decided by Amish, 2026-10-02: a Precious Plastic workspace near Irving, Texas, is the first candidate to approach (MMD-DEC-001). Recruiting is on hold while TRL 4 is on hold.
 - [ ] Run co-design sessions with intended users; record who, where and what was learned
 - [ ] Validate load, distance, terrain and cost assumptions in the field
 - [ ] Revise requirements (REQ) from findings before freezing the design

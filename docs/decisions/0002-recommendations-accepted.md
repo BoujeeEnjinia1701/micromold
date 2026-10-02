@@ -3,9 +3,9 @@ doc_id: MMD-DDR-002
 title: MicroMold recommendations accepted
 project: MicroMold
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget approved by Amish ($520); O3 decided
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: O1 and O2 decided by Amish on 2026-10-02 as recommended
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted. Every item below with a recommendation is "Decided by Amish, 2026-09-25: go with recommendation". Items without a recommendation remain "Proposed, awaiting Amish".
+- **Status:** accepted. Every item below with a recommendation is "Decided by Amish, 2026-09-25: go with recommendation". Items without a recommendation stayed "Proposed, awaiting Amish" until O1 and O2 were decided on 2026-10-02 as recommended (Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions.").
 
 ## Context
 
@@ -79,12 +83,12 @@ The options for D1 to D10 are in MMD-DDR-001 and `docs/REVIEW.md` (session 2026-
 
 ## Items still open
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Items that were proposed, awaiting Amish, until he decided them on 2026-10-02.*
 
 | # | Item | Status |
 | --- | --- | --- |
-| O1 | The specific first co-design partner and its city or region. No recommendation was made. | Proposed, awaiting Amish |
-| O2 | First product molds after the test plaque. For co-design; no recommendation was made. | Proposed, awaiting Amish |
+| O1 | The specific first co-design partner and its city or region. No recommendation was made. | Decided by Amish on 2026-10-02 as recommended in MMD-DEC-001: a community plastic recycling workspace that already shreds HDPE or PP, with a Precious Plastic workspace near Irving, Texas, as the first candidate to approach |
+| O2 | First product molds after the test plaque. For co-design; no recommendation was made. | Decided by Amish on 2026-10-02 as recommended in MMD-DEC-001: a flat, single-cavity part of 25 g or less that fits the 120 x 90 mm plates, such as a coaster, tile or cable clip, chosen with the partner from what it can sell |
 | O3 | New: the press is $507 against $500. Options: (a) raise `budget_usd` to $520; (b) keep $500 and recheck against real quotations at TRL 4, since a $7 overrun is within the accuracy of indicative prices; (c) count the mold cooling fan as workshop equipment outside the press budget, as the molds are. Recommendation: (b). | Decided by Amish, 2026-09-26: option (a), `budget_usd` $520 (see below) |
 
 ## Budget approved, 2026-09-26

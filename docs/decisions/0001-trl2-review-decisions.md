@@ -3,9 +3,9 @@ doc_id: MMD-DDR-001
 title: MicroMold TRL 2 review decisions
 project: MicroMold
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: O1 and O2 decided by Amish on 2026-10-02 as recommended
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** decided. Items D1 to D10: Decided by Amish, 2026-09-25: go with recommendation (see MMD-DDR-002). Items O1 and O2 remain "Proposed, awaiting Amish".
+- **Status:** decided. Items D1 to D10: Decided by Amish, 2026-09-25: go with recommendation (see MMD-DDR-002). Items O1 and O2 were decided on 2026-10-02 as recommended (Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions.").
 
 ## Context
 
@@ -55,8 +59,8 @@ The options for each item are those in `docs/REVIEW.md` (session 2026-09-25, /po
 
 | # | Item | Status |
 | --- | --- | --- |
-| O1 | The specific first co-design partner and its city or region. D10 sets only the type of group; no partner or place was recommended. | Proposed, awaiting Amish |
-| O2 | First product molds after the test plaque. These depend on what sells locally, which must come from co-design; no recommendation was made. | Proposed, awaiting Amish |
+| O1 | The specific first co-design partner and its city or region. D10 sets only the type of group; no partner or place was recommended. | Decided by Amish on 2026-10-02 as recommended in MMD-DEC-001: a community plastic recycling workspace that already shreds HDPE or PP, with a Precious Plastic workspace near Irving, Texas, as the first candidate to approach |
+| O2 | First product molds after the test plaque. These depend on what sells locally, which must come from co-design; no recommendation was made. | Decided by Amish on 2026-10-02 as recommended in MMD-DEC-001: a flat, single-cavity part of 25 g or less that fits the 120 x 90 mm plates, such as a coaster, tile or cable clip, chosen with the partner from what it can sell |
 
 ## Consequences
 
