@@ -3,9 +3,9 @@ doc_id: MMD-REQ-001
 title: MicroMold requirements
 project: MicroMold
 doc_type: Requirements
-version: "0.7"
+version: "0.8"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-03'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -37,6 +37,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Figures brought into line with MMD-CAL-001 v0.5 - R9 mass 39.8 kg, R14 press USD 590 (USD 70 over the target); no requirement status changed
+- version: "0.8"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: "R9 mass margin of 0.2 kg and the 180 N m socket setting accepted by Amish on 2026-10-03"
 ---
 
 # MicroMold requirements
@@ -57,7 +61,7 @@ Table 1. Requirements.
 | R6 | Throughput | 8 or more reference parts per hour with one mold | Met on paper: 11.6 per hour with the mold cooling fan, mold about 47 °C (soak limited) | Cycle-time estimate; later timed trials |
 | R7 | Mold envelope | Molds up to 150 x 120 mm footprint and 40 to 120 mm stack height; 40 cm² or more projected area at full pressure | Met on paper: 45 cm²; stacks of 30 to 120 mm fit | Clamp force calculation; model |
 | R8 | Low-cost tooling | A two-plate aluminum mold for the reference part machinable on a manual mill or small CNC for $100 or less | Met on paper: $94 (indicative) | Quotation from a local shop |
-| R9 | Bench size and mass | Press footprint 350 x 300 mm or less, top of handle 1.1 m or less above the bench, mass 40 kg or less without the control box | **At risk on mass:** 39.8 kg with an assumed 8 kg press head; 320 x 260 mm and 1,094 mm met | Model and mass estimate |
+| R9 | Bench size and mass | Press footprint 350 x 300 mm or less, top of handle 1.1 m or less above the bench, mass 40 kg or less without the control box | **At risk on mass:** 39.8 kg with an assumed 8 kg press head (0.2 kg margin accepted by Amish, 2026-10-03; 180 N m socket setting accepted the same day); 320 x 260 mm and 1,094 mm met | Model and mass estimate |
 | R10 | Power supply | Single-phase 230 V or 120 V, 1 kW or less, 10 A or less at 120 V | Met on paper: 753 W, 6.3 A at 120 V | Heater and fan ratings |
 | R11 | Touch-safe outer surfaces | Guard and jacket 60 °C or less at 220 °C set point and 25 °C ambient; nozzle and mold zone guarded | Met on paper: skin 48 °C; nozzle zone shield added | Thermal calculation |
 | R12 | Electrical safety | Earthed frame, fused inlet, double-pole switch, RCD or GFCI supply, heaters and wiring rated for 250 °C at the barrel | Met by design, unverified | Design review against IEC 60204-1 principles |

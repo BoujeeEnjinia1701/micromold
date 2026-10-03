@@ -3,9 +3,9 @@ doc_id: MMD-DEC-001
 title: MicroMold design decisions register
 project: MicroMold
 doc_type: Design decisions register
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-03'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: Value engineering updated for the torque-limiting socket and plunger rest (press USD 590, USD 70 over the target)
+  - version: "0.4"
+    date: '2026-10-03'
+    author: Amish Chadha
+    change: "Amish accepted the 180 N m socket setting and the 0.2 kg R9 mass margin on 2026-10-03; row added to decisions made"
 ---
 
 # MicroMold design decisions register
@@ -69,3 +73,4 @@ Value-engineering target: USD 520 (a hypothetical control target, not a limit). 
 | 2026-10-02 | First co-design partner: a community plastic recycling workspace that already shreds HDPE or PP; first candidate to approach a Precious Plastic workspace near Irving, Texas | Amish: "i approve your recommendations for all 555 open decisions." | MMD-DDR-001, O1 |
 | 2026-10-02 | First product mold after the test plaque: a flat, single-cavity part of 25 g or less that fits the 120 x 90 mm mold plates, such as a coaster, tile or cable clip, chosen with the partner from what it can sell | Amish: "i approve your recommendations for all 555 open decisions." | MMD-DDR-001, O2 |
 | 2026-10-02 | Appearance model: accept differences 1, 3, 5 and 6; update 2 and 4 to the constructable design (no guide rods; cap screws into inserts, no nuts), and add the screw lift, flange and fan bracket at the same time | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26, items 1 to 6 |
+| 2026-10-03 | The 180 N m setting of the torque-limiting socket and the R9 mass margin of 0.2 kg (39.8 kg against 40 kg) accepted | Amish: "TIght Margins - i accept the margins" | MMD-REQ-001, R9; MMD-CAL-001; [REVIEW.md](REVIEW.md), session 2026-10-03 |

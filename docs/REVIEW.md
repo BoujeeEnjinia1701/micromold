@@ -364,3 +364,9 @@ None for this repo from the follow-up list.
 ## 2026-10-02: photoreal renders redone on the constructable design
 
 Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.
+
+## 2026-10-03: decisions recorded
+
+Amish decided on 2026-10-03: "TIght Margins - i accept the margins". For MicroMold this is the 180 N m torque-limiting socket setting and the R9 mass margin of 0.2 kg (39.8 kg against 40 kg, with an assumed 8 kg press head).
+
+- `docs/06-design-decisions.md` (MMD-DEC-001) and `docs/03-requirements.md` (MMD-REQ-001) updated.
