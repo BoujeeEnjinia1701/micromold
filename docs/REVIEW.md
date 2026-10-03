@@ -331,3 +331,36 @@ Seven decisions, all moved to Decisions made in MMD-DEC-001, dated 2026-10-02:
 
 - Value engineering counts moving the duct fan and duct (USD 48) into shared workshop extraction as a saving that brings the press to USD 496; that removes cost from scope rather than saving it, so it does not compare like with like with the USD 520 target.
 - Overload protection (decision 4) had been recommended since TRL 3 and is still not in the model or BOM; it must be added before any build (follow-up 3).
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish, 2026-10-02, approved that every follow-up action from the open-decision sign-off be carried out. trl stays 3; no build or test work was done. Documents changed, with new versions: MMD-CAL-001 v0.5, MMD-REQ-001 v0.7, MMD-PRC-001 v0.8, MMD-BLD-001 v0.2, MMD-DEC-001 v0.3; also `bom/bom.csv` and `bom/bom-notes.md`, `README.md`, `cad/src/model.py`, `docs/04-calcs/sizing.py`, `cad/src/build_plan_media.py`, `cad/src/sheets.py` (MMD-DWG-001 Rev P5), `cad/src/concept_media.py` and `cad/src/product_model.py`.
+
+### Approved follow-ups carried out
+
+1. **Decision 1, check the bought head against P1: not done in full.** The bought press does not exist yet (buying it is TRL 4, on hold). On paper: the model now checks the nominal values the head must have (10 mm of casting between each M10 hole and the ram bore, 21 mm hole depth for a 20 mm thread in a 140 mm deep head), and build plan section 3.5 has a step to check the bought head before the cut and to stop if it differs. The model and drawing MMD-DWG-102 are revised only if the bought head differs.
+2. **Decision 2, plunger rest: done.** Plunger rest on the column's right wall in the model (cup 32 mm across, plate on two M6 rivnuts, 400 mm above the bench, with the rested plunger checked for clearance); BOM line 20 (USD 6, estimate by parts); making sketch MMD-DWG-115, joint 12, step 12 and the loading routine in build plan section 3.16; the column sketch MMD-DWG-102 gained the right-wall rivnut holes.
+3. **Decision 4, torque-limiting socket: done.** Socket between the ratchet adapter and the ratchet in the model (BOM line 21, USD 40, estimate at the midpoint of a USD 30 to 50 retail band). Torque set in MMD-CAL-001 section B: the press reaches its rating at 234 N m, the socket is set to 180 N m (198 N m at plus 10 per cent), which limits the ram to 8.3 kN (0.85 times the rating) and the melt to 21.8 MPa; the script stops if a setting would let the ram pass the rating. Build plan section 3.6, step 7, safety stops S3 and S4 and the first checks table updated. Checking the setting against the load cell is TRL 4.
+4. **Decision 6, sketch of the first product mold: not done.** It waits for the partner to choose the part (outreach by Amish).
+5. **Decision 7, appearance model: done.** `cad/src/product_model.py` updated: guide rods, screw jack and tommy bar removed; lift table with its welded Tr20 screw, handwheel nut and thrust washer; M10 cap screws into inserts, no nuts; shelf, back plate, mica pads and flange screws, head plate and screws, coupling, fan bracket and screws, hood arm, torque-limiting socket and plunger rest as built. Render scenes exported (hero, exploded) to `/home/claude/renders/micromold`. The photoreal renders, card and social preview are made on Amish's Mac next.
+
+### Key results
+
+- Requirement status changes: none. R9 stays at risk (39.8 kg against 40 kg, was 39.0 kg); R14 stays over the value-engineering target.
+- Value-engineering target: USD 520. Estimated cost of the constructable design: USD 590 (USD 70 over the target); USD 684 with the test mold. The two lines added USD 46.
+- Model: 186 constructability checks pass (was 155). STEP and STL regenerated.
+- Pictures regenerated: MMD-DWG-001 (Rev P5), MMD-DWG-102, 108 and 115 (new), joint 12 (new), overview, steps 7 to 14, concept media (hero, cutaway, exploded, flow, blueprint, viewer).
+- Appearance deviations of the appearance model from the model (2 and 4 of the 2026-09-26 list) are now removed; items 1, 3, 5 and 6 stay accepted.
+
+### Cross-repo actions
+
+None for this repo from the follow-up list.
+
+### Points for Amish
+
+- Mass is 0.2 kg under the 40 kg target; any real arbor press head heavier than the assumed 8 kg takes R9 to not met.
+- The torque setting of 180 N m is a paper figure from the press rating at an assumed 0.84 efficiency; it is confirmed against the load cell at TRL 4.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

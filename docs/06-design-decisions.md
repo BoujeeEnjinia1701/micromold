@@ -3,7 +3,7 @@ doc_id: MMD-DEC-001
 title: MicroMold design decisions register
 project: MicroMold
 doc_type: Design decisions register
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: Amish approved the recommendations for open items 1 to 7 on 2026-10-02 (MMD-DDR-003 accepted with P1 confirmed against the bought press, lift-out loading with a plunger rest, bench hole, torque-limiting socket, Precious Plastic workspace near Irving as first candidate, first product mold, appearance model); moved to decisions made
+  - version: "0.3"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: Value engineering updated for the torque-limiting socket and plunger rest (press USD 590, USD 70 over the target)
 ---
 
 # MicroMold design decisions register
@@ -41,11 +45,12 @@ None. All open decisions were decided on 2026-10-02.
 
 ## Value engineering
 
-Value-engineering target: USD 520 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 544 for the press (USD 24 over the target); USD 638 with the test mold, which is tooling outside the target (USD 94, R8). Main cost drivers and savings worth trying:
+Value-engineering target: USD 520 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 590 (USD 70 over the target) for the press; USD 684 with the test mold, which is tooling outside the target (USD 94, R8). Main cost drivers and savings worth trying:
 
 - The largest lines are the arbor press head with column tube and ratchet (USD 110), the control box (USD 55), the fume hood and duct fan (USD 48), the barrel (USD 45), the load cell and display (USD 35) and the lift table, screw and handwheel (USD 30).
 - Making the design constructable added USD 37: the construction parts of line 19 (USD 30: head mounting plate and screws, plunger coupling and ball-lock pin, ratchet adapter, hood arm and rivnuts), the bracket's back plate and cap screws (USD 4) and the shield's hinges and latch (USD 3). The mold rose USD 4 for screws, inserts and dowels.
-- Savings worth trying: a used arbor press (often under half the new price); counting the duct fan and duct (USD 48) as workshop extraction shared with other machines, as the molds are counted as tooling, which would bring the press to USD 496; buying the two PID controllers and relays as a pre-wired dual-zone controller; and a ball-lock pin replaced by a plain clevis pin and R-clip (about USD 4 less).
+- The decisions of 2026-10-02 added USD 46: the torque-limiting socket (line 21, USD 40, an estimate at the midpoint of a USD 30 to 50 retail band) and the plunger rest (line 20, USD 6, an estimate by parts).
+- Savings worth trying: a used arbor press (often under half the new price); counting the duct fan and duct (USD 48) as workshop extraction shared with other machines, as the molds are counted as tooling, which would bring the press to USD 542 (that removes cost from scope rather than saving it, so it does not compare like with like with the target); buying the two PID controllers and relays as a pre-wired dual-zone controller; and a ball-lock pin replaced by a plain clevis pin and R-clip (about USD 4 less).
 
 ## Decisions made
 

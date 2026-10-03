@@ -1,5 +1,5 @@
-"""MicroMold sizing calculations, MMD-CAL-001 v0.4 (TRL 3, with the MMD-DDR-002 decisions and the
-constructable design of MMD-DDR-003).
+"""MicroMold sizing calculations, MMD-CAL-001 v0.5 (TRL 3, with the MMD-DDR-002 decisions, the
+constructable design of MMD-DDR-003 and the 2026-10-02 decisions: torque-limiting socket and plunger rest).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Imports PARAMS and derived() from cad/src/model.py, reads bom/bom.csv and project.yaml,
@@ -38,6 +38,8 @@ A = {
     "rho_flake": 450.0,      # kg/m3, tamped flake
     "alpha_part": 0.11e-6,   # m2/s, HDPE for cooling time
     "T_melt": 210.0, "T_set": 220.0, "T_amb": 25.0, "T_eject": 95.0, "T_core": 180.0,
+    "press_rating_N": 9807.0,   # 1 t arbor press rating
+    "tq_tol": 0.10,          # torque-limiting socket accuracy, +/- 10 % (click or slip type)
     "handle_N": 250.0, "handle_max_N": 700.0,   # design pull; body weight hanging on the handle
     "eta_design": 0.60,      # TRL 2 design value for the drive
     "mu": 0.15,              # steel on steel or bronze, greased
@@ -93,9 +95,16 @@ p_d, p_c = F_d / area, F_c / area
 out("B2", f"At {A['handle_N']:.0f} N: plunger force {F_d / 1000:.2f} kN and melt pressure {p_d:.1f} MPa ({p_d * 10:.0f} bar, {p_d * 145.04:.0f} psi) at eta {A['eta_design']}; {F_c / 1000:.2f} kN and {p_c:.1f} MPa at eta {eta_calc:.2f}")
 eta_need = 8.0 * area / (A["handle_N"] * ratio)
 out("B3", f"Efficiency needed for 8 MPa at 250 N: {eta_need:.2f}; margin at the design value {100 * (p_d / 8 - 1):.0f} %")
-F_max = A["handle_max_N"] * ratio * eta_calc
+F_free = A["handle_max_N"] * ratio * eta_calc
+out("B4", f"Overload without a limiter: {A['handle_max_N']:.0f} N (body weight) gives {F_free / 1000:.1f} kN, {F_free / A['press_rating_N']:.2f} times the 1 t press rating")
+T_ceiling = A["press_rating_N"] * P["pinion_r"] / 1000 / eta_calc
+T_set = P["tq_set_Nm"]
+T_worst = T_set * (1 + A["tq_tol"])
+F_max = T_worst / (P["pinion_r"] / 1000) * eta_calc
 p_max = F_max / area
-out("B4", f"Overload: {A['handle_max_N']:.0f} N (body weight) gives {F_max / 1000:.1f} kN and {p_max:.1f} MPa, {F_max / 9807:.2f} times the 1 t press rating")
+out("B4a", f"Torque limit: 1 t at {eta_calc:.2f} efficiency is reached at {T_ceiling:.0f} N m at the pinion; the socket is set to {T_set:.0f} N m ({T_set / T_ceiling * 100:.0f} % of that), {T_worst:.0f} N m at +{A['tq_tol'] * 100:.0f} % tolerance")
+out("B4b", f"Overload with the socket: {F_max / 1000:.1f} kN and {p_max:.1f} MPa at the worst tolerance, {F_max / A['press_rating_N']:.2f} times the press rating and {F_max / 10000:.2f} of the 10 kN load cell; it slips at a pull of {T_set / P['handle_len'] * 1000:.0f} N on the {P['handle_len']:.0f} mm handle (design pull {A['handle_N']:.0f} N is {A['handle_N'] * P['handle_len'] / 1000 / T_set * 100:.0f} % of the setting, so normal strokes do not trip it)")
+assert T_worst <= T_ceiling and F_max <= A["press_rating_N"], "torque setting would let the ram exceed the press rating"
 rot = D["in_bore"] / P["pinion_r"]
 per_pull = P["pinion_r"] * A["pull_deg"] * pi / 180
 pulls = D["in_bore"] / per_pull
@@ -129,7 +138,7 @@ for tag, F in (("C5", F_c), ("C6", F_max)):
 Ipl = pi * P["bore"] ** 4 / 64
 Pcr = pi ** 2 * A["E_steel"] * Ipl / P["plunger_len"] ** 2
 out("C7", f"Plunger buckling (pinned, {P['plunger_len']:.0f} mm): {Pcr / 1000:.0f} kN, {Pcr / F_max:.0f} times the overload force")
-out("C8", f"Load cell: {F_c / 1000:.2f} kN in use and {F_max / 1000:.1f} kN at overload against 10 kN rated and a typical 15 kN (150 %) safe overload")
+out("C8", f"Load cell: {F_c / 1000:.2f} kN in use and {F_max / 1000:.1f} kN at the torque limit against 10 kN rated and a typical 15 kN (150 %) safe overload; {F_free / 1000:.1f} kN without the socket")
 
 # ---------------- D. Mold clamp (R7) ----------------
 As_M10 = 58.0
@@ -141,7 +150,7 @@ cav = P["cavity"][0] * P["cavity"][1] / 100
 out("D1", f"Four M10 8.8 bolts at {pre / 1000:.0f} kN preload ({100 * pre / proof:.0f} % of the {proof / 1000:.1f} kN proof load), torque about {0.2 * pre * 10 / 1000:.0f} N m each")
 out("D2", f"Projected area held with a factor of 2 at {p_d:.1f} MPa: {A_max:.0f} cm2; test plaque {cav:.0f} cm2 ({cav * p_d / 10:.1f} kN)")
 sep_max = cav * 100 * p_max
-out("D3", f"At overload the plaque sees {sep_max / 1000:.0f} kN against {total_pre / 1000:.0f} kN preload: the parting line flashes, bolts stay below proof ({sep_max / 4 / 1000:.1f} kN each)")
+out("D3", f"At the torque limit the plaque sees {sep_max / 1000:.0f} kN against {total_pre / 1000:.0f} kN preload: {'the parting line flashes' if sep_max > total_pre else 'the parting line stays shut'}, bolts stay below proof ({sep_max / 4 / 1000:.1f} kN each)")
 mx, my, mt = P["mold"]
 span = 2 * P["mold_bolt_xy"][0]
 Ip = my * mt ** 3 / 12

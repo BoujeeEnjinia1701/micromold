@@ -3,9 +3,9 @@ doc_id: MMD-BLD-001
 title: MicroMold prototype build plan
 project: MicroMold
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: First build plan, with pictures by component and step; design made constructable (MMD-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: Approved decisions carried into the plan - plunger rest on the column (new section 3.16, joint 12, step 12), torque-limiting socket on the ratchet adapter (sections 3.6 and 6, step 7), a head check before cutting (section 3.5), figures 28 and 29, mass and cost updated
 ---
 
 # MicroMold prototype build plan
@@ -25,9 +29,9 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order.*
 
-The prototype is one bench-top MicroMold press: a steel column welded to a base plate, carrying the head of a 1 t arbor press at the top and a heated steel barrel on a shelf half way up. A ratchet handle turns the press's pinion, the rack ram pushes a 22 mm plunger down the barrel, and melt leaves a nozzle into a two-plate aluminium mold that a screw lift table holds up against it, inside a perforated shield. A fan cools the mold and a side hood draws fumes from the funnel. Figure 1 shows the 17 components in the order you make or fit them. The base plate, column weldment, lift table, jacket, shield, fan bracket, hood and arm are cut, drilled, folded and welded in a small workshop; the coupling, spacer and plunger need only a drill press; the barrel, nozzle and mold come from a local machine shop; the press head, handwheel and lever hub are bought and modified; the heaters, load cell, fans, control box parts and fixings are bought. The parts cost about USD 544 for the press and USD 638 with the test mold, from the bill of materials.
+The prototype is one bench-top MicroMold press: a steel column welded to a base plate, carrying the head of a 1 t arbor press at the top and a heated steel barrel on a shelf half way up. A ratchet handle, through a torque-limiting socket that slips before the press can be overloaded, turns the press's pinion, the rack ram pushes a 22 mm plunger down the barrel, and melt leaves a nozzle into a two-plate aluminium mold that a screw lift table holds up against it, inside a perforated shield. A fan cools the mold and a side hood draws fumes from the funnel. Figure 1 shows the 19 components in the order you make or fit them. The base plate, column weldment, lift table, jacket, shield, fan bracket, hood, arm and plunger rest are cut, drilled, folded and welded in a small workshop; the coupling, spacer and plunger need only a drill press; the barrel, nozzle and mold come from a local machine shop; the press head, handwheel and lever hub are bought and modified; the heaters, load cell, fans, torque-limiting socket, control box parts and fixings are bought. The parts cost about USD 590 for the press and USD 684 with the test mold, from the bill of materials.
 
-> **Safety:** MicroMold runs mains-voltage heaters on a steel frame and holds molten plastic at up to 260 °C under pressure. All mains wiring must be done or checked by a qualified electrician to local code, with an earthed frame, a fused inlet, a double-pole switch, a 30 mA RCD (or GFCI) supply and an independent thermal cut-out. Wear heat-resistant gloves, long sleeves and eye protection at the hot zone, keep the shield shut while injecting, and heat only HDPE, PP, LDPE and PS, under the hood or outdoors; never PVC or unknown plastics. Welding needs a welding helmet, gloves and a fire-safe area. The finished press weighs about 39 kg: lift it with two people.
+> **Safety:** MicroMold runs mains-voltage heaters on a steel frame and holds molten plastic at up to 260 °C under pressure. All mains wiring must be done or checked by a qualified electrician to local code, with an earthed frame, a fused inlet, a double-pole switch, a 30 mA RCD (or GFCI) supply and an independent thermal cut-out. Wear heat-resistant gloves, long sleeves and eye protection at the hot zone, keep the shield shut while injecting, and heat only HDPE, PP, LDPE and PS, under the hood or outdoors; never PVC or unknown plastics. Welding needs a welding helmet, gloves and a fire-safe area. The finished press weighs about 40 kg: lift it with two people.
 
 ## 2. What changed to make it buildable
 
@@ -48,7 +52,9 @@ The concept showed what the press does; some of its parts could not be made or f
 | Shield | Sides floating 52 mm above the bench; no hinge | Sides on folded feet screwed to the base plate; the front on two hinges and a latch (Figure 21) | A fixed guard; the handwheel is reached under the closed front |
 | Fan bracket | Touching only the fan's lower edge | A plate with an intake hole, four screws through the fan's corners (Figure 23) | Holds the fan and lets it breathe |
 | Fume hood | Floating beside the funnel | An L-shaped arm to the column on rivnuts (Figure 25) | A tube wall cannot be reached from inside |
-| Base plate | 12 mm | 8 mm | Keeps the press at 39.0 kg, under its 40 kg target, after the added plates and fixings; the base plate does not carry the injection force |
+| Loading | Only 8 mm between the raised plunger and the funnel, so no room to pour flake | The plunger lifts out of its coupling on the ball-lock pin and stands tip down in a rest on the column (Figures 28 and 29) | Flake goes straight into the funnel and the hot plunger is never laid on the bench |
+| Overload | Nothing stopped a 700 N pull on the handle, which reaches 1.35 times the press rating | A torque-limiting socket set to 180 N·m between the ratchet adapter and the ratchet (section 3.6) | The socket slips at about a 400 N pull, so the ram cannot pass the press rating |
+| Base plate | 12 mm | 8 mm | Keeps the press at 39.8 kg, under its 40 kg target, after the added plates and fixings; the base plate does not carry the injection force |
 
 ## 3. Making the components
 
@@ -94,14 +100,14 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 1. Column: cut 907 mm of tube with square ends. The 80 mm faces are the front and back.
 2. In the front and back walls, drill four 22 mm access holes through both walls in line: 30 each side of the centre line, 25 and 115 below the top end.
-3. In the left wall, drill two 9 mm holes for M6 rivnuts, 477 up from the bottom end, 20 and 45 back from the front face. Fit the rivnuts.
+3. In the left wall, drill two 9 mm holes for M6 rivnuts, 477 up from the bottom end, 20 and 45 back from the front face. In the right wall, drill two more, 392 up from the bottom end, 19 and 41 back from the front face. Fit all four rivnuts.
 4. Shelf: cut 110 x 150 mm from 20 mm plate. Drill a 46 mm hole centred across the width, 65 from one short edge (the back edge). Around it, on an 82 mm circle, drill and tap four M8 holes through, at 45 degrees to the edges. Underneath, drill and tap four M5 holes 10 deep on a 132 mm circle round the same centre, at 45 degrees to the edges.
 5. Back plate: cut 110 x 120 mm from 8 mm plate.
 6. Head plate: cut 120 x 140 mm from 8 mm plate. Drill four 11 mm holes, 30 each side of centre, 25 from the top and bottom edges. Countersink them 90 degrees on one face (the back face) so an M10 countersunk screw sits flush.
 7. Weld, in this order, with 5 mm fillet welds: the head plate to the column front, back face to the column, top edge flush with the column top, its holes in line with the access holes (weld down both column corners and across the top); the shelf with its back edge against the column front and its top face 479 up from the column bottom, centred, square both ways (weld top and bottom); the back plate on the shelf against the column (weld to the shelf and down both column corners).
 8. Clean up spatter and paint everything except the shelf top.
 
-**How it fits the parts next to it.** The column stands on the base plate, welded all round (step 1). The press head bolts to the head plate (Figure 9). The barrel flange sits on mica pads on the shelf (Figure 14), and the jacket hangs under it (Figure 16). The lift table's back edge runs 2 mm in front of the column face (Figure 6). The hood arm bolts to the rivnuts (Figure 25).
+**How it fits the parts next to it.** The column stands on the base plate, welded all round (step 1). The press head bolts to the head plate (Figure 9). The barrel flange sits on mica pads on the shelf (Figure 14), and the jacket hangs under it (Figure 16). The lift table's back edge runs 2 mm in front of the column face (Figure 6). The hood arm bolts to the left-hand rivnuts (Figure 25) and the plunger rest to the right-hand ones (Figure 29).
 
 **Check before moving on.** The shelf is square to the column within 0.5 mm over 100 mm, both ways; an M10 screw passes through each access hole into each head plate hole.
 
@@ -166,18 +172,19 @@ The screw runs down through the handwheel nut, the thrust washer, the base plate
 1. Take the lever and its hub off the pinion shaft; keep the hub for the ratchet adapter (section 3.6).
 2. Cut the head from the press frame just below the head casting with a cutting disc, and grind the back face flat where it will meet the head plate.
 3. Using the head plate as a template, mark four holes on the back face (60 apart across, 90 apart up and down, centred on the ram's centre line across). Drill 8.5 mm and tap M10, 20 deep.
+4. Do this before step 2, the cut: check the bought head against what the plan assumes: at least 8 mm of casting between each M10 hole and the ram bore, room for a 20 mm thread behind each hole, and a flat back face about 140 mm deep. If the head differs, stop and send the measurements to the designer so the drawings are revised before any cut is made.
 
 **How it fits the parts next to it.** The back face sits flat on the head plate. Four M10 x 25 countersunk screws go in from behind the head plate, through the column's access holes, with medium threadlocker. The ram's centre is 65 in front of the column face, over the barrel bore.
 
 **Check before moving on.** The ram slides its full travel without binding, and its end face is square to the base plate within 0.5 mm over its width (checked at step 6).
 
-### 3.6 Ratchet adapter
+### 3.6 Ratchet adapter and torque-limiting socket
 
 ![Figure 10. Making sketch of the ratchet adapter](../cad/drawings/MMD-DWG-108.png)
 
 *Figure 10. Ratchet adapter making sketch (MMD-DWG-108).*
 
-**What it is and what it is made from.** The piece that lets a 1/2 in drive ratchet handle turn the pinion. The press's own lever hub (about 36 mm across, bored to the shaft) and the square end of a 1/2 in drive extension bar.
+**What it is and what it is made from.** The piece that lets a 1/2 in drive ratchet handle turn the pinion, and the socket that keeps the pull within the press rating. The adapter is the press's own lever hub (about 36 mm across, bored to the shaft) and the square end of a 1/2 in drive extension bar. The torque-limiting socket is a bought 1/2 in drive socket that slips at a set torque, rated for at least 200 N·m.
 
 **How to make it.**
 
@@ -185,9 +192,9 @@ The screw runs down through the handwheel nut, the thrust washer, the base plate
 2. Weld it to the hub's outer face, square to the face and on the shaft's centre line. Let it cool slowly; check it runs true with the hub on the shaft.
 3. With the hub on the shaft, drill 6 mm through hub and shaft together, 12 from the head's side face, and fit a 6 mm roll pin.
 
-**How it fits the parts next to it.** The hub slides onto the right-hand end of the pinion shaft, pinned. The ratchet handle's square drive pushes onto the square; its 450 mm handle starts a pull 30 degrees above level.
+**How it fits the parts next to it.** The hub slides onto the right-hand end of the pinion shaft, pinned. The torque-limiting socket pushes onto the square and the ratchet handle's square drive pushes onto the socket; the 450 mm handle starts a pull 30 degrees above level. Set the socket to 180 N·m (accurate to about 10 per cent). A 1 t press is at its rating at about 234 N·m, so even the worst setting of 198 N·m leaves the ram at 0.85 times the rating. The socket slips at a pull of about 400 N on the handle, well above the 250 N working pull, and a person hanging their weight on the handle cannot overload the press.
 
-**Check before moving on.** A 250 N pull at the handle turns the shaft with no movement at the pin.
+**Check before moving on.** A 250 N pull at the handle turns the shaft with no movement at the pin and no slip at the socket.
 
 ### 3.7 Nozzle
 
@@ -408,12 +415,38 @@ The lower plate stands flat on the lift table; the nozzle seats in the upper pla
 
 **Check before moving on.** Engineer's blue on the parting faces shows full contact round the cavity.
 
-### 3.16 Bought components
+### 3.16 Plunger rest
+
+![Figure 28. Making sketch of the plunger rest](../cad/drawings/MMD-DWG-115.png)
+
+*Figure 28. Plunger rest making sketch (MMD-DWG-115).*
+
+**What it is and what it is made from.** A cup on the column's right-hand side that holds the plunger upright while the barrel is loaded, so the hot plunger is never laid on the bench. Steel flat bar 38 x 30 x 5 mm, steel tube 32 mm across with a 24 mm bore, and 3 mm plate.
+
+**How to make it.**
+
+1. Cut the plate 38 x 30 mm from 5 mm flat bar. Drill two 6.6 mm holes 22 apart on its centre line.
+2. Cut 70 mm of the tube with square ends. Cut a 3 mm disc 32 mm across and weld it to one end all round, to make the cup.
+3. Stand the cup on its base against the plate's outer face, flush with the plate's lower edge, and weld it along both sides of the line where they touch.
+4. Clean up the welds and paint.
+
+**How it fits the parts next to it.**
+
+![Figure 29. Joint 12: plunger rest on the column, seen from the front right](05-build-plan/joint-12.png)
+
+*Figure 29. The plate bolts to the column's right-hand face with two M6 screws into the rivnuts; the cup leans out 61 mm and holds the plunger's tip.*
+
+The cup is 400 mm above the bench, level with the shelf, and clear of the shelf, the jacket and the shield. To load the barrel, let the ram run up, pull the ball-lock pin and lift the plunger out of its coupling, and stand it tip down in the cup (it stands 67 mm deep, top at 588 mm). Pour the flake into the funnel and tamp it, then lift the plunger out of the cup, push its top into the coupling and refit the pin. The tip is hot: use heat-resistant gloves.
+
+**Check before moving on.** The plunger stands in the cup without being held and is not knocked over by a push of the hand; the rest does not move when pushed.
+
+### 3.17 Bought components
 
 Buy to specification, not brand. Line numbers are those of the bill of materials.
 
 - **Arbor press (line 2).** 1 t, rack and pinion, 28 mm square ram 255 mm or longer with 150 mm of engaged travel, pinion pitch radius about 20 mm, a head casting that can be cut from the frame with a flat back face. Prepared as section 3.5.
 - **Ratchet handle (line 2).** 1/2 in drive, about 450 mm long, reversible.
+- **Torque-limiting socket (line 21).** 1/2 in drive, click or slip type, set to 180 N·m, rated for 200 N·m or more, accurate to about 10 per cent.
 - **Load cell (line 4).** 10 kN compression cell, 56 mm across, with a top M12 stud and a base flange with three through holes for M5 screws (46 mm circle assumed), an HX711-class amplifier and a 4-digit display.
 - **Band heaters (lines 7 and 8).** Two 300 W mica bands, 42 mm bore x 50 wide, and one 100 W band, 24 mm bore x 18 wide, all for the local mains voltage, with ceramic terminal blocks.
 - **Mica pads and washers (line 9).** Four 15 x 15 x 3 mm pads; four mica washers for M8.
@@ -421,7 +454,7 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Wiring (line 14).** Wire rated 250 °C in glass-fibre sleeving for the heaters, two K-type thermocouples (one in the barrel well, one under the nozzle band), earth leads to the frame, the jacket, the shield and the fan bracket.
 - **Duct fan and duct (line 17).** 100 mm inline fan, 170 m³/h or more in free air, 3 m of 100 mm aluminium flexible duct and clamps.
 - **Mold cooling fan (line 18).** 120 x 120 x 38 mm mains axial fan, about 18 W, corner holes on a 105 mm square, with a finger guard.
-- **Fixings (lines 9 to 19).** Four M10 x 25 countersunk screws (head); four M8 x 30 cap screws (flange); four M5 x 25 screws and 14 mm spacers (jacket); three M5 x 12 low-head screws and three M5 x 12 screws (spacer); four M10 x 70 class 8.8 cap screws, four M10 thread inserts and two 6 x 24 mm dowels (mold); a 6 mm ball-lock pin and a 6 mm roll pin; eight M6 x 12 screws (shield feet, fan bracket); two M6 rivnuts and two M6 x 16 screws (hood arm); two M5 screws and nuts (hood); four M4 x 45 screws and nuts (fan); four M10 bench bolts with washers; a 2 mm steel thrust washer for 20 mm; copper anti-seize and medium threadlocker.
+- **Fixings (lines 9 to 20).** Four M10 x 25 countersunk screws (head); four M8 x 30 cap screws (flange); four M5 x 25 screws and 14 mm spacers (jacket); three M5 x 12 low-head screws and three M5 x 12 screws (spacer); four M10 x 70 class 8.8 cap screws, four M10 thread inserts and two 6 x 24 mm dowels (mold); a 6 mm ball-lock pin and a 6 mm roll pin; eight M6 x 12 screws (shield feet, fan bracket); two M6 rivnuts and two M6 x 16 screws each for the hood arm and the plunger rest; two M5 screws and nuts (hood); four M4 x 45 screws and nuts (fan); four M10 bench bolts with washers; a 2 mm steel thrust washer for 20 mm; copper anti-seize and medium threadlocker.
 
 ## 4. Putting it together
 
@@ -463,11 +496,11 @@ Clamp the two 300 W bands round the barrel, centred 60 and 180 above its lower e
 
 Hold the head against the head plate and fit four M10 countersunk screws from behind, through the column's access holes, with medium threadlocker. Tighten to about 45 N·m with a hex key through the holes.
 
-### Step 7: ratchet adapter and handle
+### Step 7: ratchet adapter, torque-limiting socket and handle
 
 ![Step 7](05-build-plan/step-07.png)
 
-Slide the adapter onto the right-hand end of the pinion shaft and fit the roll pin. Push the ratchet onto the square and set it so a pull toward you drives the ram down. Turn the ram to its highest.
+Slide the adapter onto the right-hand end of the pinion shaft and fit the roll pin. Push the torque-limiting socket onto the square, set to 180 N·m, then push the ratchet onto the socket and set it so a pull toward you drives the ram down. Turn the ram to its highest.
 
 ### Step 8: plunger unit
 
@@ -493,11 +526,11 @@ Stand the sides on the base plate and fit two M6 screws through each foot. Check
 
 Fix the fan to the bracket with four M4 x 45 screws and nuts, then the bracket's foot to the base plate with two M6 screws.
 
-### Step 12: fume hood
+### Step 12: fume hood and plunger rest
 
 ![Step 12](05-build-plan/step-12.png)
 
-Bolt the arm's short leg to the column's left face with two M6 screws into the rivnuts. Fix the duct stub to the flexible duct and run it to the duct fan.
+Bolt the arm's short leg to the column's left face with two M6 screws into the rivnuts. Fix the duct stub to the flexible duct and run it to the duct fan. Bolt the plunger rest to the column's right face with two M6 screws into the rivnuts.
 
 ### Step 13: onto the bench, and wiring
 
@@ -519,7 +552,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 
 | Check | Requirement | How | Pass when |
 | --- | --- | --- | --- |
-| Size, handle height and mass | R9 | Measure the footprint and the handle's top at the start of a pull; weigh the press without the control box | 350 x 300 mm or less; 1,100 mm or less (1,094 mm by the model); 40 kg or less (39.0 kg estimated) |
+| Size, handle height and mass | R9 | Measure the footprint and the handle's top at the start of a pull; weigh the press without the control box | 350 x 300 mm or less; 1,100 mm or less (1,094 mm by the model); 40 kg or less (39.8 kg estimated) |
 | Plunger travel | R2 | Turn the handle through a full stroke, cold | 150 mm of travel, 120 mm in the bore, no binding; about four pulls |
 | Mold stack range | R7 | Seat a 30 mm and a 120 mm block on the nozzle with the handwheel | Both seat with at least 10 mm of travel to lower them |
 | Electrical safety | R12 | Electrician's inspection: earth continuity, insulation, RCD trip | All pass; the RCD trips at 30 mA or less |
@@ -528,6 +561,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Touch temperature | R11 | Surface thermometer on the guard after 30 min at 220 °C | 60 °C or less (48 °C estimated) |
 | Supply current | R10 | Clamp meter on the supply with everything running | 1 kW or less; 10 A or less at 120 V |
 | Hood flow | R13 | Vane anemometer across the hood face | About 124 m³/h; smoke from a smoke pencil at the funnel goes into the hood |
+| Overload limit | R3 | With the barrel cold, pull the handle past the socket's setting while watching the load cell | The socket slips at about a 400 N pull; the cell never reads above 8.3 kN |
 | Melt pressure | R3 | Load cell reading with 250 N on the handle (a spring balance on the grip), barrel full of melt | 3.4 kN or more on the cell (8.9 MPa) |
 
 ## 6. Safety stops
@@ -536,8 +570,8 @@ Stop at each point. Carry on only when everything listed is true.
 
 - **S1. Before the press is connected to the mains.** A qualified electrician has wired and inspected the control box to local code: fused inlet, double-pole switch, RCD or GFCI supply, independent cut-out in series with both heater relays, 250 °C wire at the barrel, every metal part earthed. Heater leads are clear of the plunger, ram and handle in every position.
 - **S2. First heat, with no plastic.** Attended the whole time, hood running, shield shut, nothing flammable within 1 m. Both zones to 220 °C; stop and switch off at the inlet if any reading runs away, smoke appears or the guard passes 60 °C.
-- **S3. Before any plastic goes in.** The resin is HDPE, PP, LDPE or PS flake from injection-molded items, clean and dry; never PVC or unknown plastics. Heat-resistant gloves, long sleeves and eye protection are on. The hood fan runs whenever the heaters are on.
-- **S4. Before every injection.** Mold screws at their torque, the nozzle seated, the shield front shut and latched, faces away from the axis. Pull steadily with no more than about 250 N; never hang body weight on the handle (about 35 MPa, enough to open the mold). Release the ratchet pawl only with the handle in hand.
+- **S3. Before any plastic goes in, and every time the barrel is loaded.** The resin is HDPE, PP, LDPE or PS flake from injection-molded items, clean and dry; never PVC or unknown plastics. Heat-resistant gloves, long sleeves and eye protection are on. The hood fan runs whenever the heaters are on. The plunger is lifted out on its pin and stood in the rest, never laid on the bench; its tip is hot.
+- **S4. Before every injection.** Mold screws at their torque, the nozzle seated, the shield front shut and latched, faces away from the axis. Pull steadily with no more than about 250 N. The torque-limiting socket, set to 180 N·m, slips at about a 400 N pull so that the ram stays under the press rating (about 22 MPa at most, against 35 MPa without it); if it slips, stop and release the pull rather than pulling harder. Check the socket's setting before the first injection of each day. Release the ratchet pawl only with the handle in hand.
 - **S5. Before opening the mold.** The fan has run for at least 1 min after the hold; lower the table before opening the front; gloves on. The sprue and plaque are hot.
 - **S6. Before leaving the press.** Heaters off at the inlet; the barrel left to cool with the hood running.
 
@@ -553,10 +587,10 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 8. Where the numbers come from
 
-- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 155 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
-- Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/MMD-DWG-101` to `MMD-DWG-114`.
-- General arrangement: `cad/drawings/MMD-DWG-001.pdf`, Rev P4.
-- Calculations: `docs/04-calcs/01-sizing.md` (MMD-CAL-001 v0.4) and `docs/04-calcs/sizing.py`; shot [A2], table and stacks [A5], stroke and pulls [B5], mold screws [D1], warm-up [G4], plunger temperature [G6], mass [K1], heights [K2], cost [L1, L2].
+- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 186 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
+- Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/MMD-DWG-101` to `MMD-DWG-115`.
+- General arrangement: `cad/drawings/MMD-DWG-001.pdf`, Rev P5.
+- Calculations: `docs/04-calcs/01-sizing.md` (MMD-CAL-001 v0.5) and `docs/04-calcs/sizing.py`; shot [A2], table and stacks [A5], stroke and pulls [B5], torque limit [B4a, B4b], mold screws [D1], warm-up [G4], plunger temperature [G6], mass [K1], heights [K2], cost [L1, L2].
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (MMD-DDR-003), with MMD-DDR-001 and MMD-DDR-002; open items in `docs/06-design-decisions.md` (MMD-DEC-001).
 - Requirements: `docs/03-requirements.md` (MMD-REQ-001 v0.6).

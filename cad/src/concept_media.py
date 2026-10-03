@@ -61,6 +61,8 @@ parts = [
     Part("Nozzle zone shield", m["shield"], "#A8A29E", 16, (0, -520, -40), alpha=1.0),
     Part("Fume hood and duct", m["hood"], "#CBD5E1", 17, (-260, 0, 120)),
     Part("Mold cooling fan", m["coolfan"], "#0369A1", 18, (260, 0, 0)),
+    Part("Plunger rest", m["rest"], "#0F766E", 20, (200, 60, 40)),
+    Part("Torque-limiting socket, 180 N m", m["tqsocket"], "#7C2D12", 21, (330, 0, 80)),
 ]
 
 # Context for scale: workbench and a 1.75 m person (hero and blueprint isometric only)

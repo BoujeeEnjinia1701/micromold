@@ -4,7 +4,7 @@ Run from the repo root:  python cad/src/build_plan_media.py [overview|sheets|lay
 With no argument it draws everything. Every picture is drawn from cad/src/model.py
 (build_components), so the pictures and the model never disagree:
     docs/05-build-plan/overview.png        every component pulled apart, numbered in build order
-    cad/drawings/MMD-DWG-101 to 114        making sketches for the made components
+    cad/drawings/MMD-DWG-101 to 115        making sketches for the made components (MMD-DWG-101 to 115)
     docs/05-build-plan/base-holes.png      hole positions in the base plate
     docs/05-build-plan/joint-NN.png        close-ups of the joints that need explaining
     docs/05-build-plan/step-NN.png         one picture per assembly step
@@ -18,11 +18,11 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT / ".kit"), str(ROOT / "cad" / "src")]
 import build_views as bv  # noqa: E402
 from build_views import Part  # noqa: E402
-from model import PARAMS as P, build_components, derived, bx  # noqa: E402
+from model import PARAMS as P, build_components, derived, bx, rested_plunger  # noqa: E402
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-10-01"
+DATE = "2026-10-02"
 D = derived(P)
 C = build_components(P)
 BT = D["bt"]
@@ -32,7 +32,7 @@ COL = {"base": "#78716C", "column": "#1F2937", "frame": "#334155", "head": "#374
        "plunger": "#9CA3AF", "barrel": "#57534E", "heaters": "#C2410C", "nozzle": "#D4A017", "pads": "#F5F5F4",
        "screws": "#111827", "guard": "#94A3B8", "table": "#115E59", "handwheel": "#B91C1C", "washer": "#D6D3D1",
        "mold": "#B8C4CE", "mold2": "#8FA3B5", "dowel": "#374151", "shield": "#A8A29E", "front": "#D6D3D1",
-       "hinge": "#44403C", "fan": "#0369A1", "fanbr": "#475569", "hood": "#CBD5E1", "arm": "#B45309",
+       "hinge": "#44403C", "rest": "#0F766E", "fan": "#0369A1", "fanbr": "#475569", "hood": "#CBD5E1", "arm": "#B45309",
        "ctrl": "#2563EB", "wiring": "#111827", "bench": "#E7E5E4"}
 
 
@@ -66,7 +66,7 @@ def made():
         "table": part("Lift table and screw", C["table"].shape, COL["table"]),
         "handwheel": part("Handwheel nut and thrust washer", S("handwheel", "washer"), COL["handwheel"]),
         "head": part("Arbor press head, rack ram, head screws", S("press_head", "ram", "head_screws"), COL["head"]),
-        "drive": part("Ratchet adapter and ratchet handle", S("adapter", "adapter_pin", "ratchet"), COL["adapter"]),
+        "drive": part("Ratchet adapter, torque-limiting socket, ratchet handle", S("adapter", "adapter_pin", "torque_socket", "ratchet"), COL["adapter"]),
         "nozzle": part("Nozzle and nozzle heater", S("nozzle", "nozzle_heater"), COL["nozzle"]),
         "barrel": part("Barrel and band heaters", S("barrel", "heaters"), COL["barrel"]),
         "pads": part("Mica pads and flange screws", S("pads", "flange_screws"), COL["pads"]),
@@ -76,13 +76,14 @@ def made():
         "shield": part("Nozzle zone shield", S("shield_sides", "shield_front", "hinges"), COL["shield"]),
         "fan": part("Fan bracket and mold cooling fan", S("fan_bracket", "fan"), COL["fan"]),
         "hood": part("Fume hood and hood arm", S("hood", "hood_arm"), COL["hood"]),
+        "rest": part("Plunger rest", C["plunger_rest"].shape, COL["rest"]),
         "mold": part("Test plaque mold", S("mold_lower", "mold_upper", "mold_screws", "dowels"), COL["mold"]),
         "ctrl": part("Control box and wiring", S("ctrl", "wiring"), COL["ctrl"]),
     }
 
 
 ORDER = ["base", "frame", "table", "handwheel", "head", "drive", "nozzle", "barrel", "pads", "guard", "cell",
-         "plunger", "shield", "fan", "hood", "mold", "ctrl"]
+         "plunger", "shield", "fan", "hood", "rest", "mold", "ctrl"]
 
 
 # ----------------------------------------------------------------- overview
@@ -91,7 +92,7 @@ def overview():
     off = {"base": (0, 0, -220), "frame": (0, 220, 0), "table": (0, -200, -150), "handwheel": (0, -200, -300),
            "head": (0, 0, 260), "drive": (260, 0, 260), "nozzle": (0, 0, -90), "barrel": (0, 0, 20),
            "pads": (0, 0, 90), "guard": (-200, 0, -60), "cell": (0, 0, 170), "plunger": (0, 0, 90),
-           "shield": (0, -620, -60), "fan": (330, 0, -40), "hood": (-320, 0, 180), "mold": (0, -360, -90),
+           "shield": (0, -620, -60), "fan": (330, 0, -40), "hood": (-320, 0, 180), "rest": (190, 60, 30), "mold": (0, -360, -90),
            "ctrl": (720, -420, -260)}
     parts = []
     for k in ORDER:
@@ -159,7 +160,8 @@ def s102():
                   ["Column: cut 907 mm of 80 x 60 x 3 mm tube, ends square. In the front and",
                    "  back walls drill four 22 mm access holes, 30 mm each side of centre,",
                    "  25 and 115 mm below the top. In the left wall drill two 9 mm holes",
-                   "  for M6 rivnuts, 477 mm up, 20 and 45 mm back from the front face.",
+                   "  for M6 rivnuts, 477 mm up, 20 and 45 mm back from the front face; in the",
+                   "  right wall two more, 392 mm up, 19 and 41 mm back (plunger rest).",
                    "Shelf: 110 x 150 x 20 mm. 46 mm hole centred 65 mm from its back edge;",
                    "  four M8 tapped holes on an 82 mm circle at 45 degrees; three M5 holes",
                    "  10 deep underneath on a 132 mm circle (front, back left, back right).",
@@ -279,7 +281,7 @@ def s107():
 def s108():
     M = made()
     sh = S("adapter")
-    return _sheet("drive", "Ratchet adapter", sh, COL["adapter"], [M["head"], part("Ratchet handle", C["ratchet"].shape, COL["ratchet"])],
+    return _sheet("drive", "Ratchet adapter", sh, COL["adapter"], [M["head"], part("Torque-limiting socket", C["torque_socket"].shape, "#7C2D12"), part("Ratchet handle", C["ratchet"].shape, COL["ratchet"])],
                   "MMD-DWG-108", "MicroMold ratchet adapter: making sketch", "The press's own lever hub; a 1/2 in drive extension bar",
                   ["Start from the lever hub that comes on the press's pinion shaft (36 mm",
                    "  across, bored to the shaft, 28 mm in the model). Remove its lever.",
@@ -288,9 +290,11 @@ def s108():
                    "  Let it cool slowly; check it runs true when the hub is on the shaft.",
                    "Drill 6 mm through the hub and shaft together, 12 mm from the head's",
                    "  side face, and fit a 6 mm roll pin.",
-                   "Fit: the ratchet handle's square drive pushes on; set the ratchet so a",
-                   "  pull toward you drives the ram down.",
-                   "Check: a 250 N pull turns the shaft with no slip at the pin."],
+                   "Fit: the torque-limiting socket (set to 180 N m) pushes onto the square,",
+                   "  then the ratchet handle pushes onto the socket's drive; set the ratchet",
+                   "  so a pull toward you drives the ram down.",
+                   "Check: a 250 N pull turns the shaft with no slip at the pin; the socket",
+                   "  clicks or slips at about a 400 N pull on the 450 mm handle."],
                   view_shape=_zero(sh), inset=(15, 30))
 
 
@@ -416,6 +420,25 @@ def s114():
                    "  its centre level with the flange.",
                    "Check: the hood stays put when pushed by hand."],
                   view_shape=_zero(sh), inset=(25, -40))
+
+
+@sheet(115)
+def s115():
+    M = made()
+    sh = C["plunger_rest"].shape
+    return _sheet("rest", "Plunger rest", sh, COL["rest"], [M["frame"], part("Plunger", rested_plunger(P)[0], COL["plunger"])],
+                  "MMD-DWG-115", "MicroMold plunger rest: making sketch", "Steel flat bar, steel tube and 3 mm plate offcuts",
+                  ["Cut the plate 38 x 30 x 5 mm from flat bar. Drill two 6.6 mm holes 22 mm",
+                   "  apart on its centre line, for M6 rivnuts in the column wall.",
+                   "Cut the cup from 32 mm OD x 24 mm ID steel tube, 70 mm long; cut a",
+                   "  3 mm disc 32 mm across for its base and weld it all round.",
+                   "Stand the cup on its base against the plate's outer face, flush with the",
+                   "  plate's lower edge, and weld it along both sides of the contact line.",
+                   "Fit: two M6 rivnuts in the column's right wall (see the column sketch),",
+                   "  two M6 screws through the plate. The cup then leans out 61 mm from the wall.",
+                   "Check: the plunger stands tip down in the cup, 67 mm deep, and cannot be",
+                   "  knocked over by a push of the hand; the cup is clear of the shelf."],
+                  view_shape=_zero(sh), inset=(24, 30))
 
 
 def sheets(which=None):
@@ -639,6 +662,30 @@ def j11():
                elev=25, azim=125)
 
 
+@jnt(12)
+def j12():
+    rz = P["rest_z"]
+    w = (-45, 115, 55, 130, rz - 40, rz + 130)
+    pl = win(rested_plunger(P)[0], *w)
+    import numpy as np
+    tgt = np.array([42.0, 62.0, rz + 100.0])
+    keep = bv._anchor
+    bv._anchor = lambda v: v[np.argmin(np.linalg.norm(v - tgt, axis=1))]   # leaders end on each part's nearest visible corner
+    try:
+        return _j12(w, pl)
+    finally:
+        bv._anchor = keep
+
+
+def _j12(w, pl):
+    return _j(12, [part("Column (right wall, rivnuts)", win(C["column"].shape, *w), COL["column"]),
+                   part("Plunger rest", win(C["plunger_rest"].shape, *w), COL["rest"]),
+                   part("Plunger, tip down in the cup", pl, COL["plunger"])],
+               "plunger rest on the column (seen from the front right)",
+               "The plate bolts to the column's right wall; the lifted-out plunger stands tip down in the cup, off the bench",
+               elev=18, azim=-30)
+
+
 def _mid_anchor(v):
     """For close-ups: the part's own vertex nearest its centre, so a leader ends on the part it names."""
     import numpy as np
@@ -677,7 +724,7 @@ def st(n, done, new, title, sub, **kw):
 def _state(upto):
     M = made()
     keys = {1: ["base", "frame"], 2: ["table", "handwheel"], 3: [], 4: ["nozzle", "pads"], 5: ["barrel", "guard"],
-            6: ["head"], 7: ["drive"], 8: [], 9: ["cell", "plunger"], 10: ["shield"], 11: ["fan"], 12: ["hood"], 13: ["ctrl"]}
+            6: ["head"], 7: ["drive"], 8: [], 9: ["cell", "plunger"], 10: ["shield"], 11: ["fan"], 12: ["hood", "rest"], 13: ["ctrl"]}
     out = []
     for k in range(1, upto + 1):
         out += [M[x] for x in keys[k]]
@@ -747,8 +794,8 @@ def p6():
 @stp(7)
 def p7():
     M = made()
-    return st(7, _state(6), [mv(M["drive"], (180, 0, 0))], "ratchet adapter and handle",
-              "Adapter onto the pinion shaft, 6 mm roll pin; ratchet onto the square, set to drive the ram down on a pull",
+    return st(7, _state(6), [mv(M["drive"], (180, 0, 0))], "ratchet adapter, torque-limiting socket and handle",
+              "Adapter onto the pinion shaft, 6 mm roll pin; torque-limiting socket onto the square; ratchet onto the socket, set to drive the ram down",
               elev=18, azim=-40)
 
 
@@ -793,8 +840,8 @@ def p11():
 @stp(12)
 def p12():
     M = made()
-    return st(12, _state(11), [mv(M["hood"], (-160, 0, 0))], "fume hood",
-              "Arm to the column's left face, two M6 screws into rivnuts; hood face 100 mm from the funnel axis",
+    return st(12, _state(11), [mv(M["hood"], (-160, 0, 0)), mv(M["rest"], (130, 0, 0))], "fume hood and plunger rest",
+              "Hood arm to the column's left face and the rest to its right face, two M6 screws each into rivnuts; hood face 100 mm from the funnel axis",
               elev=18, azim=-55)
 
 

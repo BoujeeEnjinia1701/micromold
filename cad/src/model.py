@@ -63,6 +63,13 @@ PARAMS = {
     "handle_len": 450.0,                 # ratchet handle, pinion axis to grip center
     "handle_up_deg": 30.0,               # highest start angle of a pull above horizontal
     "knob_r": 24.0,
+    "tq_socket": (34.0, 70.0),           # torque-limiting socket OD, body length (MMD-DDR-003 decision 4, 2026-10-02)
+    "tq_set_Nm": 180.0,                  # torque setting, N m (MMD-CAL-001 section B, from the 1 t press rating)
+    # plunger rest on the column (decision 2, 2026-10-02): cup and plate on the +X column wall
+    "rest_cup": (32.0, 24.0, 70.0),      # cup OD, ID, height; the hot plunger tip stands in it
+    "rest_z": 400.0,                     # centre of the mounting plate
+    "rest_plate": (38.0, 30.0, 5.0),     # plate Y, Z, thickness against the column wall
+    "rest_y": 95.0,                      # cup axis Y
     # mold and clamp
     "mold": (120.0, 90.0, 45.0),         # each plate X, Y, thickness
     "cavity": (64.0, 50.0, 6.0),         # test plaque
@@ -245,6 +252,8 @@ def build_components(p=PARAMS, table_top=None, stroke=0.0):
     hood_z = d["fl1"] - 15
     for yy in (85.0, 110.0):                             # M6 rivnut holes for the hood arm (left wall)
         col = col - xcyl(4.5, -cx / 2 - 1, -cx / 2 + cw + 1, yy, hood_z)
+    for yy in (84.0, 106.0):                             # M6 rivnut holes for the plunger rest (right wall)
+        col = col - xcyl(4.5, cx / 2 - cw - 1, cx / 2 + 1, yy, p["rest_z"])
     add("column", col, "make", 2, "Column")
 
     # ---- head mounting plate, welded to the column front; four M10 countersunk screws into the head
@@ -278,8 +287,14 @@ def build_components(p=PARAMS, table_top=None, stroke=0.0):
     pin = ycyl(3, py - 20, py + 20, hx / 2 + 12, pz)
     add("adapter_pin", pin, "buy", 19, "Adapter pin (6 mm roll pin)")
     ky, kz = d["knob"]
-    ratchet = xcyl(20, shaft_x1 + 2, shaft_x1 + 22, py, pz) - bx(shaft_x1 + 1, shaft_x1 + 17, py - 6.5, py + 6.5, pz - 6.5, pz + 6.5)
-    xh = shaft_x1 + 12
+    tqd, tql = p["tq_socket"]
+    xs0 = shaft_x1 + 2
+    tq = xcyl(tqd / 2, xs0, xs0 + tql, py, pz) - bx(shaft_x1 + 1, shaft_x1 + 17, py - 6.35, py + 6.35, pz - 6.35, pz + 6.35)
+    tq = tq + bx(xs0 + tql, xs0 + tql + 16, py - 6.35, py + 6.35, pz - 6.35, pz + 6.35)
+    add("torque_socket", tq, "buy", 21, "Torque-limiting socket (180 N m)")
+    xr0 = xs0 + tql + 2
+    ratchet = xcyl(20, xr0, xr0 + 20, py, pz) - bx(xr0 - 1, xr0 + 15, py - 6.5, py + 6.5, pz - 6.5, pz + 6.5)
+    xh = xr0 + 10
     handle = tube((xh, py, pz), (xh, py + ky, kz), 11) + b.Pos(xh, py + ky, kz) * b.Sphere(p["knob_r"])
     add("ratchet", ratchet + handle, "buy", 2, "Ratchet handle")
 
@@ -448,6 +463,17 @@ def build_components(p=PARAMS, table_top=None, stroke=0.0):
         arm = arm - ycyl(2.75, ya - 1, ya + 6, xx, hood_z)
     add("hood_arm", arm, "make", 19, "Hood arm")
 
+    # ---- plunger rest: a plate on two M6 rivnuts in the column's right wall, with a cup the hot plunger tip stands in
+    rcd, rci, rch = p["rest_cup"]
+    rpy, rpz, rpt = p["rest_plate"]
+    rz = p["rest_z"]
+    rplate = bx(cx / 2, cx / 2 + rpt, p["rest_y"] - rpy / 2, p["rest_y"] + rpy / 2, rz - rpz / 2, rz + rpz / 2)
+    for yy in (84.0, 106.0):
+        rplate = rplate - xcyl(3.3, cx / 2 - 1, cx / 2 + rpt + 1, yy, rz)
+    rcx = cx / 2 + rpt + rcd / 2
+    cup = zring(rcd / 2, rci / 2, rz - rpz / 2, rz - rpz / 2 + rch, rcx, p["rest_y"]) + zcyl(rcd / 2, rz - rpz / 2, rz - rpz / 2 + 3, rcx, p["rest_y"])
+    add("plunger_rest", rplate + cup, "make", 20, "Plunger rest")
+
     # ---- mold cooling fan on a plate bracket bolted to the base plate
     fx, fyy, fzz = p["cool_fan"]
     xc, zc2 = p["cool_fan_x"], p["cool_fan_z"]
@@ -480,6 +506,7 @@ def build_components(p=PARAMS, table_top=None, stroke=0.0):
 GROUPS = {   # BOM-line grouping used by the concept media, the drawing and the appearance model
     "base": ["base"],
     "drive": ["column", "head_plate", "head_screws", "press_head", "adapter", "adapter_pin", "ratchet"],
+    "tqsocket": ["torque_socket"],
     "ram": ["ram"],
     "loadcell": ["loadcell", "spacer", "coupling", "coupling_pin"],
     "plunger": ["plunger"],
@@ -495,6 +522,7 @@ GROUPS = {   # BOM-line grouping used by the concept media, the drawing and the 
     "shield": ["shield_sides", "shield_front", "hinges"],
     "hood": ["hood", "hood_arm"],
     "coolfan": ["fan", "fan_bracket"],
+    "rest": ["plunger_rest"],
 }
 
 
@@ -505,7 +533,7 @@ def build_parts(p=PARAMS):
 
 
 ORDER = ["base", "drive", "ram", "loadcell", "plunger", "barrel", "heaters", "nozzle", "bracket",
-         "guard", "clamp", "mold", "ctrl", "wiring", "shield", "hood", "coolfan"]
+         "guard", "clamp", "mold", "ctrl", "wiring", "shield", "hood", "coolfan", "rest", "tqsocket"]
 
 
 def assembly(p=PARAMS, parts=None):
@@ -530,6 +558,8 @@ def construction_mass(p=PARAMS):
         "hood arm": 30 * 5 * 200 * rho,
         "shield feet, hinges and latch": 2 * 20 * 170 * 1.5 * rho + 0.12,
         "jacket hangers": 0.05,
+        "plunger rest": 38 * 30 * 5 * rho + pi / 4 * (32 ** 2 - 24 ** 2) * 70 * rho + pi / 4 * 32 ** 2 * 3 * rho,
+        "torque-limiting socket (assumed)": 0.55,
     }
     return m
 
@@ -549,7 +579,9 @@ CONTACTS = [   # (a, b, what holds them): faces that must touch
     ("hangers", "shelf", "M5 screws"),
     ("hangers", "guard", "M5 screws through the tabs"),
     ("adapter", "press_head", "slides on the pinion shaft, roll pin"),
-    ("ratchet", "adapter", "1/2 in square drive"),
+    ("torque_socket", "adapter", "1/2 in square drive"),
+    ("ratchet", "torque_socket", "1/2 in square drive"),
+    ("plunger_rest", "column", "two M6 rivnuts and screws"),
     ("loadcell", "ram", "M12 stud into the ram end"),
     ("spacer", "loadcell", "three M5 screws into blind holes"),
     ("coupling", "spacer", "three M5 screws into blind holes"),
@@ -573,7 +605,7 @@ ENGAGED = {   # pairs that share volume on purpose: (a, b): why
     ("flange_screws", "shelf"): "screws in tapped holes", ("flange_screws", "barrel"): "screws through the flange",
     ("nozzle", "barrel"): "thread", ("hangers", "shelf"): "screws in tapped holes", ("hangers", "guard"): "screws through the tabs",
     ("adapter", "press_head"): "adapter on the shaft", ("adapter_pin", "adapter"): "pin", ("adapter_pin", "press_head"): "pin through the shaft",
-    ("ratchet", "adapter"): "square drive", ("coupling_pin", "coupling"): "pin", ("coupling_pin", "plunger"): "pin",
+    ("torque_socket", "adapter"): "square drive", ("ratchet", "torque_socket"): "square drive", ("coupling_pin", "coupling"): "pin", ("coupling_pin", "plunger"): "pin",
     ("plunger", "coupling"): "socket", ("table", "handwheel"): "screw in the nut", ("table", "washer"): "screw through the washer",
 ("mold_screws", "mold_upper"): "screws", ("mold_screws", "mold_lower"): "screws in inserts",
     ("dowels", "mold_upper"): "dowel", ("dowels", "mold_lower"): "dowel", ("fan", "fan_bracket"): "screws",
@@ -593,10 +625,26 @@ CLEAR = [   # (a, b, minimum gap mm, why)
     ("wiring", "shield_sides", 5.0, "wiring passes above the shield"),
     ("hood", "back_plate", 20.0, "hood clear of the shelf back plate"),
     ("ratchet", "column", 10.0, "handle clear of the column"),
+    ("torque_socket", "column", 10.0, "socket clear of the column"),
+    ("ratchet", "fan_bracket", 20.0, "handle clear of the fan bracket"),
+    ("plunger_rest", "shelf", 5.0, "rest cup clear of the shelf"),
+    ("plunger_rest", "guard", 20.0, "hot jacket away from the rest"),
+    ("plunger_rest", "barrel", 20.0, "rest clear of the flange and funnel"),
+    ("plunger_rest", "shield_sides", 5.0, "rest cup clear of the shield"),
+    ("plunger_rest", "fan_bracket", 20.0, "rest clear of the fan bracket"),
+    ("plunger_rest", "flange_screws", 20.0, "rest clear of the flange screws"),
     ("mold_screws", "nozzle_heater", 5.0, "screw heads clear of the nozzle heater"),
     ("flange_screws", "back_plate", 2.0, "screw heads clear of the back plate"),
     ("loadcell", "back_plate", 5.0, "load cell clear of the back plate"),
 ]
+
+
+def rested_plunger(p=PARAMS):
+    """The plunger standing in the rest cup, tip down, for the loading step checks."""
+    rcd, rci, rch = p["rest_cup"]
+    rz = p["rest_z"] - p["rest_plate"][1] / 2 + 3.0
+    rcx = p["col"][0] / 2 + p["rest_plate"][2] + rcd / 2
+    return zcyl(p["bore"] / 2, rz, rz + p["plunger_len"], rcx, p["rest_y"]), rz
 
 
 def _vol(a, b):
@@ -659,6 +707,23 @@ def check(p=PARAMS, verbose=True):
         rec(dc >= 1.5, f"table at {tt:.0f}: {dc:.1f} mm from the column face")
         engaged = min(d["hub1"], tt) - max(d["hub0"], tt - p["lift_screw"][1])
         rec(tt - p["lift_screw"][1] <= d["hub0"], f"table at {tt:.0f}: screw passes through the full nut ({engaged:.0f} mm engaged)")
+    # 4b. loading: the plunger lifted out on its ball-lock pin stands in the rest, never on the bench
+    rp, rz0 = rested_plunger(p)
+    for k in ("column", "barrel", "guard", "shelf", "back_plate", "shield_sides", "fan_bracket", "hood", "hood_arm",
+              "flange_screws", "torque_socket", "ratchet", "head_plate", "press_head", "ram"):
+        dist = rp.distance_to(C[k].shape)
+        rec(dist >= 15 or (k == "column" and dist >= 8), f"rested plunger: {dist:.0f} mm from {C[k].name} (at least 15; 8 from the column wall)")
+    seat = p["rest_cup"][2] - 3.0
+    rec(seat >= 60, f"rested plunger: stands {seat:.0f} mm deep in the cup (at least 60), top {rz0 + p['plunger_len']:.0f} mm above the bench")
+    rec(rz0 + p["plunger_len"] <= d["pl1"], f"rested plunger top {rz0 + p['plunger_len']:.0f} mm is below the raised plunger top {d['pl1']:.0f} mm")
+    # 4c. P1: the press head holes (MMD-DDR-003) repeated on the bought head before it is cut
+    hole_x = 30.0
+    web = hole_x - 5.0 - (p["ram"] + 2) / 2
+    rec(web >= 8, f"P1 nominal: {web:.0f} mm of casting between each M10 hole and the ram bore (at least 8; confirm on the bought head)")
+    rec(p["head"][1] - 21 >= 100, f"P1 nominal: holes are 21 mm deep (20 mm thread) in a head {p['head'][1]:.0f} mm deep; confirm on the bought head")
+    # 4d. torque limit from the press rating (MMD-CAL-001 B)
+    tq_ceiling = 9807.0 * p["pinion_r"] / 1000 / 0.84
+    rec(p["tq_set_Nm"] * 1.10 <= tq_ceiling, f"torque limit {p['tq_set_Nm']:.0f} N m, +10 % tolerance {p['tq_set_Nm'] * 1.10:.0f}, is within the {tq_ceiling:.0f} N m that gives 1 t at 84 % efficiency")
     # 5. assembly order: the barrel goes in from above before the press head
     below = (C["barrel"].shape + C["nozzle"].shape + C["nozzle_heater"].shape) & bx(-200, 200, -200, 200, -10, d["bar1"])
     bbx = below.bounding_box()

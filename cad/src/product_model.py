@@ -6,8 +6,10 @@ pinion bosses, gib screws and a name badge; the rack ram with its teeth; the rat
 rubber grip and ball knob; the load cell on its glass-epoxy spacer, with a label and lead; the
 ground plunger; the barrel, flange and funnel; the two mica band heaters with clamp lugs and
 terminal blocks; the nozzle with its radiused tip and heater band; the aluminum-skinned jacket
-inside a slotted guard; the two-plate aluminum test mold with a visible parting line, pry slots,
-washers, hex bolts and nuts; the screw jack, guide rods, slotted lift table and tommy bar; the
+inside a slotted guard; the two-plate aluminum test mold with a visible parting line, pry slots
+and four M10 cap screws into thread inserts; the lift table with its welded Tr20 screw, handwheel
+nut and thrust washer; the torque-limiting socket on the ratchet adapter; the plunger rest on the
+column; the head mounting plate, shelf back plate, mica pads and flange screws; the plunger coupling; the
 perforated nozzle zone shield with hinges, latch and a hot-surface label; the side fume hood,
 duct stub, band clamp and a short run of flexible duct; the mold cooling fan with blades, finger
 guard and bracket; and the control box with two lit PID controllers, a lit force display, a lit
@@ -19,7 +21,9 @@ APPEARANCE MODEL ONLY: no tolerances, no fabrication detail. CONCEPT, NOT FOR FA
 Every main dimension and interface comes from PARAMS, derived() and build_parts() in model.py.
 Axes as model.py: Z up, bench top at Z = 0, the operator on the -Y side, injection axis at
 X = 0, Y = 0. Shown with the plunger raised and the test mold seated on the nozzle.
-Appearance-only departures from model.py are listed in docs/REVIEW.md, session 2026-09-26.
+Appearance-only departures from model.py are listed in docs/REVIEW.md, sessions 2026-09-26 and
+2026-10-02 (updated to the constructable design: no guide rods, cap screws into inserts, screw lift,
+flange and fan bracket as built, plunger rest and torque-limiting socket added).
 
     from product_model import product_parts
     for p in product_parts(): print(p["name"], p["group"], p["material"])
@@ -33,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from build123d import (Axis, Box, Cone, Cylinder, Plane, Polygon, Pos, RegularPolygon, Rot, Solid,
                        Sphere, Vector, extrude, fillet)
-from model import PARAMS, build_parts, derived
+from model import PARAMS, build_components, build_parts, derived
 
 TITLE = "MicroMold: desktop injection molding press for recycled plastic"
 
@@ -201,6 +205,7 @@ def _plate_holes(plate, centers, size, axis):
 def product_parts(P=PARAMS):
     D = derived(P)
     m = build_parts(P)
+    Cm = build_components(P)
     out = []
 
     def add(name, shape, color, material, bom, group, explode):
@@ -227,6 +232,7 @@ def product_parts(P=PARAMS):
     E_SHIELD = (0, -300, -60)
     E_HOOD = (-160, 0, 160)
     E_FAN = (200, 0, 0)
+    E_REST = (200, 40, 40)
     E_CTRL = (-140, -60, 0)
     E_WIRE = (-70, -60, 0)
 
@@ -289,6 +295,13 @@ def product_parts(P=PARAMS):
 
     hxp = hx / 2 + 25
     ky, kz = D["knob"]
+    tqd, tql = P["tq_socket"]
+    tq = _xcyl(hxp + 2 + tql / 2, py, pz, tqd / 2, tql)
+    tq = _fillet_try(tq, tq.edges(), [3.0, 2.0])
+    tq += _union([_xcyl(hxp + 2 + 8 + 9 * k, py, pz, tqd / 2 + 0.8, 2.0) for k in range(5)])      # knurled grip bands
+    tq += _xcyl(hxp + 2 + tql - 8, py, pz, tqd / 2 + 0.5, 6.0)                                    # torque scale ring
+    add("Torque-limiting socket, 180 N m", tq, "#7C2D12", "metal", 21, "shell", E_FRAME)
+    hxp = hxp + 2 + tql + 2 - 0.0                                                                  # ratchet now sits on the socket drive
     ratchet = _xcyl(hxp + 10, py, pz, 20.0, 20.0)
     ratchet = _fillet_try(ratchet, ratchet.edges(), [3.0, 2.0])
     ratchet += _box(hxp + 21, py + 6, pz + 16, 3, 8, 10)       # reversing lever
@@ -314,6 +327,11 @@ def product_parts(P=PARAMS):
     ram = ram.cut(*teeth)
     add("Rack ram", ram, C_STEEL, "metal", 3, "shell", E_RAM)
 
+    hpl = Cm["head_plate"].shape
+    add("Head mounting plate (painted steel)", hpl, C_FRAME, "painted", 19, "shell", E_FRAME)
+    add("Head countersunk screws (4 x M10)", Cm["head_screws"].shape, C_BRIGHT, "metal", 19, "shell", E_FRAME)
+    add("Ratchet adapter", Cm["adapter"].shape, C_STEEL, "metal", 19, "shell", E_FRAME)
+
     # ------------------------------------------------------------ 4 load cell and spacer
     lr, lh = P["loadcell"]
     cell = _zcyl(0, 0, (D["sp1"] + D["lc1"]) / 2, lr / 2, lh)
@@ -335,6 +353,7 @@ def product_parts(P=PARAMS):
     pl = _fillet_try(pl, _bottom(pl), [1.5, 1.0])
     pl -= _xcyl(0, 0, D["pl1"] - 12, 3.0, P["bore"] + 2)                        # coupling cross hole
     add("Plunger (ground steel)", pl, C_BRIGHT, "metal", 5, "internal", E_PLUNGER)
+    add("Plunger coupling and ball-lock pin", Cm["coupling"].shape + Cm["coupling_pin"].shape, C_STEEL, "metal", 19, "internal", E_PLUNGER)
 
     # ------------------------------------------------------------ 6 barrel, flange and funnel
     barrel = m["barrel"]
@@ -377,11 +396,9 @@ def product_parts(P=PARAMS):
     # ------------------------------------------------------------ 9 barrel bracket
     kx, ky_, kt = P["bracket"]
     brk_y = D["col_front"] + cw - ky_ / 2
-    brk = _box(0, brk_y, (D["brk0"] + D["brk1"]) / 2, kx, ky_, kt)
-    brk = _fillet_try(brk, _edges_par(brk, Axis.Z), [10.0, 6.0])
-    brk = _fillet_try(brk, _top(brk), [1.5, 1.0])
-    brk -= _zcyl(0, 0, (D["brk0"] + D["brk1"]) / 2, P["barrel_od"] / 2 + 2, kt + 2)
-    add("Barrel bracket (heat break plate)", brk, C_ACCENT, "painted", 9, "shell", E_FRAME)
+    brk = Cm["shelf"].shape + Cm["back_plate"].shape            # as built: 20 mm shelf, welded 8 mm back plate
+    add("Barrel shelf and back plate (painted steel)", brk, C_ACCENT, "painted", 9, "shell", E_FRAME)
+    add("Mica pads and flange cap screws (4 x M8)", Cm["pads"].shape + Cm["flange_screws"].shape, C_BRIGHT, "metal", 9, "internal", E_BARREL)
 
     # ------------------------------------------------------------ 10 insulation jacket and guard
     jo, jlo, jhi = P["jacket"]
@@ -403,30 +420,27 @@ def product_parts(P=PARAMS):
     # ------------------------------------------------------------ 11 mold clamp: jack, rods, table, tommy bar
     tx, ty, tt = P["table"]
     t_top = D["table_top"]
-    jack = _box(0, 0, bt + 25, 70, 70, 50)
-    jack = _fillet_try(jack, _edges_par(jack, Axis.Z), [8.0, 5.0])
-    jack = _fillet_try(jack, _top(jack), [3.0, 2.0])
-    jack += _zcyl(0, 0, (bt + 50 + t_top - tt) / 2, 20.0, t_top - tt - bt - 50 + 0.5)
-    jack += _ycyl(0, -35 - 6, bt + 22, 14.0, 12)                  # input shaft boss on the front face
-    add("Screw jack", jack, C_FRAME, "painted", 11, "shell", E_CLAMP)
-    rods = _zcyl(-62, 0, (bt + t_top - tt) / 2, 7.0, t_top - tt - bt) + _zcyl(62, 0, (bt + t_top - tt) / 2, 7.0, t_top - tt - bt)
-    rods += _zring(-62, 0, bt, bt + 8, 12, 6.9) + _zring(62, 0, bt, bt + 8, 12, 6.9)
-    add("Guide rods and bushes", rods, C_BRIGHT, "metal", 11, "shell", E_CLAMP)
+    sd, sl = P["lift_screw"]
     table = _box(0, 0, t_top - tt / 2, tx, ty, tt)
     table = _fillet_try(table, _edges_par(table, Axis.Z), [6.0, 4.0])
     table = _fillet_try(table, _top(table), [1.2, 0.8])
-    bxo, byo = P["mold_bolt_xy"]
-    table = table.cut(_box(-bxo, 0, t_top - tt / 2, 17, 2 * byo + 24, tt + 2), _box(bxo, 0, t_top - tt / 2, 17, 2 * byo + 24, tt + 2))
-    add("Lift table", table, C_ACCENT, "painted", 11, "shell", E_CLAMP)
-    bar = _pipe([(0, -35, bt + 22), (0, -150, bt + 22)], 8.0)
-    bar += _xcyl(0, -150, bt + 22, 7.0, 90.0) + _ycyl(0, -150, bt + 22, 11.0, 18.0)
-    add("Tommy bar", bar, C_BRIGHT, "metal", 11, "shell", E_CLAMP)
-    tgrips = _xcyl(-38, -150, bt + 22, 9.0, 24) + _xcyl(38, -150, bt + 22, 9.0, 24)
-    tgrips = _fillet_try(tgrips, tgrips.edges(), [2.5, 1.5])
-    add("Tommy bar grips", tgrips, C_BLACK, "rubber", 11, "shell", E_CLAMP)
+    add("Lift table (painted steel)", table, C_ACCENT, "painted", 11, "shell", E_CLAMP)
+    screw = _zcyl(0, 0, t_top - tt - (sl - tt) / 2, sd / 2, sl - tt)
+    screw += _union([_zcyl(0, 0, t_top - tt - 6 - 9 * k, sd / 2 + 0.6, 1.2) for k in range(int((sl - tt - 12) // 9))])   # thread crests
+    add("Lift screw, Tr20 x 4 (welded under the table)", screw, C_BRIGHT, "metal", 11, "shell", E_CLAMP)
+    hw_o, hub_o, hub_h = P["handwheel"]
+    wheel = _zring(0, 0, D["hub0"], D["hub1"], hub_o / 2, sd / 2) + _zring(0, 0, D["hub0"] + 8, D["hub0"] + 18, hw_o / 2, hw_o / 2 - 7)
+    for ang in (90, 210, 330):
+        wheel += Pos(0, 0, D["hub0"] + 13) * Rot(0, 0, ang) * Pos((hub_o / 2 + hw_o / 2 - 7) / 2, 0, 0) * Box(hw_o / 2 - 7 - hub_o / 2 + 2, 10, 8)
+    wheel = _fillet_try(wheel, _top(wheel), [1.0, 0.6])
+    add("Handwheel nut (painted steel)", wheel, C_ACCENT, "painted", 11, "shell", E_CLAMP)
+    spin = _zcyl(hw_o / 2 - 3.5, 0, D["hub0"] + 18 + 15, 5.0, 30)
+    add("Handwheel spinner knob", spin, C_BLACK, "plastic", 11, "shell", E_CLAMP)
+    add("Thrust washer", Cm["washer"].shape, C_BRIGHT, "metal", 11, "shell", E_CLAMP)
 
     # ------------------------------------------------------------ 12 mold set
     mx, my, mt = P["mold"]
+    bxo, byo = P["mold_bolt_xy"]
     cvx, cvy, cvz = P["cavity"]
     m0, ms, m1 = D["mold0"], D["split"], D["mold1"]
 
@@ -453,13 +467,12 @@ def product_parts(P=PARAMS):
     mb = []
     for sx in (-bxo, bxo):
         for sy in (-byo, byo):
-            w = _zcyl(sx, sy, m1 - 0.25 + 0.8, 10.0, 1.6)
-            h = _hex_z(sx, sy, m1 + 1.35, 16.0, 5.9)
+            h = _zcyl(sx, sy, m1 + 5.0, 8.0, 10.0)
             h = _fillet_try(h, _top(h), [1.0, 0.6])
-            shank = _zcyl(sx, sy, (m0 - tt + 1 + m1) / 2, 5.0, m1 - m0 + tt - 1)
-            nut = _hex_z(sx, sy, m0 - tt + 0.5, 16.0, 8.0)
-            mb.append(w + h + shank + nut)
-    add("Mold bolts, washers and nuts (M10)", _union(mb), "#3E4349", "metal", 12, "shell", E_BOLTS)
+            h -= _hex_z(sx, sy, m1 + 8.0, 8.0, 5.0)                                              # hex socket
+            mb.append(h + _zcyl(sx, sy, (ms - 25 + m1) / 2, 5.0, m1 - ms + 25))
+    add("Mold cap screws (4 x M10) into thread inserts", _union(mb), "#3E4349", "metal", 12, "shell", E_BOLTS)
+    add("Dowel pins (2 x 6 mm)", Cm["dowels"].shape, C_BRIGHT, "metal", 12, "internal", E_MOLD_UP)
 
     # ------------------------------------------------------------ 13 control box
     ccx, ccy = P["ctrl_xy"]
@@ -601,12 +614,11 @@ def product_parts(P=PARAMS):
     for a in (45, 135, 225, 315):
         fg += Pos(gx, 0, zc2) * Rot(a, 0, 0) * Pos(0, 0, 38) * Box(2.0, 2.0, 76)
     add("Cooling fan finger guard", fg, C_BRIGHT, "metal", 18, "shell", E_FAN)
-    z_leg0 = bt
-    leg = _box(xc, 0, (z_leg0 + zc2 - fzz / 2) / 2, 3, 60, zc2 - fzz / 2 - z_leg0)
-    leg += _box(xc - 10, 0, bt + 1.5, 20, 60, 3)
-    add("Cooling fan bracket", leg, C_FRAME, "painted", 18, "shell", E_FAN)
-    fb = _union([_hex_z(xc - 12, sy * 20, bt + 3, 10, 4) for sy in (-1, 1)])
-    add("Fan bracket bolts", fb, C_BRIGHT, "metal", 15, "shell", E_FAN)
+    add("Cooling fan bracket (3 mm painted steel plate)", Cm["fan_bracket"].shape, C_FRAME, "painted", 18, "shell", E_FAN)
+    fb = _union([_zcyl(146.0, yy, bt + 3 + 2, 5.0, 4.0) for yy in (-40.0, 40.0)])                  # M6 screws into the base plate
+    add("Fan bracket screws (2 x M6)", fb, C_BRIGHT, "metal", 18, "shell", E_FAN)
+    add("Hood arm (flat bar)", Cm["hood_arm"].shape, C_ACCENT, "painted", 19, "shell", E_HOOD)
+    add("Plunger rest (cup on a plate)", Cm["plunger_rest"].shape, C_ACCENT, "painted", 20, "shell", E_REST)
 
     # ------------------------------------------------------------ accessories (not in the BOM)
     rng = random.Random(7)

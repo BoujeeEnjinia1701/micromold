@@ -21,6 +21,7 @@ trl_evidence:
   - cad/step/mold-set.step
   - cad/drawings/MMD-DWG-001.svg
   - cad/drawings/MMD-DWG-001.pdf
+  - cad/drawings/MMD-DWG-115.pdf
   - bom/bom.csv
   - docs/05-build-plan.md
   - docs/06-design-decisions.md

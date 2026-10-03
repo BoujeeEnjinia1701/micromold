@@ -1,4 +1,4 @@
-"""MicroMold general arrangement sheet MMD-DWG-001, Rev P4 (TRL 3, constructable design MMD-DDR-003).
+"""MicroMold general arrangement sheet MMD-DWG-001, Rev P5 (TRL 3, constructable design MMD-DDR-003).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/MMD-DWG-001.svg, .pdf and .png from the parametric model in
@@ -16,9 +16,9 @@ sys.path[:0] = [str(ROOT / ".kit"), str(ROOT / "cad" / "src")]
 from drawing import Sheet, _viewbox, _t, M, TB_Y, INK, MUTED  # noqa: E402
 from model import PARAMS as P, build_parts, derived  # noqa: E402
 
-DATE = "2026-10-01"
+DATE = "2026-10-02"
 PRESS = ["base", "drive", "ram", "loadcell", "plunger", "barrel", "heaters", "nozzle", "bracket",
-         "guard", "clamp", "mold", "shield", "hood", "coolfan"]
+         "guard", "clamp", "mold", "shield", "hood", "coolfan", "rest", "tqsocket"]
 
 
 def safe_project_views(part, workdir, line_weight=0.35):
@@ -101,13 +101,14 @@ def main():
     work = ROOT / "cad" / "drawings" / "_views"
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="MicroMold", title="General arrangement", dwg_no="MMD-DWG-001", rev="P4",
+    s = Sheet(project="MicroMold", title="General arrangement", dwg_no="MMD-DWG-001", rev="P5",
               author="Amish Chadha", date=DATE, scale=0.1, theme="technical",
               material="Steel frame and barrel; 6061 mold; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", "2026-09-25", "AC"),
                          ("P2", "Mold cooling fan added; 300 W bands (MMD-DDR-002)", "2026-09-25", "AC"),
                          ("P3", "Layout and labels tidied", "2026-09-30", "AC"),
-                         ("P4", "Design made constructable (MMD-DDR-003)", "2026-10-01", "AC")])
+                         ("P4", "Design made constructable (MMD-DDR-003)", "2026-10-01", "AC"),
+                         ("P5", "Plunger rest and torque-limiting socket added (decisions of 2026-10-02)", "2026-10-02", "AC")])
     s.add_ortho(views, names=("front", "right"))
     k = s.scale
     c = ortho_cells(s, views)
@@ -164,7 +165,7 @@ def main():
                 f"RATCHET HANDLE {P['handle_len']:.0f}, {P['handle_up_deg']:.0f} DEG UP TO 60 DEG DOWN")
 
     s._layers += L
-    s.add_svg(views["iso"], 276, 37, 140, 96, label="Isometric view", sublabel="Not to scale; control box not shown")
+    s.add_svg(views["iso"], 276, 44, 140, 82, label="Isometric view", sublabel="Not to scale; control box not shown")
     fo, _ = P["flange"]
     s.add_notes("Main dimensions and interfaces (mm)", [
         f"Barrel {P['barrel_od']:.0f} OD, bore {P['bore']:.0f} (22 H8/f7 plunger fit), {P['barrel_len']:.0f} long",
@@ -172,6 +173,7 @@ def main():
         f"Nozzle orifice {P['nozzle_orifice']:.0f}; sprue 5 to 7 taper; tip at {D['noz0']:.0f}",
         f"Stroke {P['stroke']:.0f}, {D['in_bore']:.0f} in the bore; ram {D['ram_len']:.0f} long, 28 square",
         f"Pinion r {P['pinion_r']:.0f}; ratchet handle {P['handle_len']:.0f}; {P['handle_len'] / P['pinion_r']:.1f}:1",
+        f"Torque socket {P['tq_set_Nm']:.0f} N m; plunger rest cup {P['rest_cup'][0]:.0f} OD, {P['rest_z']:.0f} up",
         f"Lift table {P['table'][0]:.0f} x {P['table'][1]:.0f}, top {P['table_min_top']:.0f} to {P['table_min_top'] + P['table_travel']:.0f}; Tr20 screw, handwheel nut",
         f"Test mold {P['mold'][0]:.0f} x {P['mold'][1]:.0f} x {2 * P['mold'][2]:.0f}; four M10 8.8 in inserts at 20 kN",
         f"Load cell 10 kN on a {P['spacer_t']:.0f} mm G-11 thermal spacer",
@@ -179,7 +181,7 @@ def main():
         f"Mold cooling fan {P['cool_fan'][1]:.0f} x {P['cool_fan'][2]:.0f} x {P['cool_fan'][0]:.0f} at X {P['cool_fan_x']:.0f}; barrel bands 2 x 300 W",
         f"Lift screw runs on {-(D['table_top'] - P['lift_screw'][1]):.0f} below the bench top (not drawn), through a 25 mm hole",
         "Third-angle; front view from -Y (operator side)",
-    ], x=276, y=148, width=140)
+    ], x=276, y=142, width=140)
     out = s.save(ROOT / "cad" / "drawings" / "MMD-DWG-001")
     shutil.rmtree(work, ignore_errors=True)
     print(f"wrote {out} and .pdf, .png at scale 1:{1 / k:g}")

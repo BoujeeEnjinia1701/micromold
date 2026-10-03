@@ -3,7 +3,7 @@ doc_id: MMD-PRC-001
 title: MicroMold design precis
 project: MicroMold
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -37,13 +37,17 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Decisions of 2026-10-02 (MMD-DEC-001 v0.2): lift-out loading with a plunger rest, torque-limiting socket against overload, first product mold, first candidate partner'
+- version: "0.8"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Figures brought into line with MMD-CAL-001 v0.5 - torque-limiting socket and plunger rest in Table 1 (items 19 to 21), overload 8.3 kN with the socket, mass 39.8 kg, press USD 590
 ---
 
 # MicroMold design precis
 
 ## Summary
 
-MicroMold is a bench-top, hand-operated plunger injection press for recycled HDPE, PP, LDPE and PS. The rack-and-pinion head of a 1 t arbor press, mounted on a taller steel column and turned by a 450 mm ratchet handle, drives a 22 mm plunger down a vertical steel barrel heated by two 300 W band heaters. Melt leaves a heated 4 mm nozzle into a two-plate aluminum mold that a screw lift table holds against the nozzle, inside a perforated nozzle zone shield, where a small fan cools the mold, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations (MMD-CAL-001 v0.4) give a shot of up to 34.2 g at 8.9 MPa (89 bar) with 250 N on the handle, delivered in about four ratchet pulls; a warm-up of 12.3 min; and about 11.6 parts per hour from 753 W of single-phase power. Value-engineering target: USD 520. Estimated cost of the constructable design: USD 544 for the press (USD 24 over the target), USD 638 with one mold, which is tooling. It weighs about 39.0 kg against a 40 kg target. All figures are estimates. The design was made buildable on 2026-10-01 (MMD-DDR-003) and the prototype build plan is MMD-BLD-001 (`docs/05-build-plan.md`).
+MicroMold is a bench-top, hand-operated plunger injection press for recycled HDPE, PP, LDPE and PS. The rack-and-pinion head of a 1 t arbor press, mounted on a taller steel column and turned by a 450 mm ratchet handle through a torque-limiting socket set to 180 N m, drives a 22 mm plunger down a vertical steel barrel heated by two 300 W band heaters. Melt leaves a heated 4 mm nozzle into a two-plate aluminum mold that a screw lift table holds against the nozzle, inside a perforated nozzle zone shield, where a small fan cools the mold, and a side hood with a duct fan draws fumes from the funnel. The TRL 3 calculations (MMD-CAL-001 v0.5) give a shot of up to 34.2 g at 8.9 MPa (89 bar) with 250 N on the handle, delivered in about four ratchet pulls; a warm-up of 12.3 min; and about 11.6 parts per hour from 753 W of single-phase power. Value-engineering target: USD 520. Estimated cost of the constructable design: USD 590 (USD 70 over the target) for the press, and USD 684 with one mold, which is tooling. It weighs about 39.8 kg against a 40 kg target. All figures are estimates. The design was made buildable on 2026-10-01 (MMD-DDR-003) and the prototype build plan is MMD-BLD-001 (`docs/05-build-plan.md`).
 
 ![MicroMold on a workbench](../media/hero.png)
 
@@ -85,6 +89,9 @@ Table 1. Main components. Numbers match `bom/bom.csv` and Figure 4.
 | 16 | Nozzle zone shield | Perforated steel sides and hinged front around the nozzle and mold | Added at TRL 3 for R11 and melt spit |
 | 17 | Fume hood and duct fan | Side hood, 150 x 100 mm face, 100 mm from the funnel axis; 100 mm inline fan; 3 m of duct | Added at TRL 3 (MMD-DDR-001 D9); about 124 m³/h |
 | 18 | Mold cooling fan | 120 mm mains axial fan, about 18 W, on an angle bracket on the base plate, blowing on the mold through the shield side | Added by MMD-DDR-002; mold about 47 °C instead of about 92 °C |
+| 19 | Construction parts | Head mounting plate, plunger coupling and ball-lock pin, ratchet adapter, hood arm | Added to make the design buildable (MMD-DDR-003) |
+| 20 | Plunger rest | A cup on a plate on two M6 rivnuts in the column's right wall, 400 mm above the bench | Holds the plunger upright, tip down, while the barrel is loaded; the hot plunger is never laid on the bench (decision of 2026-10-02) |
+| 21 | Torque-limiting socket | 1/2 in drive, set to 180 N m, between the ratchet adapter and the ratchet | Slips at about a 400 N pull so the ram cannot exceed the press rating; checked against the load cell at TRL 4 (decision of 2026-10-02) |
 
 Item 15 (hardware and consumables) is in the BOM but not modeled. The general arrangement is drawing MMD-DWG-001 (`cad/drawings/`).
 
@@ -104,7 +111,7 @@ Table 2. Key numbers.
 | Drive ratio and efficiency | 22.5:1; 0.60 design, 0.84 calculated [B1] | |
 | Plunger force and melt pressure at 250 N | 3.38 kN and 8.9 MPa (89 bar, 1,288 psi) at 0.60; 12.4 MPa at 0.84 [B2] | R3 met on paper, 11 % margin |
 | Stroke per ratchet pull | 31.4 mm per 90° pull; 3.8 pulls per shot [B5] | |
-| Overload (700 N on the handle) | 13.2 kN, 34.7 MPa, 1.35 times the press rating [B4] | Parts sized for it |
+| Overload (700 N on the handle) | 13.2 kN, 34.7 MPa, 1.35 times the press rating without a limiter; with the torque-limiting socket at 180 N m (198 N m worst case) 8.3 kN, 21.8 MPa, 0.85 times the rating [B4, B4a, B4b] | Parts sized for the limited case |
 | Fill pressure, 4 mm nozzle, 10 s fill | About 4.8 MPa [E3] | |
 | Mold clamp limit | 45 cm² projected area at 8.9 MPa [D2] | R7 met on paper |
 | Warm-up to 220 °C | 12.3 min barrel zone with 2 x 300 W, 6.6 min nozzle [G4] | R5 met on paper |
@@ -114,9 +121,9 @@ Table 2. Key numbers.
 | Electrical load | 753 W; 3.3 A at 230 V, 6.3 A at 120 V [I1] | R10 met on paper |
 | Energy per shot | About 20 Wh, 0.66 kWh per kg of parts [I2] | |
 | Fume hood flow | About 124 m³/h [J1] | R13 met on paper |
-| Mass | 39.0 kg without the control box, against 40 kg [K1] | R9 at risk |
+| Mass | 39.8 kg without the control box, against 40 kg [K1] | R9 at risk |
 | Size | 320 x 260 mm base; handle 1,094 mm above the bench at the start of a pull [K2] | R9 met on size |
-| Parts cost | $544 press, against a $520 value-engineering target; $638 with one mold [L1, L2] | R14 USD 24 over the value-engineering target |
+| Parts cost | $590 press, against a $520 value-engineering target; $684 with one mold [L1, L2] | R14 USD 70 over the value-engineering target |
 
 ## Key design choices
 
@@ -144,7 +151,7 @@ These follow MMD-DDR-001 and MMD-DDR-002. Each was decided by Amish, 2026-09-25:
 
 - **Hot plunger.** The plunger's top end reaches about 94 °C. Lift it out for loading only in heat-resistant gloves and set it on the plunger rest on the column, never on the bench.
 - **Hot surfaces and melt.** The barrel, nozzle, mold and purge reach 180 to 260 °C, and molten plastic sticks to skin. The funnel top is a working surface at about 150 °C. Keep the jacket guard and the nozzle zone shield in place, wear heat-resistant gloves, long sleeves and eye protection, and never look down the barrel.
-- **Pressure.** Trapped melt can spit from the nozzle or the parting line. An operator hanging body weight on the handle can reach about 35 MPa, which would open the parting line of the test mold (MMD-CAL-001, D3). Close the shield before injecting and keep faces away from the axis. A torque-limiting socket on the ratchet adapter, set so the ram cannot exceed the press rating, limits the force whoever pulls (decided by Amish, 2026-10-02); it is checked against the load cell at TRL 4.
+- **Pressure.** Trapped melt can spit from the nozzle or the parting line. Without a limiter, an operator hanging body weight on the handle could reach about 35 MPa, which would open the parting line of the test mold (MMD-CAL-001, D3); with the socket the most is about 22 MPa. Close the shield before injecting and keep faces away from the axis. A torque-limiting socket on the ratchet adapter, set so the ram cannot exceed the press rating, limits the force whoever pulls (decided by Amish, 2026-10-02); it is checked against the load cell at TRL 4.
 - **Fumes.** Process only HDPE, PP, LDPE and PS within their published ranges. Never heat PVC, which releases hydrogen chloride, or unknown and mixed plastics ([Precious Plastic Academy](https://onearmy.github.io/academy/plastic/basics)). Overheated PS can release styrene. Run the hood fan whenever the heaters are on, or work outdoors. Set point limits of 260 °C are set in both controllers.
 - **Mains electricity.** Heaters run at mains voltage next to steel parts. Earth the frame and every metal part, use a fused inlet, double-pole switch and an RCD (30 mA) or GFCI supply, rate wiring at the barrel for 250 °C, and fit an independent thermal cut-out. Mains wiring must be done or checked by a qualified electrician to local electrical code.
 - **Moving parts and lever.** The ratchet holds the ram under load: release the pawl only with the handle in hand. The ram and pinion can pinch; keep hands clear of the rack. The mold cooling fan runs at mains voltage: keep its finger guard fitted and its lead clear of the hot barrel and nozzle.
@@ -153,7 +160,7 @@ These follow MMD-DDR-001 and MMD-DDR-002. Each was decided by Amish, 2026-09-25:
 
 ## Open questions after TRL 3
 
-- Ram length and travel of real 1 t arbor presses: is a 255 mm ram with 150 mm of engaged travel available, and how heavy is the head? This sets R9, now at 39.0 kg against 40 kg.
+- Ram length and travel of real 1 t arbor presses: is a 255 mm ram with 150 mm of engaged travel available, and how heavy is the head? This sets R9, now at 39.8 kg against 40 kg.
 - How dense is a tamped, part-melted charge at injection time? This sets R2.
 - Is the fan enough to keep the mold near 47 °C in practice, and how dense is the charge after the shorter soak-limited cycle? This sets R6.
 - Nozzle temperature for each resin, and mold design rules for the group's own machinists: draft, venting, gate size and ejection.
